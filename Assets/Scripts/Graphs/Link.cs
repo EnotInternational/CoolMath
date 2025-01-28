@@ -15,6 +15,13 @@ public class Link
     public Vertex VertexA{get => _vertexA;}
     public Vertex VertexB{get => _vertexB;}
 
+    public Vertex GetOther(Vertex vertex)
+    {
+        if(vertex == _vertexA)
+            return _vertexB;
+        else
+            return _vertexA;
+    }
     public Link(Vertex vertexA, Vertex vertexB)
     {
         this._weight = 1;
