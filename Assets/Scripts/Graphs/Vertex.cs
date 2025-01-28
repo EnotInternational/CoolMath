@@ -4,9 +4,14 @@ using UnityEngine;
 public class Vertex : MonoBehaviour
 {
     [SerializeField]private List<Link> _links= new List<Link>();
-    public void AddLink(Link link)
+    [SerializeField]public List<Link> Links {get => _links;}
+    protected void AddLink(Link link)
     {
         _links.Add(link);
+    }
+    protected void RemoveLink(Link link)
+    {
+        _links.Remove(link);
     }
 
     private void OnDrawGizmos()
@@ -16,7 +21,33 @@ public class Vertex : MonoBehaviour
             Gizmos.DrawLine(link.VertexA.transform.position, link.VertexB.transform.position);
         }
     }
+    public bool HasLinkWith(Vertex vertex)
+    {
+        if(GetLinkWith(vertex) == null)
+            return false;
+        return true;
+    }
+    public Link GetLinkWith(Vertex vertex)
+    {
+        foreach(Link link in _links)
+        {
+            if(link.VertexA == vertex || link.VertexB == vertex)
+            {
+                return link;
+            }
+        }
+        return null;
+    }
 
+    public static void UnLink(Vertex vertexA, Vertex vertexB)
+    {
+        Link link = vertexA.GetLinkWith(vertexB);
+        if(link == null)
+            return;
+        
+        link.VertexA.RemoveLink(link);
+        link.VertexB.RemoveLink(link);
+    }
     public static Link LinkTogether(Vertex vertexA, Vertex vertexB)
     {
         return LinkTogether(vertexA, vertexB, 1);
