@@ -3,8 +3,8 @@ using UnityEngine;
 public class Wall : MonoBehaviour
 {
      public GameObject block;
-   public int width = 10;
-   public int height = 4;
+   [SerializeField]private int width = 10;
+   [SerializeField]private int height = 4;
   
    void Start()
    {
@@ -16,9 +16,4 @@ public class Wall : MonoBehaviour
            }
        }       
    }
-
-    void Update()
-    {
-        
-    }
 }

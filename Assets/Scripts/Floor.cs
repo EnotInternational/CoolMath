@@ -2,8 +2,8 @@ using UnityEngine;
 public class Floor : MonoBehaviour
 {
    public GameObject block;
-   public int width = 10;
-   public int length = 4;
+   [SerializeField]private int width = 10;
+   [SerializeField]private int length = 4;
   
    void Start()
    {
