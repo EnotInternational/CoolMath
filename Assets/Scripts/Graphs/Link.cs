@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public class Link
 {
     [SerializeField]private float _weight;
+    public UnityEvent OnUnlink = new();
+    public UnityEvent OnChanged = new();
     public float Weight
     {
         get { return _weight; }

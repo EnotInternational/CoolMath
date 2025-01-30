@@ -13,12 +13,11 @@ public class Vertex : MonoBehaviour
     {
         _links.Remove(link);
     }
-
-    private void OnDrawGizmos()
+    public void UpdateAllLinks()
     {
-        foreach(Link link in _links)
+        foreach (Link link in _links)
         {
-            Gizmos.DrawLine(link.VertexA.transform.position, link.VertexB.transform.position);
+            link.OnChanged.Invoke();
         }
     }
     public bool HasLinkWith(Vertex vertex)
@@ -38,13 +37,24 @@ public class Vertex : MonoBehaviour
         }
         return null;
     }
+    private void OnDestroy()
+    {
+        for(int i = _links.Count-1; i>=0; i--)
+        {
+            UnLink(_links[i]);
+        }
+    }
 
     public static void UnLink(Vertex vertexA, Vertex vertexB)
     {
         Link link = vertexA.GetLinkWith(vertexB);
         if(link == null)
             return;
-        
+        UnLink(link);
+    }
+    public static void UnLink(Link link)
+    {
+        link.OnUnlink.Invoke();
         link.VertexA.RemoveLink(link);
         link.VertexB.RemoveLink(link);
     }
