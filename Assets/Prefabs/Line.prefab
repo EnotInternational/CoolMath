@@ -153,7 +153,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 4886788891846834384}
-  link:
-    _weight: 5.1184635
+  _link:
+    _weight: 0
+    OnUnlink:
+      m_PersistentCalls:
+        m_Calls: []
+    OnChanged:
+      m_PersistentCalls:
+        m_Calls: []
+    OnSetAsPath:
+      m_PersistentCalls:
+        m_Calls: []
+    OnSeen:
+      m_PersistentCalls:
+        m_Calls: []
     _vertexA: {fileID: 0}
     _vertexB: {fileID: 0}
+  _linkColorSettings: {fileID: 11400000, guid: 2e9ed1abff997e7479de2f21222541ba, type: 2}

@@ -101,7 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb940588efc61484c8ec24855ec0db1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  links: []
+  _links: []
+  vertexColorSettings: {fileID: 11400000, guid: d7de2e5318c1cac4384970d8354e88ce, type: 2}
 --- !u!58 &1414823556419191006
 CircleCollider2D:
   m_ObjectHideFlags: 0

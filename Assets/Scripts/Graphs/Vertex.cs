@@ -5,6 +5,13 @@ public class Vertex : MonoBehaviour
 {
     [SerializeField]private List<Link> _links= new List<Link>();
     [SerializeField]public List<Link> Links {get => _links;}
+    public VertexVisualizer vertexVisualizer{get;private set;}
+    [SerializeField]public VertexColorSettings vertexColorSettings;
+    // [SerializeField]private Sprite
+    public void Start()
+    {
+        vertexVisualizer = new VertexVisualizer(vertexColorSettings, GetComponent<SpriteRenderer>());
+    }
     protected void AddLink(Link link)
     {
         _links.Add(link);

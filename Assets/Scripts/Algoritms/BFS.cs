@@ -1,72 +1,80 @@
-using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.Events;
 
-public class BFS : MonoBehaviour
+public class BFS : SearchAlgorithm
 {
-  [SerializeField] private Vertex current;
-  [SerializeField] private Vertex previous;
-  [SerializeField] private Dictionary <Vertex,Vertex> vertexHistory = new Dictionary<Vertex,Vertex>();
-  [SerializeField] private List<Vertex>pathVertexes=new List<Vertex>();
+    [SerializeField] private Dictionary <Vertex,Vertex> vertexHistory = new Dictionary<Vertex,Vertex>();
+    [SerializeField] private List<Vertex> processedInPreviousStep = new List<Vertex>();
+    [SerializeField] private List<Vertex>pathVertexes=new List<Vertex>();
     [SerializeField] private Queue<Vertex> queueVertexes = new Queue<Vertex>();  
-  public Vertex goalVertex;
-  public Vertex startVertex;
-  public bool InProcess; 
 
-    [SerializeField]private void Serch()
+    public BFS(AlgorithmManager manager) : base(manager){}
+    protected override void BeforeFirstIteration()
     {
-
-        foreach(Link link in startVertex.Links)
+        queueVertexes.Enqueue(startVertex);
+    }
+    protected override void Iterate()
+    {
+        int vertexCount= queueVertexes.Count;
+        if(vertexCount == 0)
         {
-            SerchVertex(link.GetOther(startVertex), startVertex);
-            queueVertexes.Enqueue(link.GetOther(startVertex));  
+            Fail();
         }
-
-        while (InProcess)
+        foreach(Vertex v in processedInPreviousStep)
         {
-            int vertexCount= queueVertexes.Count;
-            for(int i=0;i<vertexCount;i++)
+            v.vertexVisualizer.SetSeen();
+        }
+        processedInPreviousStep.Clear();
+        for(int i=0;i<vertexCount;i++)
+        {
+            Vertex current = queueVertexes.Dequeue();
+            foreach(Link link in current.Links)
             {
-                Vertex q=queueVertexes.Dequeue();
-                    foreach(Link link in q.Links)
-                {
-                SerchVertex(link.GetOther(q),q);
-                queueVertexes.Enqueue(link.GetOther(q));  
-                } 
+                Vertex next = link.GetOther(current);
+
+                link.SetSeen();
+
+                if(vertexHistory.ContainsKey(next))
+                    continue;
+                
+                queueVertexes.Enqueue(next);  
+                if(CheckVertex(next,current)) return;
             } 
-        }
-    
+        } 
+        OnStepComplete.Invoke();
     }
  
-    [SerializeField] private void  SerchVertex(Vertex current, Vertex privous)
+    [SerializeField] private bool CheckVertex(Vertex current, Vertex privous)
     {
-      if(privous!=null || current!=null)//все vertex
-      {
-        vertexHistory.Add(current,previous);
-      }
-      else if (current==goalVertex ) //последний vertex
-      {
-        vertexHistory.Add(null,previous);
-        RecursiveReturnToStart(current);
-      }
-      else if (current=null) //первый vertex 
-      {
-        vertexHistory.Add(current,null);
-      }
+        vertexHistory.Add(current,privous);
+        processedInPreviousStep.Add(current);
+        current.vertexVisualizer.SetProcessed();
+
+        if (current==goalVertex) //последний vertex
+        {
+            RecursiveReturnToStart(current);
+            return true;
+        }
+        return false;
     }
      void RecursiveReturnToStart(Vertex vertex)
     {
-      pathVertexes.Add(vertex);
+        pathVertexes.Add(vertex);
 
-      if(vertex==startVertex)
-      {
-        //Конец алгоритма
-      }
-      else
-      {
-        Vertex previous = vertexHistory[vertex];
-        RecursiveReturnToStart(previous);
-      }
+        if(vertex==startVertex)
+        {
+            Complete(pathVertexes);
+            foreach(Vertex processed in processedInPreviousStep)
+            {
+                processed.vertexVisualizer.SetSeen();
+            }
+        }
+        else
+        {
+            Vertex previous = vertexHistory[vertex];
+            vertex.GetLinkWith(previous).SetPath();
+            RecursiveReturnToStart(previous);
+        }
     }
 }
