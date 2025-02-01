@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/SelectorUss.uss?fileID=7433441132597879392&amp;guid=2ac19e910f2436a44b4c92b6a172ce92&amp;type=3#SelectorUss" />
+    <ui:VisualElement name="Panel" style="flex-grow: 1;">
+        <ui:Button text="Menu" name="Menu" emoji-fallback-support="true" parse-escape-sequences="false" style="height: 81px; width: 80px; position: relative; top: 19px; left: 731px; transform-origin: right top; cursor: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4154780841294389669&amp;guid=1fc05187a85c671468bf8ab95f6784be&amp;type=3#arrow-down&quot;); display: flex; overflow: visible; flex-wrap: nowrap; color: rgb(0, 0, 0); -unity-background-scale-mode: stretch-to-fill; background-position-x: center 0; -unity-background-image-tint-color: rgb(0, 0, 0); background-color: rgb(104, 96, 147); background-image: none;" />
+    </ui:VisualElement>
+</ui:UXML>
