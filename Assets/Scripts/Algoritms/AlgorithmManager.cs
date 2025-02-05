@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,7 +24,7 @@ public class AlgorithmManager : MonoBehaviour
             new BFS(this)
         };
     }
-    [Button]
+    [EditorAttributes.Button]
     public void StartBFS()
     {
         ChangeAlgorithm<BFS>();
@@ -66,7 +65,7 @@ public class AlgorithmManager : MonoBehaviour
         return true;
 
     }
-    [Button]
+    [EditorAttributes.Button]
     public void MakeOneIteration()
     {
         if(currentAlgorithm == null) return;

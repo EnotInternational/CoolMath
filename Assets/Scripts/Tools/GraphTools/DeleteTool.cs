@@ -8,7 +8,9 @@ public class DeleteTool : GraphTool
     {
         Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition);
         if(hit == null)
+        {
             return;
+        }
         MonoBehaviour.Destroy(hit.gameObject);
     }
     public override void Disable()
