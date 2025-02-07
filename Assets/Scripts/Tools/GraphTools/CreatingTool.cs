@@ -5,14 +5,37 @@ public class CreatingTool: GraphTool
 {
     [SerializeField]private GameObject _vertexPrefab;
     [SerializeField]private GameObject _linkPrefab;
+    [SerializeField]private LayerMask _layerMask;
 
     private Transform _selectedObject;
     private Transform _toMove;
 
     #region StateChanging
-    public override void Disable()
+    public override void Enable()
     {
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition);
+        manager.OnClickDown.AddListener(ClickDownHandler);
+        manager.OnClickUp.AddListener(ClickUpHandler);
+    }
+    private void ClickDownHandler()
+    {
+        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition, _layerMask);
+        if(!hit)
+        {
+            _selectedObject = null;
+            Debug.Log("Not Selected" + _selectedObject);
+        }
+        else
+        {
+            Debug.Log("Selected" + _selectedObject);
+            _selectedObject = hit.transform;
+
+            CreateToMove();
+            _toMove.GetComponent<Collider2D>().enabled = false;
+        }
+    }
+    private void ClickUpHandler()
+    {
+        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition, _layerMask);
         if(!hit)
         {
             if(!_selectedObject)
@@ -63,23 +86,10 @@ public class CreatingTool: GraphTool
             }
         }
     }
-
-    public override void Enable()
+    public override void Disable()
     {
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition);
-        if(!hit)
-        {
-            _selectedObject = null;
-            Debug.Log("Not Selected" + _selectedObject);
-        }
-        else
-        {
-            Debug.Log("Selected" + _selectedObject);
-            _selectedObject = hit.transform;
-
-            CreateToMove();
-            _toMove.GetComponent<Collider2D>().enabled = false;
-        }
+        manager.OnClickDown.RemoveListener(ClickDownHandler);
+        manager.OnClickUp.RemoveListener(ClickUpHandler);
     }
 
     public override void Point()

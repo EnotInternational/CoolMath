@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 177298791735924517}
   - component: {fileID: 4886788891846834384}
   - component: {fileID: 4738201563042432080}
-  m_Layer: 0
+  - component: {fileID: 6666411017331805455}
+  m_Layer: 7
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,9 +80,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 3.2059798, y: 3.9900331, z: 0}
+  - {x: 4.9781213, y: 0.66971767, z: 0}
   - {x: 0, y: 0, z: 0}
-  - {x: 0.6808224, y: 2.7231445, z: -1.3652039}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -153,7 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c80e18388f9eeb42840d1777a24f454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 4886788891846834384}
   _link:
     _weight: 0
     OnUnlink:
@@ -171,3 +170,54 @@ MonoBehaviour:
     _vertexA: {fileID: 0}
     _vertexB: {fileID: 0}
   _linkColorSettings: {fileID: 11400000, guid: 2e9ed1abff997e7479de2f21222541ba, type: 2}
+--- !u!60 &6666411017331805455
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7065491014752729683}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.380517, y: -0.83146983}
+      - {x: 1.4728746, y: -0.65407175}
+      - {x: 0.046178773, y: 0.08869905}
+      - {x: -0.046178773, y: -0.08869905}
+  m_UseDelaunayMesh: 0

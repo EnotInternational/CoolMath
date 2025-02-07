@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4184583511638437966}
   - component: {fileID: 189085879681701179}
   - component: {fileID: 1414823556419191006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Vertex2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

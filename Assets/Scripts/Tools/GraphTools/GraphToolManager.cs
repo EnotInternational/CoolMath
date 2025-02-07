@@ -1,4 +1,7 @@
+using System;
+using EditorAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class GraphToolManager : MonoBehaviour, IToolManager
@@ -6,14 +9,21 @@ public class GraphToolManager : MonoBehaviour, IToolManager
     [SerializeField]private CreatingTool creatingTool;
     [SerializeField]private MoveTool moveTool;
     [SerializeField]private DeleteTool deleteTool;
+    [SerializeField]private StartEndPointTool startEndPointTool;
     private ToolMachine<ITool, IToolManager> toolMachine;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
+    private Action _setDefaultToolAction;
+    public AlgorithmManager alogthmManager{get;private set;}
     public Vector3 mousePosition{get => _mousePosition;}
     private Vector3 _mousePosition;
+    public UnityEvent OnClickDown;
+    public UnityEvent OnClickUp;
     private void Start()
     {
+        alogthmManager = GetComponent<AlgorithmManager>();  
         toolMachine = new(this);
+        _setDefaultToolAction = SetMoveTool;
     }
     private void OnPoint(InputValue value)
     {
@@ -29,36 +39,56 @@ public class GraphToolManager : MonoBehaviour, IToolManager
     }
     private void OnDelete(InputValue value)
     {
-        if(value.isPressed)
-        {
-            toolMachine.SetTool(deleteTool);
-        }
-        else
-        {
-            toolMachine.SetTool(null);
-        }
+        SetDeleteTool();
     }
     private void OnRightClick(InputValue value)
     {
-        if(value.isPressed)
-        {
-            toolMachine.SetTool(moveTool);
-        }
-        else
-        {
-            toolMachine.SetTool(null);
-        }
+        // SetMoveTool();
     }
     private void OnClick(InputValue value)
     {
-
         if(value.isPressed)
-        {
-            toolMachine.SetTool(creatingTool);
-        }
+            OnClickDown.Invoke();
         else
+            OnClickUp.Invoke();
+        // SetCreatingTool();
+    }
+    [Button]
+    private void SetCreatingTool()
+    {
+        toolMachine.SetTool(creatingTool);
+    }
+    [Button]
+    private void SetMoveTool()
+    {
+        toolMachine.SetTool(moveTool);
+    }
+    [Button]
+    private void SetDeleteTool()
+    {
+        toolMachine.SetTool(deleteTool);
+    }
+    [Button]
+    public void ChangeSettingPointToStart()
+    {
+        SetStartEndPointsTool(StartEndPointTool.PointType.Start);
+    }
+    [Button]
+    public void ChangeSettingPointToGoal()
+    {
+        SetStartEndPointsTool(StartEndPointTool.PointType.Goal);
+    }
+    private void SetStartEndPointsTool(StartEndPointTool.PointType pointType)
+    {
+        
+        startEndPointTool.OnEndPlacing.AddListener(EndPlacingHandler);
+        startEndPointTool.ChangeSettingPoint(pointType);
+        toolMachine.SetTool(startEndPointTool);
+        
+        void EndPlacingHandler()
         {
-            toolMachine.SetTool(null);
+            _setDefaultToolAction();
+            startEndPointTool.OnEndPlacing.RemoveListener(EndPlacingHandler);
         }
     }
 }
