@@ -10,7 +10,7 @@ public class GraphToolManager : MonoBehaviour, IToolManager
     [SerializeField]private MoveTool moveTool;
     [SerializeField]private DeleteTool deleteTool;
     [SerializeField]private StartEndPointTool startEndPointTool;
-    private ToolMachine<ITool, IToolManager> toolMachine;
+    private ToolMachine toolMachine;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
     private Action _setDefaultToolAction;

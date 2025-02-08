@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class ToolMachine<T, M> where T : ITool where M : IToolManager
+public class ToolMachine
 {
-    private M _manager;
-    public ToolMachine(M manager)
+    private IToolManager _manager;
+    public ToolMachine(IToolManager manager)
     {
         _manager = manager;
     }
-    public T currentTool{get; private set;}
-    public virtual void SetTool(T tool)
+    public ITool currentTool{get; private set;}
+    public virtual void SetTool(ITool tool)
     {
         if(currentTool!=null)
         {

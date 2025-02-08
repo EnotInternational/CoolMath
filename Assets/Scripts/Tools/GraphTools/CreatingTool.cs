@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,25 +14,27 @@ public class CreatingTool: GraphTool
     #region StateChanging
     public override void Enable()
     {
-        manager.OnClickDown.AddListener(ClickDownHandler);
-        manager.OnClickUp.AddListener(ClickUpHandler);
+        InteractionsManager.instance.OnObjectClicked.AddListener(ObjectClickedhandler);
+        InteractionsManager.instance.OnVoidClicked.AddListener(VoidClickedhandler);
+        InteractionsManager.instance.OnClickUp.AddListener(ClickUpHandler);
     }
-    private void ClickDownHandler()
+    private void ObjectClickedhandler(Transform clicked)
     {
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition, _layerMask);
-        if(!hit)
+        if(!LayerMaskExtensions.Includes(_layerMask, clicked.gameObject.layer))
         {
-            _selectedObject = null;
-            Debug.Log("Not Selected" + _selectedObject);
+            return;
         }
-        else
-        {
-            Debug.Log("Selected" + _selectedObject);
-            _selectedObject = hit.transform;
+        
+        Debug.Log("Selected" + _selectedObject);
+        _selectedObject = clicked;
 
-            CreateToMove();
-            _toMove.GetComponent<Collider2D>().enabled = false;
-        }
+        CreateToMove();
+        _toMove.GetComponent<Collider2D>().enabled = false;
+    }
+    private void VoidClickedhandler()
+    {
+        _selectedObject = null;
+        Debug.Log("Not Selected");
     }
     private void ClickUpHandler()
     {
@@ -88,8 +91,9 @@ public class CreatingTool: GraphTool
     }
     public override void Disable()
     {
-        manager.OnClickDown.RemoveListener(ClickDownHandler);
-        manager.OnClickUp.RemoveListener(ClickUpHandler);
+        InteractionsManager.instance.OnObjectClicked.RemoveListener(ObjectClickedhandler);
+        InteractionsManager.instance.OnVoidClicked.RemoveListener(VoidClickedhandler);
+        InteractionsManager.instance.OnClickUp.RemoveListener(ClickUpHandler);
     }
 
     public override void Point()
@@ -118,7 +122,6 @@ public class CreatingTool: GraphTool
     public void CreateSeparateVertex()
     {
         MonoBehaviour.Instantiate(_vertexPrefab, manager.mousePosition, Quaternion.identity, manager.gameSpace);
-
     }
     private void Link(Vertex vertexA, Vertex vertexB)
     {

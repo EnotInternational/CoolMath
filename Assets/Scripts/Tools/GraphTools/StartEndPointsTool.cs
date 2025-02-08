@@ -1,18 +1,19 @@
 using UnityEngine;
 using UnityEngine.Events;
 [System.Serializable]
-public class StartEndPointTool : GraphTool
+public class StartEndPointTool : ITool
 {
     [SerializeField]private LayerMask _layerMask;
+    [SerializeField]private AlgorithmManager _algorithmManager;
     private PointType _pointType = PointType.Null;
     public UnityEvent OnEndPlacing = new UnityEvent();
     public void ChangeSettingPoint(PointType type)
     {
         _pointType = type;
     }
-    public override void Enable()
+    public void Enable()
     {
-        manager.OnClickDown.AddListener(Click);
+        InteractionsManager.instance.OnClickDown.AddListener(Click);
     }
     private void Click()
     {
@@ -22,7 +23,7 @@ public class StartEndPointTool : GraphTool
             return;
         }
 
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition, _layerMask);
+        Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.mousePosition, _layerMask);
         if(!hit)
         {
             Debug.Log("No hit");
@@ -30,7 +31,7 @@ public class StartEndPointTool : GraphTool
         }
         Vertex vertex = hit.transform.GetComponent<Vertex>();
         
-        AlgorithmManager alogthmManager = manager.alogthmManager;
+        AlgorithmManager alogthmManager = _algorithmManager;
         if(_pointType == PointType.Goal)
         {
             Debug.Log("Setting goal");
@@ -47,7 +48,7 @@ public class StartEndPointTool : GraphTool
         Debug.Log("End");
         _pointType = PointType.Null;
         OnEndPlacing.Invoke();
-        manager.OnClickDown.RemoveListener(Click);
+        InteractionsManager.instance.OnClickDown.RemoveListener(Click);
 
         void ReplaceVertex(Vertex targetVertex, Vertex newVertex)
         {
@@ -59,14 +60,20 @@ public class StartEndPointTool : GraphTool
         }
 
     }
-    public override void Disable()
+    public void Disable()
     {
-        manager.OnClickDown.RemoveListener(Click);
+        InteractionsManager.instance.OnClickDown.RemoveListener(Click);
         _pointType = PointType.Null;
     }
-    public override void Point()
+    public void Point()
     {
         
     }
+
+    public void Initialize(IToolManager toolManager)
+    {
+        
+    }
+
     public enum PointType{Null, Goal, Start};
 }
