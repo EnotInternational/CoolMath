@@ -34,7 +34,7 @@ public class ToolsMenu : MonoBehaviour
         {
             v.x += 0.01f;
             slider.anchorMax = v;
-            if (slider.anchorMax.x >= 0.09f)
+            if (slider.anchorMax.x >= 0.06f)
             {
                 pressLeftMenu = false;
             }
