@@ -9,11 +9,12 @@ public class GraphToolManager : MonoBehaviour, IToolManager
     [SerializeField]private CreatingTool creatingTool;
     [SerializeField]private MoveTool moveTool;
     [SerializeField]private DeleteTool deleteTool;
-    [SerializeField]private StartEndPointTool startEndPointTool;
+    private SetVertexType<GraphVertex> setStartTool;
+    private SetVertexType<GraphVertex> setGoalTool;
+
     private ToolMachine toolMachine;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
-    private Action _setDefaultToolAction;
     public AlgorithmManager alogthmManager{get;private set;}
     public Vector3 mousePosition{get => _mousePosition;}
     private Vector3 _mousePosition;
@@ -23,8 +24,11 @@ public class GraphToolManager : MonoBehaviour, IToolManager
     {
         alogthmManager = GetComponent<AlgorithmManager>();  
         toolMachine = new(this);
-        _setDefaultToolAction = SetMoveTool;
+
+        setStartTool = CreateStartPointTool();
+        setGoalTool = CreateGoalPointTool();
     }
+    #region OnEvents
     private void OnPoint(InputValue value)
     {
         _mousePosition = Camera.main.ScreenToWorldPoint(value.Get<Vector2>());
@@ -53,6 +57,8 @@ public class GraphToolManager : MonoBehaviour, IToolManager
             OnClickUp.Invoke();
         // SetCreatingTool();
     }
+    #endregion
+    #region Buttons
     [Button]
     private void SetCreatingTool()
     {
@@ -69,26 +75,43 @@ public class GraphToolManager : MonoBehaviour, IToolManager
         toolMachine.SetTool(deleteTool);
     }
     [Button]
-    public void ChangeSettingPointToStart()
+    private void SetSetPointToStartTool()
     {
-        SetStartEndPointsTool(StartEndPointTool.PointType.Start);
+        // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
+        toolMachine.SetTool(setStartTool);
     }
     [Button]
-    public void ChangeSettingPointToGoal()
+    private void SetSetPointToGoalTool()
     {
-        SetStartEndPointsTool(StartEndPointTool.PointType.Goal);
+        toolMachine.SetTool(setGoalTool);
     }
-    private void SetStartEndPointsTool(StartEndPointTool.PointType pointType)
+    #endregion
+    #region PrivateMethods
+    private SetVertexType<GraphVertex> CreateStartPointTool()
     {
-        
-        startEndPointTool.OnEndPlacing.AddListener(EndPlacingHandler);
-        startEndPointTool.ChangeSettingPoint(pointType);
-        toolMachine.SetTool(startEndPointTool);
-        
-        void EndPlacingHandler()
+        return new SetVertexType<GraphVertex>((vertexVisualizer) => 
         {
-            _setDefaultToolAction();
-            startEndPointTool.OnEndPlacing.RemoveListener(EndPlacingHandler);
-        }
+            vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Start;
+            if(alogthmManager.startVertex != null)
+            {
+                alogthmManager.startVertex.SetCustomStatesToDefault();
+            }
+            alogthmManager.startVertex = vertexVisualizer.vertex;
+
+        });
+    } 
+    private SetVertexType<GraphVertex> CreateGoalPointTool()
+    {
+        return new SetVertexType<GraphVertex>((vertexVisualizer) => 
+        {
+            vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Goal;
+            if(alogthmManager.goalVertex != null)
+            {
+                alogthmManager.goalVertex.SetCustomStatesToDefault();
+            }
+            alogthmManager.goalVertex = vertexVisualizer.vertex;
+
+        });
     }
+    #endregion
 }

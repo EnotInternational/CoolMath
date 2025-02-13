@@ -52,7 +52,7 @@ public abstract class SearchAlgorithm
             {
                 yield return new WaitWhile(()=>{return _manager.iterationsPerSecond == 0;});
             }
-            yield return new WaitForSeconds(1/_manager.iterationsPerSecond);
+            yield return new WaitForSeconds(1f/_manager.iterationsPerSecond);
             Iterate();
         }
     }

@@ -32,8 +32,8 @@ public class MoveTool : GraphTool
     {
         if(_toMove)
         {
-            _toMove.GetComponent<Vertex>().UpdateAllLinks();
             _toMove.position = manager.mousePosition;
+            _toMove.GetComponent<IVertexVisualizer<GraphVertex>>().UpdatePosition();
         }
     }
     #endregion

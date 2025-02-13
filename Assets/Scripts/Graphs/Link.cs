@@ -5,12 +5,13 @@ using UnityEngine.Events;
 [Serializable]
 public class Link
 {
-    [SerializeField]private float _weight;
-    public UnityEvent OnUnlink = new();
-    public UnityEvent OnChanged = new();
-    public UnityEvent OnSetAsPath = new();
-    public UnityEvent OnSeen = new();
-    public float Weight
+    [SerializeField]private float _weight = 1;
+    [HideInInspector]public UnityEvent OnUnlink = new();
+    [HideInInspector]public UnityEvent OnChanged = new();
+    [HideInInspector]public UnityEvent OnSetAsPath = new();
+    [HideInInspector]public UnityEvent OnSeen = new();
+    
+    public float weight
     {
         get { return _weight; }
         set { _weight = value; }

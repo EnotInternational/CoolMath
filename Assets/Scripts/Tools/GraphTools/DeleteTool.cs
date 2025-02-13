@@ -17,6 +17,7 @@ public class DeleteTool : GraphTool
         {
             return;
         }
+        
         MonoBehaviour.Destroy(hit.gameObject);
     }
     // protected void ClickUpHandler()

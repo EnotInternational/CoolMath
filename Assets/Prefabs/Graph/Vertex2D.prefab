@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 499500632118910469}
   - component: {fileID: 4184583511638437966}
-  - component: {fileID: 189085879681701179}
   - component: {fileID: 1414823556419191006}
+  - component: {fileID: 6079847691349043358}
   m_Layer: 6
   m_Name: Vertex2D
   m_TagString: Untagged
@@ -89,20 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &189085879681701179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3896830524439641521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb940588efc61484c8ec24855ec0db1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _links: []
-  vertexColorSettings: {fileID: 11400000, guid: d7de2e5318c1cac4384970d8354e88ce, type: 2}
 --- !u!58 &1414823556419191006
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -139,3 +125,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &6079847691349043358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3896830524439641521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959abb3c926280f42b330242cd312ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: d7de2e5318c1cac4384970d8354e88ce, type: 2}
+  _renderer: {fileID: 4184583511638437966}

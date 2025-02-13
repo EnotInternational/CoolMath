@@ -57,8 +57,8 @@ public class LinkVisualizer : MonoBehaviour
     }
     public void SyncPosiitons()
     {
-        Vector2 posA = _link.VertexA.transform.position;
-        Vector2 posB = _link.VertexB.transform.position;
+        Vector2 posA = _link.VertexA.position;
+        Vector2 posB = _link.VertexB.position;
 
         _lineRenderer.SetPosition(0, posA);
         _lineRenderer.SetPosition(1, posB);

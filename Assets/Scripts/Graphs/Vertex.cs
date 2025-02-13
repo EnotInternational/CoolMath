@@ -1,25 +1,54 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Vertex : MonoBehaviour
+[System.Serializable]
+public abstract class Vertex
 {
-    [SerializeField]private List<Link> _links= new List<Link>();
-    [SerializeField]public List<Link> Links {get => _links;}
-    public VertexVisualizer vertexVisualizer{get;private set;}
-    [SerializeField]public VertexColorSettings vertexColorSettings;
-    // [SerializeField]private Sprite
-    public void Start()
+    public ProcessState processState
     {
-        vertexVisualizer = new VertexVisualizer(vertexColorSettings, GetComponent<SpriteRenderer>());
+        get => _processState;
+        set
+        {
+            _processState = value;
+            OnProcessStateChanged.Invoke(_processState);
+        }
     }
-    protected void AddLink(Link link)
+    public Vector2 position
     {
-        _links.Add(link);
+        get => _position;
+        set
+        {
+            _position = value;
+            UpdateAllLinks();
+        }  
     }
-    protected void RemoveLink(Link link)
+    private Vector2 _position;
+    [SerializeField]protected List<Link> _links= new List<Link>();
+    private ProcessState _processState;
+    public UnityEvent<ProcessState> OnProcessStateChanged = new();
+    
+    public List<Link> Links {get => _links;}
+    public (Link, Vertex)[] GetNeighbours()
     {
-        _links.Remove(link);
+        (Link, Vertex)[] vertices = new (Link, Vertex)[_links.Count];
+        for(int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = (_links[i], _links[i].GetOther(this));
+        }
+        return vertices;
     }
+    public virtual (Link, Vertex, float)[] GetNeighboursWithWeights()
+    {
+        (Link, Vertex, float)[] vertices = new (Link, Vertex, float)[_links.Count];
+        for(int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = (_links[i],_links[i].GetOther(this), _links[i].weight);
+        }
+        return vertices;
+    }
+    
     public void UpdateAllLinks()
     {
         foreach (Link link in _links)
@@ -44,12 +73,22 @@ public class Vertex : MonoBehaviour
         }
         return null;
     }
-    private void OnDestroy()
+    public void UnlinkAll()
     {
         for(int i = _links.Count-1; i>=0; i--)
         {
             UnLink(_links[i]);
         }
+    }
+    // [SerializeField]private Sprite
+    protected void AddLink(Link link)
+    {
+        _links.Add(link);
+    }
+    public abstract void SetCustomStatesToDefault();
+    protected void RemoveLink(Link link)
+    {
+        _links.Remove(link);
     }
 
     public static void UnLink(Vertex vertexA, Vertex vertexB)
@@ -76,4 +115,5 @@ public class Vertex : MonoBehaviour
         vertexB.AddLink(link);
         return link;
     }
+    public enum ProcessState{NotSeen, Seen, Processing, Path}
 }

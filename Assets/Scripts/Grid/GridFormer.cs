@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,11 +9,10 @@ public class GridFormer : MonoBehaviour
     [SerializeField]private GameObject _prefab;
     [SerializeField]private Transform _root;
     [SerializeField]private AnchorRect _anchorRect;
-    [SerializeField]private Transform _draggedObject;    
     [SerializeField]private LayerMask _mask;    
     [SerializeField]private InteractionsManager _interactionsManager;    
     private Vector2Int _gridSize = Vector2Int.zero;
-    private List<List<Vertex>> _vertices= new List<List<Vertex>>();
+    private List<List<CellVertexVisualizer>> _vertices= new List<List<CellVertexVisualizer>>();
     private void Start()
     {
         _interactionsManager = InteractionsManager.instance;
@@ -49,7 +49,7 @@ public class GridFormer : MonoBehaviour
                 for(int x = 0; x < absDelta; x++)
                 {
                     Debug.Log("spawn");
-                    _vertices[y].Add(SpawnVertex(new Vector2(_vertices[y].Count,y)));
+                    _vertices[y].Add(SpawnVertex(new Vector2Int(_vertices[y].Count,y)));
                 }
             }
         } 
@@ -57,10 +57,10 @@ public class GridFormer : MonoBehaviour
         {
             for(int y = 0; y < _vertices.Count; y++)
             {
-                List<Vertex> row = _vertices[y];
+                List<CellVertexVisualizer> row = _vertices[y];
                 for(int x = 0; x < absDelta; x++)
                 {
-                    Vertex vertex = row[row.Count-1];
+                    CellVertexVisualizer vertex = row[row.Count-1];
                     row.Remove(vertex);
                     DestroyVertex(vertex);
                 }
@@ -77,19 +77,19 @@ public class GridFormer : MonoBehaviour
         {
             for(int y = 0; y < absDelta; y++)
             {
-                List<Vertex> row = new List<Vertex>();
+                List<CellVertexVisualizer> row = new List<CellVertexVisualizer>();
+                _vertices.Add(row);
                 for(int x = 0; x < _gridSize.x; x++)
                 {
                     Debug.Log("spawn row");
-                    row.Add(SpawnVertex(new Vector2(x, _gridSize.y + y)));
+                    row.Add(SpawnVertex(new Vector2Int(x, _gridSize.y + y)));
                 }
-                _vertices.Add(row);
             }
         } else
         {
             for(int y = 0; y < absDelta; y++)
             {
-                List<Vertex> row = _vertices[_vertices.Count-1];
+                List<CellVertexVisualizer> row = _vertices[_vertices.Count-1];
                 for(int x = 0; x < row.Count; x++)
                 {
                     DestroyVertex(row[x]);
@@ -99,13 +99,72 @@ public class GridFormer : MonoBehaviour
         }
         
     }
-    private Vertex SpawnVertex(Vector2 position)
+    private CellVertexVisualizer SpawnVertex(Vector2Int position)
     {
-        GameObject vertex = Instantiate(_prefab, _root);
-        vertex.transform.localPosition = position;
-        return vertex.GetComponent<Vertex>();
+        GameObject vertexGO = Instantiate(_prefab, _root);
+        vertexGO.transform.localPosition = (Vector2)position;
+        CellVertexVisualizer vertex = vertexGO.GetComponent<CellVertexVisualizer>();
+        CellVertex cellVertex = new CellVertex();
+        vertex.vertex = cellVertex;
+        ConnectVertex(vertex.vertex, position);
+        return vertex;
     }
-    private void DestroyVertex(Vertex vertex)
+    public void ConnectVertex(Vertex vertex, Vector2Int vertexPosition)
+    {
+        for(int y = -1; y < 2; y++)
+        {
+            for(int x = -1; x < 2; x++)
+            {
+                if(!TryGetVertex(vertexPosition + new Vector2Int(x, y), out CellVertexVisualizer currentVertex))
+                    continue;
+                if(vertex.HasLinkWith(currentVertex.vertex))
+                    continue;
+                
+                Link link = Vertex.LinkTogether(vertex, currentVertex.vertex);
+                if(Mathf.Abs(y) + Mathf.Abs(x) == 2)
+                {
+                    link.weight = Mathf.Pow(2f, 0.5f);
+                }
+                else
+                {
+                    link.weight = 1;
+                }
+            }
+        }
+    }
+    public bool LocateVertex(CellVertexVisualizer vertexVisualizer, out Vector2Int position)
+    {
+        for(int y = 0; y < _vertices.Count; y++)
+        {
+            for(int x = 0; x < _vertices[y].Count; x++)
+            {
+                if(_vertices[y][x] == vertexVisualizer)
+                {
+                    position =  new Vector2Int(x, y);
+                    return true;
+                }
+                    
+            }
+        }
+        position =  Vector2Int.zero;
+        return false;
+    }
+    private bool TryGetVertex(Vector2Int position, out CellVertexVisualizer vertex)
+    {
+        if(position.y < 0 || position.y >= _vertices.Count)
+        {
+            vertex = null;
+            return false;
+        }
+        if(position.x < 0 || position.x >= _vertices[position.y].Count)
+        {
+            vertex = null;
+            return false;
+        }
+        vertex = _vertices[position.y][position.x];
+        return true;
+    }
+    private void DestroyVertex(CellVertexVisualizer vertex)
     {
         Destroy(vertex.gameObject);
     }

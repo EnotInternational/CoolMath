@@ -9,11 +9,11 @@ public class AlgorithmManager : MonoBehaviour
     [SerializeField]private SearchAlgorithm currentAlgorithm;
     public Vertex startVertex;
     public Vertex goalVertex;
-    public int iterationsPerSecond
+    public float iterationsPerSecond
     {
         get => _iterationsPerSecond;
     }
-    [SerializeField]private int _iterationsPerSecond = 0;
+    [SerializeField]private float _iterationsPerSecond = 0;
     private List<Vertex> processedInStepVertexes;
     public bool inProcess{get =>_inProcess;}
     private bool _inProcess = false;
@@ -21,7 +21,8 @@ public class AlgorithmManager : MonoBehaviour
     {
         algorithms = new SearchAlgorithm[]
         {
-            new BFS(this)
+            new BFS(this),
+            new Dijkstra(this)
         };
     }
     [EditorAttributes.Button]
@@ -30,12 +31,17 @@ public class AlgorithmManager : MonoBehaviour
         ChangeAlgorithm<BFS>();
         StartSearch();
     }
+    [EditorAttributes.Button]
+    public void StartDijkstra()
+    {
+        ChangeAlgorithm<Dijkstra>();
+        StartSearch();
+    }
+
     public void StartSearch()
     {
         if(!CanStartSearch()) return;
         
-        startVertex.vertexVisualizer.SetStart();
-        goalVertex.vertexVisualizer.SetGoal();
 
         _inProcess = true;
         currentAlgorithm.StartSearch(goalVertex, startVertex);
@@ -52,7 +58,7 @@ public class AlgorithmManager : MonoBehaviour
             return false;
         }
 
-        if(!startVertex || !goalVertex)
+        if(startVertex == null || goalVertex == null)
         {
             Debug.LogWarning($"Can`t start search because start or goal vertexes are not assigned");
             return false;
@@ -97,7 +103,7 @@ public class AlgorithmManager : MonoBehaviour
 
         foreach(var vertex in path)
         {
-            vertex.vertexVisualizer.SetPath();
+            vertex.processState = Vertex.ProcessState.Path;
         }
         Debug.Log("Complete!");
     }

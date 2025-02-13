@@ -46,10 +46,10 @@ public class CreatingTool: GraphTool
 
             Debug.Log("New Link" + _selectedObject);
 
-            Vertex vertexA = _selectedObject.GetComponent<Vertex>();
-            Vertex vertexB = _toMove.GetComponent<Vertex>();
+            GraphVertexVisualizer vertexA = _selectedObject.GetComponent<GraphVertexVisualizer>();
+            GraphVertexVisualizer vertexB = _toMove.GetComponent<GraphVertexVisualizer>();
 
-            if(vertexA.HasLinkWith(vertexB))
+            if(vertexA.vertex.HasLinkWith(vertexB.vertex))
             {
                 DropSelections();
                 return;
@@ -65,8 +65,8 @@ public class CreatingTool: GraphTool
         {
             if(_selectedObject != null)
             {
-                Vertex vertexA = _selectedObject.GetComponent<Vertex>();
-                Vertex vertexB = hit.transform.GetComponent<Vertex>();
+                GraphVertexVisualizer vertexA = _selectedObject.GetComponent<GraphVertexVisualizer>();
+                GraphVertexVisualizer vertexB = hit.transform.GetComponent<GraphVertexVisualizer>();
                 
                 if(vertexA == vertexB)
                 {
@@ -74,7 +74,7 @@ public class CreatingTool: GraphTool
                     return;
                 }
 
-                if(!vertexA.HasLinkWith(vertexB))
+                if(!vertexA.vertex.HasLinkWith(vertexB.vertex))
                 {
                     Debug.Log("Linked" + _selectedObject);
                     Link(vertexA, vertexB);
@@ -82,7 +82,7 @@ public class CreatingTool: GraphTool
                 else
                 {
                     Debug.Log("Unlink");
-                    Vertex.UnLink(vertexA, vertexB);
+                    Vertex.UnLink(vertexA.vertex, vertexB.vertex);
                 }
                 
                 DropSelections();
@@ -100,8 +100,9 @@ public class CreatingTool: GraphTool
     {
         if(_toMove)
         {
-            _toMove.GetComponent<Vertex>().UpdateAllLinks();
+            _toMove.GetComponent<GraphVertexVisualizer>().UpdatePosition();
             _toMove.position = manager.mousePosition;
+            
         }
     }
     #endregion
@@ -117,20 +118,22 @@ public class CreatingTool: GraphTool
     private void CreateToMove()
     {
         _toMove = MonoBehaviour.Instantiate(_vertexPrefab, manager.gameSpace).transform;
+        _toMove.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
         _toMove.position = manager.mousePosition;
     }
     public void CreateSeparateVertex()
     {
-        MonoBehaviour.Instantiate(_vertexPrefab, manager.mousePosition, Quaternion.identity, manager.gameSpace);
+        var go = MonoBehaviour.Instantiate(_vertexPrefab, manager.mousePosition, Quaternion.identity, manager.gameSpace);
+        go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
     }
-    private void Link(Vertex vertexA, Vertex vertexB)
+    private void Link(GraphVertexVisualizer vertexA, GraphVertexVisualizer vertexB)
     {
         float distance = Vector2.Distance(vertexA.transform.position, vertexB.transform.position);
 
         GameObject linkGameObject = MonoBehaviour.Instantiate(_linkPrefab, manager.gameSpace);
         LinkVisualizer linkVisualizer = linkGameObject.GetComponent<LinkVisualizer>();
 
-        Link link = Vertex.LinkTogether(vertexA, vertexB, distance);
+        Link link = Vertex.LinkTogether(vertexA.vertex, vertexB.vertex, distance);
         linkVisualizer.SetLink(link);
         linkVisualizer.SyncPosiitons();
 

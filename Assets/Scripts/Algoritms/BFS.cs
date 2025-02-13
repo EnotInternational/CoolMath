@@ -6,7 +6,7 @@ public class BFS : SearchAlgorithm
 {
     [SerializeField] private Dictionary <Vertex,Vertex> vertexHistory = new Dictionary<Vertex,Vertex>();
     [SerializeField] private List<Vertex> processedInPreviousStep = new List<Vertex>();
-    [SerializeField] private List<Vertex>pathVertexes=new List<Vertex>();
+    [SerializeField] private List<Vertex> pathVertexes=new List<Vertex>();
     [SerializeField] private Queue<Vertex> queueVertexes = new Queue<Vertex>();  
 
     public BFS(AlgorithmManager manager) : base(manager){}
@@ -23,17 +23,18 @@ public class BFS : SearchAlgorithm
         }
         foreach(Vertex v in processedInPreviousStep)
         {
-            v.vertexVisualizer.SetSeen();
+            v.processState = Vertex.ProcessState.Seen;
         }
         processedInPreviousStep.Clear();
         for(int i=0;i<vertexCount;i++)
         {
             Vertex current = queueVertexes.Dequeue();
-            foreach(Link link in current.Links)
+            var neighpours = current.GetNeighbours();
+            foreach(var neighbour in neighpours)
             {
-                Vertex next = link.GetOther(current);
+                Vertex next = neighbour.Item2;
 
-                link.SetSeen();
+                neighbour.Item1.SetSeen();
 
                 if(vertexHistory.ContainsKey(next))
                     continue;
@@ -49,7 +50,7 @@ public class BFS : SearchAlgorithm
     {
         vertexHistory.Add(current,privous);
         processedInPreviousStep.Add(current);
-        current.vertexVisualizer.SetProcessed();
+        current.processState = Vertex.ProcessState.Processing;
 
         if (current==goalVertex) //последний vertex
         {
@@ -58,7 +59,7 @@ public class BFS : SearchAlgorithm
         }
         return false;
     }
-     void RecursiveReturnToStart(Vertex vertex)
+    void RecursiveReturnToStart(Vertex vertex)
     {
         pathVertexes.Add(vertex);
 
@@ -67,7 +68,7 @@ public class BFS : SearchAlgorithm
             Complete(pathVertexes);
             foreach(Vertex processed in processedInPreviousStep)
             {
-                processed.vertexVisualizer.SetSeen();
+                processed.processState = Vertex.ProcessState.Seen;
             }
         }
         else
