@@ -16,7 +16,7 @@ MonoBehaviour:
   seenColor: {r: 0.36078432, g: 0.36078432, b: 0.36078432, a: 1}
   pathColor: {r: 0.12834764, g: 1, b: 0, a: 1}
   processedColor: {r: 0.27450982, g: 0.67058825, b: 0.79607844, a: 1}
-  startColor: {r: 0.5687462, g: 1, b: 0, a: 1}
+  startColor: {r: 0.6357751, g: 1, b: 0.15566039, a: 1}
   goalColor: {r: 1, g: 0.040395662, b: 0, a: 1}
   blockedColor: {r: 0, g: 0, b: 0, a: 1}
   weightGradient:

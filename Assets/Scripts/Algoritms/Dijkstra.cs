@@ -9,6 +9,20 @@ public class Dijkstra : SearchAlgorithm
     [SerializeField] private LinkedList<WeightedVertex> seenVertexes = new();  
     
     public Dijkstra(AlgorithmManager manager) : base(manager){}
+    public override void Clear()
+    {
+        foreach(WeightedVertex weightedVertex in seenVertexes)
+        {
+            weightedVertex.vertex.processState = Vertex.ProcessState.NotSeen;
+            foreach(var link in weightedVertex.vertex.Links)
+            {
+                link.state = Link.State.NotSeen;
+            }
+        }
+        seenVertexes.Clear();
+        potentialVertexes.Clear();
+        pathVertexes.Clear();
+    }
     protected override void BeforeFirstIteration()
     {
         var startWeightedVertex = new WeightedVertex(startVertex, null, 0);
@@ -28,7 +42,7 @@ public class Dijkstra : SearchAlgorithm
         // processedInPreviousStep.Clear();
         
         var currentVertex = GetMinimalPotentialVertex();
-        Debug.Log("Processing " + currentVertex.vertex);
+        // Debug.Log("Processing " + currentVertex.vertex);
         // Debug.
         var neighbourInfos = currentVertex.vertex.GetNeighboursWithWeights();
         // processedInPreviousStep.Add(currentVertex.vertex);
@@ -42,11 +56,6 @@ public class Dijkstra : SearchAlgorithm
                     neighbourWeightedVertex.weight = currentVertex.weight + neighbour.Item3;
                     neighbourWeightedVertex.origin = currentVertex;
                 }
-                else
-                {
-                    // potentialVertexes.Remove(neighbourWeightedVertex);
-                    // neighbourWeightedVertex.vertex.processState = Vertex.ProcessState.Seen;
-                }
             }
             else
             {
@@ -59,6 +68,7 @@ public class Dijkstra : SearchAlgorithm
                     RecursiveReturnToStart(neighbourWeightedVertex);
                 }
             }
+            neighbour.Item1.state = Link.State.Seen;
             
         }
         
@@ -110,42 +120,10 @@ public class Dijkstra : SearchAlgorithm
         }
         else
         {
-            currentVertex.GetLinkWith(weightedVertex.origin.vertex).SetPath();
+            currentVertex.GetLinkWith(weightedVertex.origin.vertex).state = Link.State.Path;
             RecursiveReturnToStart(weightedVertex.origin);
         }
     }
-    // private bool CheckVertex(Vertex current, Vertex privous)
-    // {
-    //     // vertexHistory.Add(current,privous);
-    //     processedInPreviousStep.Add(current);
-    //     current.processState = Vertex.ProcessState.Processing;
-
-    //     if (current==goalVertex) //последний vertex
-    //     {
-    //         RecursiveReturnToStart(current);
-    //         return true;
-    //     }
-    //     return false;
-    // }
-    // void RecursiveReturnToStart(Vertex vertex)
-    // {
-    //     pathVertexes.Add(vertex);
-
-    //     if(vertex==startVertex)
-    //     {
-    //         Complete(pathVertexes);
-    //         foreach(Vertex processed in processedInPreviousStep)
-    //         {
-    //             processed.processState = Vertex.ProcessState.Seen;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         // Vertex previous = vertexHistory[vertex];
-    //         vertex.GetLinkWith(previous).SetPath();
-    //         RecursiveReturnToStart(previous);
-    //     }
-    // }
     private class WeightedVertex
     {
         public Vertex vertex;

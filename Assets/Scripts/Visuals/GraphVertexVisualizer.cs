@@ -34,6 +34,10 @@ public class GraphVertexVisualizer : MonoBehaviour, IVertexVisualizer<GraphVerte
         {
             _processable = false;
         }
+        else
+        {
+            _processable = true;
+        }
         _renderer.color = _settings.GetGraphColor(graphState);
     }
     private void OnDestroy()

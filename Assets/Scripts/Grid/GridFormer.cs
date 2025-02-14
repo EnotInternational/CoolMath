@@ -27,7 +27,7 @@ public class GridFormer : MonoBehaviour
         _root.position = (Vector2)_anchorRect.rect.position + new Vector2(0.5f,0.5f);
 
         Vector2Int sizeDelta = _anchorRect.rect.size - _gridSize;
-        Debug.Log(sizeDelta);
+        // Debug.Log(sizeDelta);
         if(sizeDelta.y != 0)
         {
             ChangeHeight(sizeDelta.y);

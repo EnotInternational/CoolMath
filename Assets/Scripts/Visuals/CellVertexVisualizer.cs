@@ -25,8 +25,24 @@ public class CellVertexVisualizer : MonoBehaviour, IVertexVisualizer<CellVertex>
     private void ProcessStateChangedHandler(Vertex.ProcessState processState)
     {
         if(!_processable)
+        {
             return;
-        _renderer.color = _settings.GetProcessColor(processState);
+        }
+        if(processState == Vertex.ProcessState.NotSeen)
+        {
+            if(_vertex.cellState == CellVertex.CellState.Weighted)
+            {
+                _renderer.color = _settings.GetColorFromWeightGradient(_vertex.weight / maxWeight);
+            }
+            else
+            {
+                _renderer.color = _settings.GetProcessColor(processState);
+            }
+        }
+        else
+        {
+            _renderer.color = _settings.GetProcessColor(processState);
+        }
     }
     private void CellStateChangedHandler(CellVertex.CellState cellState)
     {
@@ -47,6 +63,7 @@ public class CellVertexVisualizer : MonoBehaviour, IVertexVisualizer<CellVertex>
         text.text = "";
         _renderer.color = _settings.GetCellColor(cellState);
     }
+    
     public void UpdatePosition()
     {
         _vertex.position = transform.position;

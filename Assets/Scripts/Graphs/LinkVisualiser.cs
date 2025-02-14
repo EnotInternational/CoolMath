@@ -22,16 +22,22 @@ public class LinkVisualizer : MonoBehaviour
         _lineRenderer.material = _linkColorSettings.standartMaterial;
         _link.OnUnlink.AddListener(() => Destroy(gameObject));
         _link.OnChanged.AddListener(()=>SyncPosiitons());
-        _link.OnSetAsPath.AddListener(SetPath);
-        _link.OnSeen.AddListener(SetSeen);
+        _link.OnStateChanged.AddListener(StateChangeHandler);
     }
-    private void SetPath()
+    private void StateChangeHandler(Link.State state)
     {
-        _lineRenderer.material = _linkColorSettings.pathMaterial;
-    }
-    private void SetSeen()
-    {
-        _lineRenderer.material = _linkColorSettings.seenMaterial;
+        switch (state)
+        {
+            case Link.State.Seen:
+                _lineRenderer.material = _linkColorSettings.seenMaterial;
+                break;
+            case Link.State.NotSeen:
+                _lineRenderer.material = _linkColorSettings.standartMaterial;
+                break;
+            case Link.State.Path:
+                _lineRenderer.material = _linkColorSettings.pathMaterial;
+                break;
+        }
     }
     [Button]
     private void SyncCollider()

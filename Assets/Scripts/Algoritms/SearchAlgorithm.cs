@@ -15,6 +15,8 @@ public abstract class SearchAlgorithm
     protected Vertex startVertex;
     public Coroutine searchCoroutine;
     protected AlgorithmManager _manager;
+    private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+    private float _iterations = 0;
     public SearchAlgorithm(AlgorithmManager searchAlgorithmManager)
     {
         _manager = searchAlgorithmManager;
@@ -31,17 +33,35 @@ public abstract class SearchAlgorithm
     {
         Iterate();
     }
+    public void Stop()
+    {
+        _inProcess = false;
+    }
     public void Complete(List<Vertex> path)
     {
         _inProcess = false;
         OnComplete.Invoke(path);
+        ResetCounting();
     }
     public void Fail()
     {
         _inProcess = false;
         OnFail.Invoke();
+        ResetCounting();
+    }
+    private void ResetCounting()
+    {
+        Debug.Log(
+            "Process time: " + stopwatch.ElapsedMilliseconds + " ms \n" 
+            +"Iterations: " + _iterations + "\n"
+            + "Avg iteration time: " + stopwatch.ElapsedMilliseconds/_iterations + " ms \n"
+            + "Ticks: " + stopwatch.ElapsedTicks);
+
+        stopwatch.Reset();
+        _iterations = 0;
     }
     protected abstract void BeforeFirstIteration(); 
+    public abstract void Clear(); 
     protected abstract void Iterate();
     protected IEnumerator SearchCoroutine()
     {
@@ -53,7 +73,12 @@ public abstract class SearchAlgorithm
                 yield return new WaitWhile(()=>{return _manager.iterationsPerSecond == 0;});
             }
             yield return new WaitForSeconds(1f/_manager.iterationsPerSecond);
+            
+            stopwatch.Start();
             Iterate();
+            stopwatch.Stop();
+            _iterations++;
         }
     }
+
 }

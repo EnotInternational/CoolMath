@@ -25,7 +25,7 @@ public class CreatingTool: GraphTool
             return;
         }
         
-        Debug.Log("Selected" + _selectedObject);
+        // Debug.Log("Selected" + _selectedObject);
         _selectedObject = clicked;
 
         CreateToMove();
@@ -34,7 +34,7 @@ public class CreatingTool: GraphTool
     private void VoidClickedhandler()
     {
         _selectedObject = null;
-        Debug.Log("Not Selected");
+        // Debug.Log("Not Selected");
     }
     private void ClickUpHandler()
     {
@@ -44,7 +44,7 @@ public class CreatingTool: GraphTool
             if(!_selectedObject)
                 return;
 
-            Debug.Log("New Link" + _selectedObject);
+            // Debug.Log("New Link" + _selectedObject);
 
             GraphVertexVisualizer vertexA = _selectedObject.GetComponent<GraphVertexVisualizer>();
             GraphVertexVisualizer vertexB = _toMove.GetComponent<GraphVertexVisualizer>();
@@ -76,12 +76,12 @@ public class CreatingTool: GraphTool
 
                 if(!vertexA.vertex.HasLinkWith(vertexB.vertex))
                 {
-                    Debug.Log("Linked" + _selectedObject);
+                    // Debug.Log("Linked" + _selectedObject);
                     Link(vertexA, vertexB);
                 }
                 else
                 {
-                    Debug.Log("Unlink");
+                    // Debug.Log("Unlink");
                     Vertex.UnLink(vertexA.vertex, vertexB.vertex);
                 }
                 

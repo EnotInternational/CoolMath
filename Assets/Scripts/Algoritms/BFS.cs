@@ -10,6 +10,21 @@ public class BFS : SearchAlgorithm
     [SerializeField] private Queue<Vertex> queueVertexes = new Queue<Vertex>();  
 
     public BFS(AlgorithmManager manager) : base(manager){}
+    public override void Clear()
+    {
+        foreach (var vertex in vertexHistory.Keys)
+        {
+            vertex.processState = Vertex.ProcessState.NotSeen;
+            foreach(var link in vertex.Links)
+            {
+                link.state = Link.State.NotSeen;
+            }
+        }
+        vertexHistory.Clear();
+        processedInPreviousStep.Clear();
+        pathVertexes.Clear();
+        queueVertexes.Clear();
+    }
     protected override void BeforeFirstIteration()
     {
         queueVertexes.Enqueue(startVertex);
@@ -34,7 +49,7 @@ public class BFS : SearchAlgorithm
             {
                 Vertex next = neighbour.Item2;
 
-                neighbour.Item1.SetSeen();
+                neighbour.Item1.state = Link.State.Seen;
 
                 if(vertexHistory.ContainsKey(next))
                     continue;
@@ -59,7 +74,7 @@ public class BFS : SearchAlgorithm
         }
         return false;
     }
-    void RecursiveReturnToStart(Vertex vertex)
+    private void RecursiveReturnToStart(Vertex vertex)
     {
         pathVertexes.Add(vertex);
 
@@ -74,7 +89,7 @@ public class BFS : SearchAlgorithm
         else
         {
             Vertex previous = vertexHistory[vertex];
-            vertex.GetLinkWith(previous).SetPath();
+            vertex.GetLinkWith(previous).state = Link.State.Path;
             RecursiveReturnToStart(previous);
         }
     }

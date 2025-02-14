@@ -8,9 +8,17 @@ public class Link
     [SerializeField]private float _weight = 1;
     [HideInInspector]public UnityEvent OnUnlink = new();
     [HideInInspector]public UnityEvent OnChanged = new();
-    [HideInInspector]public UnityEvent OnSetAsPath = new();
-    [HideInInspector]public UnityEvent OnSeen = new();
-    
+    [HideInInspector]public UnityEvent<State> OnStateChanged = new();
+    private State _state;
+    public State state 
+    { 
+        get => _state; 
+        set 
+        {
+            _state = value;
+            OnStateChanged.Invoke(_state);
+        }
+    }
     public float weight
     {
         get { return _weight; }
@@ -20,14 +28,7 @@ public class Link
     [SerializeField]private Vertex _vertexB;
     public Vertex VertexA{get => _vertexA;}
     public Vertex VertexB{get => _vertexB;}
-    public void SetPath()
-    {
-        OnSetAsPath.Invoke();
-    }
-    public void SetSeen()
-    {
-        OnSeen.Invoke();
-    }
+
     public Vertex GetOther(Vertex vertex)
     {
         if(vertex == _vertexA)
@@ -47,4 +48,5 @@ public class Link
         this._vertexA = vertexA;
         this._vertexB = vertexB;
     }
+    public enum State{NotSeen, Seen, Path};
 }

@@ -78,8 +78,25 @@ public class AlgorithmManager : MonoBehaviour
 
         currentAlgorithm.MakeOneIteration();
     }
+    [EditorAttributes.Button]
+    public void ClearResults()
+    {
+        if(_inProcess)
+        {
+            _inProcess = false;
+            currentAlgorithm.Stop();
+        }
+        if(currentAlgorithm != null)
+        {
+            currentAlgorithm.Clear();
+        }
+    }
     public void ChangeAlgorithm<T>() where T : SearchAlgorithm
     {
+        if(currentAlgorithm != null)
+        {
+            currentAlgorithm.Clear();
+        }
         foreach (var algorithm in algorithms)
         {
             if(algorithm.GetType() == typeof(T))
@@ -92,12 +109,14 @@ public class AlgorithmManager : MonoBehaviour
     }
     private void AlgorithmFailHandler()
     {
+        _inProcess = false;
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
-        Debug.Log("Fail!");
+        // Debug.Log("Fail!");
     }
     private void AlgorithmCompleteHandler(List<Vertex> path)
     {
+        _inProcess = false;
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
 
@@ -105,7 +124,7 @@ public class AlgorithmManager : MonoBehaviour
         {
             vertex.processState = Vertex.ProcessState.Path;
         }
-        Debug.Log("Complete!");
+        // Debug.Log("Complete!");
     }
     private void AlgorithmStepHandler()
     {
