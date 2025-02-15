@@ -1,4 +1,6 @@
-public interface IToolManager
+using UnityEngine;
+
+public abstract class ToolManager : MonoBehaviour
 {
 
 }

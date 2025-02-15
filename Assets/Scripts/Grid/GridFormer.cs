@@ -18,6 +18,10 @@ public class GridFormer : MonoBehaviour
         _interactionsManager = InteractionsManager.instance;
         _anchorRect.OnRectChanged.AddListener(ChangeGrid);
     }
+    private void OnEnable()
+    {
+        ChangeGrid();
+    }
     private void OnDisable()
     {
         _anchorRect.OnRectChanged.RemoveListener(ChangeGrid);

@@ -15,7 +15,6 @@ public class Anchor : MonoBehaviour
 
     private Vector3 _mousePosition;
     private bool _dragging;
-    
     private void Start()
     {
         _transform = transform;
@@ -101,6 +100,7 @@ public class Anchor : MonoBehaviour
     }
     private void OnEnable()
     {
+        _transform = transform;
         InteractionsManager.instance.OnObjectClicked.AddListener(ObjectClickedhandler);
         InteractionsManager.instance.OnClickUp.AddListener(StopDragging);
     }

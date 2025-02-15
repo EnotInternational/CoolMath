@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ToolMachine
 {
-    private IToolManager _manager;
-    public ToolMachine(IToolManager manager)
+    private ToolManager _manager;
+    public ToolMachine(ToolManager manager)
     {
         _manager = manager;
     }

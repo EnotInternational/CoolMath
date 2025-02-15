@@ -9,12 +9,12 @@ public class MoveTool : GraphTool
     #region StateChanging
     public override void Enable()
     {
-        manager.OnClickDown.AddListener(ClickDownHandler);
-        manager.OnClickUp.AddListener(ClickUpHandler);
+        InteractionsManager.instance.OnClickDown.AddListener(ClickDownHandler);
+        InteractionsManager.instance.OnClickUp.AddListener(ClickUpHandler);
     }
     private void ClickDownHandler()
     {
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition, _layerMask);
+        Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.mousePosition, _layerMask);
         if(!hit)
             return;
         _toMove = hit.transform;
@@ -25,14 +25,14 @@ public class MoveTool : GraphTool
     }
     public override void Disable()
     {
-        manager.OnClickDown.RemoveListener(ClickDownHandler);
-        manager.OnClickUp.RemoveListener(ClickUpHandler);
+        InteractionsManager.instance.OnClickDown.RemoveListener(ClickDownHandler);
+        InteractionsManager.instance.OnClickUp.RemoveListener(ClickUpHandler);
     }
     public override void Point()
     {
         if(_toMove)
         {
-            _toMove.position = manager.mousePosition;
+            _toMove.position = InteractionsManager.instance.mousePosition;
             _toMove.GetComponent<IVertexVisualizer<GraphVertex>>().UpdatePosition();
         }
     }

@@ -38,7 +38,7 @@ public class CreatingTool: GraphTool
     }
     private void ClickUpHandler()
     {
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition, _layerMask);
+        Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.mousePosition, _layerMask);
         if(!hit)
         {
             if(!_selectedObject)
@@ -101,7 +101,7 @@ public class CreatingTool: GraphTool
         if(_toMove)
         {
             _toMove.GetComponent<GraphVertexVisualizer>().UpdatePosition();
-            _toMove.position = manager.mousePosition;
+            _toMove.position = InteractionsManager.instance.mousePosition;
             
         }
     }
@@ -119,11 +119,11 @@ public class CreatingTool: GraphTool
     {
         _toMove = MonoBehaviour.Instantiate(_vertexPrefab, manager.gameSpace).transform;
         _toMove.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
-        _toMove.position = manager.mousePosition;
+        _toMove.position = InteractionsManager.instance.mousePosition;
     }
     public void CreateSeparateVertex()
     {
-        var go = MonoBehaviour.Instantiate(_vertexPrefab, manager.mousePosition, Quaternion.identity, manager.gameSpace);
+        var go = MonoBehaviour.Instantiate(_vertexPrefab, InteractionsManager.instance.mousePosition, Quaternion.identity, manager.gameSpace);
         go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
     }
     private void Link(GraphVertexVisualizer vertexA, GraphVertexVisualizer vertexB)

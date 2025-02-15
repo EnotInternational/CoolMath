@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class GraphToolManager : MonoBehaviour, IToolManager
+public class GraphToolManager : ToolManager
 {
     [SerializeField]private CreatingTool creatingTool;
     [SerializeField]private MoveTool moveTool;
@@ -16,46 +16,27 @@ public class GraphToolManager : MonoBehaviour, IToolManager
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
     public AlgorithmManager alogthmManager{get;private set;}
-    public Vector3 mousePosition{get => _mousePosition;}
-    private Vector3 _mousePosition;
-    public UnityEvent OnClickDown;
-    public UnityEvent OnClickUp;
-    private void Start()
+    private void Awake()
     {
         alogthmManager = GetComponent<AlgorithmManager>();  
         toolMachine = new(this);
 
         setStartTool = CreateStartPointTool();
         setGoalTool = CreateGoalPointTool();
+        creatingTool.Initialize(this);
+        deleteTool.Initialize(this);
     }
     #region OnEvents
-    private void OnPoint(InputValue value)
+    private void OnDoubleClick()
     {
-        _mousePosition = Camera.main.ScreenToWorldPoint(value.Get<Vector2>());
-        _mousePosition.z = _gameSpace.position.z;
-
-        if(toolMachine.currentTool != null)
-            toolMachine.currentTool.Point();
-    }
-    private void OnDoubleClick(InputValue value)
-    {
+        if(!enabled)
+            return;
         creatingTool.CreateSeparateVertex();
     }
-    private void OnDelete(InputValue value)
+    private void OnPoint(InputValue value)
     {
-        SetDeleteTool();
-    }
-    private void OnRightClick(InputValue value)
-    {
-        // SetMoveTool();
-    }
-    private void OnClick(InputValue value)
-    {
-        if(value.isPressed)
-            OnClickDown.Invoke();
-        else
-            OnClickUp.Invoke();
-        // SetCreatingTool();
+        if(toolMachine.currentTool != null)
+            toolMachine.currentTool.Point();
     }
     #endregion
     #region Buttons

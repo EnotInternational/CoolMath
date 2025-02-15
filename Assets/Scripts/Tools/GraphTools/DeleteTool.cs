@@ -7,12 +7,12 @@ public class DeleteTool : GraphTool
     #region StateChanging
     public override void Enable()
     {
-        manager.OnClickDown.AddListener(ClickDownHandler);
-        manager.OnClickUp.AddListener(ClickUpHandler);
+        InteractionsManager.instance.OnClickDown.AddListener(ClickDownHandler);
+        InteractionsManager.instance.OnClickUp.AddListener(ClickUpHandler);
     }
     public void Delete()
     {
-        Collider2D hit = Physics2D.OverlapPoint(manager.mousePosition);
+        Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.mousePosition);
         if(hit == null)
         {
             return;
@@ -27,8 +27,8 @@ public class DeleteTool : GraphTool
     public override void Disable()
     {
         _deleting = false;
-        manager.OnClickDown.RemoveListener(ClickDownHandler);
-        manager.OnClickUp.RemoveListener(ClickUpHandler);
+        InteractionsManager.instance.OnClickDown.RemoveListener(ClickDownHandler);
+        InteractionsManager.instance.OnClickUp.RemoveListener(ClickUpHandler);
     }
     public override void Point()
     {   

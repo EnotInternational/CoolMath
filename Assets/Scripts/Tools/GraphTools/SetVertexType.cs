@@ -31,7 +31,7 @@ public class SetVertexType<T> : ITool where T : Vertex
         
     }
 
-    public void Initialize(IToolManager toolManager)
+    public void Initialize(ToolManager toolManager)
     {
         
     }

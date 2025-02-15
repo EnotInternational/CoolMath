@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class GridToolManager : MonoBehaviour, IToolManager
+public class GridToolManager : ToolManager
 {
     private SetVertexType<CellVertex> setCleanTool;
     private SetVertexType<CellVertex> setStartTool;
@@ -18,13 +18,9 @@ public class GridToolManager : MonoBehaviour, IToolManager
     public int settingWeight = 2;
     public AlgorithmManager alogthmManager{get;private set;}
     public GridFormer gridFormer { get => _gridFormer; private set => _gridFormer = value; }
-    public Vector3 mousePosition{get => _mousePosition;}
-    private Vector3 _mousePosition;
-    public UnityEvent OnClickDown;
-    public UnityEvent OnClickUp;
     [SerializeField]private GridFormer _gridFormer;
 
-    private void Start()
+    private void Awake()
     {
         alogthmManager = GetComponent<AlgorithmManager>();  
         toolMachine = new(this);
@@ -38,34 +34,15 @@ public class GridToolManager : MonoBehaviour, IToolManager
 
     
     #region OnEvents
+
+    #region OnEvents
     private void OnPoint(InputValue value)
     {
-        _mousePosition = Camera.main.ScreenToWorldPoint(value.Get<Vector2>());
-        _mousePosition.z = _gameSpace.position.z;
-
         if(toolMachine.currentTool != null)
             toolMachine.currentTool.Point();
     }
-    private void OnDoubleClick(InputValue value)
-    {
 
-    }
-    private void OnDelete(InputValue value)
-    {
-
-    }
-    private void OnRightClick(InputValue value)
-    {
-        // SetMoveTool();
-    }
-    private void OnClick(InputValue value)
-    {
-        if(value.isPressed)
-            OnClickDown.Invoke();
-        else
-            OnClickUp.Invoke();
-        // SetCreatingTool();
-    }
+    #endregion
     #endregion
     #region Buttons
     [Button]
