@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class Anchor : MonoBehaviour
+public class Anchor : MonoBehaviour, IClickable
 {
     public UnityEvent OnPositionChanged;
     public Anchor pair;
@@ -11,21 +11,20 @@ public class Anchor : MonoBehaviour
     public int intPosition{get => _intPosition;}
     private int _intPosition;
     [SerializeField]private Constraint _constraint;
-    private Transform _transform;
+    [SerializeField]private Transform _transform;
 
     private Vector3 _mousePosition;
     private bool _dragging;
     private void Start()
     {
-        _transform = transform;
         
         switch(_constraint)
         {
             case Constraint.OnlyY:
-                _intPosition = Mathf.RoundToInt(_transform.position.y);
+                _intPosition = Mathf.FloorToInt(_transform.position.y);
                 break;
             case Constraint.OnlyX:
-                _intPosition = Mathf.RoundToInt(_transform.position.x);
+                _intPosition = Mathf.FloorToInt(_transform.position.x);
                 break;
         }
         
@@ -42,6 +41,19 @@ public class Anchor : MonoBehaviour
         other.pair = this;
         this.minToPairDistance = minToPairDistance;
         other.minToPairDistance = minToPairDistance;
+    }
+    public int GetIntPosition()
+    {
+        switch(_constraint)
+        {
+            case Constraint.OnlyY:
+                _intPosition = Mathf.FloorToInt(_transform.position.y);
+                break;
+            case Constraint.OnlyX:
+                _intPosition = Mathf.FloorToInt(_transform.position.x);
+                break;
+        }
+        return _intPosition;
     }
     public void ChangePosition(Vector2 targetPos)
     {
@@ -64,7 +76,7 @@ public class Anchor : MonoBehaviour
             }
             if(targetPos != _intPosition)
             {
-                Debug.Log(CanBeMoved(targetPos));
+                // Debug.Log(CanBeMoved(targetPos));
                 if(!CanBeMoved(targetPos))
                     return;
                 MoveByCurrentAxis(targetPos);
@@ -100,29 +112,21 @@ public class Anchor : MonoBehaviour
     }
     private void OnEnable()
     {
-        _transform = transform;
-        InteractionsManager.instance.OnObjectClicked.AddListener(ObjectClickedhandler);
         InteractionsManager.instance.OnClickUp.AddListener(StopDragging);
     }
     private void OnDisable()
     {
-        InteractionsManager.instance.OnObjectClicked.RemoveListener(ObjectClickedhandler);
         InteractionsManager.instance.OnClickUp.RemoveListener(StopDragging);
     }
-    private void ObjectClickedhandler(Transform clicked)
+    public void OnClickDown()
     {
-        if(clicked == _transform)
-        {
-            _dragging = true;
-        }
-        else
-        {
-            _dragging = false;
-        }
+        _dragging = true;
+        GridToolManager.instance.block = true;
     }
     private void StopDragging()
     {
         _dragging = false;
+        GridToolManager.instance.block = false;
     }
     public enum Constraint{OnlyX, OnlyY};
 }

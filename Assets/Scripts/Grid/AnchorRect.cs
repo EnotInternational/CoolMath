@@ -22,6 +22,11 @@ public class AnchorRect : MonoBehaviour
         _right.OnPositionChanged.AddListener(UpdateRect);
         _left.OnPositionChanged.AddListener(UpdateRect);
         _right.MakePair(_left, _minToPairDistance);
+
+        Vector2Int position = new Vector2Int(_left.GetIntPosition(), _down.GetIntPosition());
+        Vector2Int size = new Vector2Int(_right.GetIntPosition(), _up.GetIntPosition()) - position;
+        _rect.position = position;
+        _rect.size = size;
     }
     private void UpdateRect()
     {
@@ -30,6 +35,7 @@ public class AnchorRect : MonoBehaviour
         _rect.position = position;
         _rect.size = size;
         
+        // Debug.Log("Upd rect "+ _rect);
         Vector2 center = ((Vector2)position + (Vector2) (position + size))/2;
         _up.ChangePosition(new Vector2(center.x, _up.intPosition));
         _down.ChangePosition(new Vector2(center.x, _down.intPosition));

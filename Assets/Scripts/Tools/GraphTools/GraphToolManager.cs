@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EditorAttributes;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,12 +10,14 @@ public class GraphToolManager : ToolManager
     [SerializeField]private CreatingTool creatingTool;
     [SerializeField]private MoveTool moveTool;
     [SerializeField]private DeleteTool deleteTool;
+    // [SerializeField]private Transform 
     private SetVertexType<GraphVertex> setStartTool;
     private SetVertexType<GraphVertex> setGoalTool;
 
     private ToolMachine toolMachine;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
+    public List<GraphVertexVisualizer> graphVertices = new List<GraphVertexVisualizer>();
     public AlgorithmManager alogthmManager{get;private set;}
     private void Awake()
     {
@@ -27,12 +30,26 @@ public class GraphToolManager : ToolManager
         deleteTool.Initialize(this);
     }
     #region OnEvents
-    private void OnDoubleClick()
+    private void OnEnable()
     {
-        if(!enabled)
-            return;
-        creatingTool.CreateSeparateVertex();
+        toolMachine.SetTool(creatingTool);
+        alogthmManager.OnProcessChanged.AddListener((processing) => {if(processing) DeselectTools();});
     }
+    private void OnDisable()
+    {
+        toolMachine.SetTool(null);
+        alogthmManager.OnProcessChanged.RemoveListener((processing) => {if(processing) DeselectTools();});
+    }
+    private void DeselectTools()
+    {
+        toolMachine.SetTool(null);
+    }
+    // private void OnDoubleClick()
+    // {
+    //     if(!enabled)
+    //         return;
+    //     creatingTool.CreateSeparateVertex();
+    // }
     private void OnPoint(InputValue value)
     {
         if(toolMachine.currentTool != null)
@@ -41,30 +58,73 @@ public class GraphToolManager : ToolManager
     #endregion
     #region Buttons
     [Button]
-    private void SetCreatingTool()
+    public void SetCreatingTool()
     {
+        if(alogthmManager.inProcess)
+            return;
+        if(alogthmManager.inProcess)
+        {
+            return;
+        }
         toolMachine.SetTool(creatingTool);
     }
     [Button]
-    private void SetMoveTool()
+    public void SetMoveTool()
     {
+        if(alogthmManager.inProcess)
+            return;
+        if(alogthmManager.inProcess)
+        {
+            return;
+        }
         toolMachine.SetTool(moveTool);
     }
     [Button]
-    private void SetDeleteTool()
+    public void SetDeleteTool()
     {
+        if(alogthmManager.inProcess)
+            return;
+        if(alogthmManager.inProcess)
+        {
+            return;
+        }
         toolMachine.SetTool(deleteTool);
     }
     [Button]
-    private void SetSetPointToStartTool()
+    public void SetSetPointToStartTool()
     {
+        if(alogthmManager.inProcess)
+            return;
+        if(alogthmManager.inProcess)
+        {
+            return;
+        }
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
         toolMachine.SetTool(setStartTool);
     }
     [Button]
-    private void SetSetPointToGoalTool()
+    public void SetSetPointToGoalTool()
     {
+        if(alogthmManager.inProcess)
+            return;
+        if(alogthmManager.inProcess)
+        {
+            return;
+        }
         toolMachine.SetTool(setGoalTool);
+    }
+    [Button]
+    public void DestroyAll()
+    {
+        if(alogthmManager.inProcess)
+            return;
+        for(int i = graphVertices.Count-1; i>=0; i--)
+        {
+            if(!graphVertices[i])
+                continue;
+            Destroy(graphVertices[i].gameObject);
+            graphVertices.RemoveAt(i);
+        }
     }
     #endregion
     #region PrivateMethods
@@ -72,11 +132,14 @@ public class GraphToolManager : ToolManager
     {
         return new SetVertexType<GraphVertex>((vertexVisualizer) => 
         {
-            vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Start;
-            if(alogthmManager.startVertex != null)
+            if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Start)
+                return;
+            if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Goal)
             {
-                alogthmManager.startVertex.SetCustomStatesToDefault();
+                alogthmManager.goalVertex.SetCustomStatesToDefault();
+                alogthmManager.goalVertex = null;
             }
+            vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Start;
             alogthmManager.startVertex = vertexVisualizer.vertex;
 
         });
@@ -85,11 +148,14 @@ public class GraphToolManager : ToolManager
     {
         return new SetVertexType<GraphVertex>((vertexVisualizer) => 
         {
-            vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Goal;
-            if(alogthmManager.goalVertex != null)
+            if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Goal)
+                return;
+            if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Start)
             {
-                alogthmManager.goalVertex.SetCustomStatesToDefault();
+                alogthmManager.startVertex.SetCustomStatesToDefault();
+                alogthmManager.startVertex = null;
             }
+            vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Goal;
             alogthmManager.goalVertex = vertexVisualizer.vertex;
 
         });

@@ -13,9 +13,10 @@ public class CellVertex : Vertex
         {
             _cellState = value;
             OnCellStateChanged.Invoke(cellState);
+            OnCustomStateChanged.Invoke();
         }
     }
-    private CellState _cellState;
+    private CellState _cellState = CellState.Common;
     public UnityEvent<CellState> OnCellStateChanged = new();
     public override (Link, Vertex, float)[] GetNeighboursWithWeights()
     {

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class GridToolManager : ToolManager
 {
+    public static GridToolManager instance{get; private set;}
     private SetVertexType<CellVertex> setCleanTool;
     private SetVertexType<CellVertex> setStartTool;
     private SetVertexType<CellVertex> setGoalTool;
@@ -16,12 +17,29 @@ public class GridToolManager : ToolManager
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
     public int settingWeight = 2;
+    public bool block
+    {
+        get
+        {
+            return _block;
+        }
+        set
+        {
+            _block = value;
+            if(toolMachine.currentTool != null)
+            {
+                toolMachine.currentTool.block = _block;
+            }
+        }
+    }
+    private bool _block;
     public AlgorithmManager alogthmManager{get;private set;}
     public GridFormer gridFormer { get => _gridFormer; private set => _gridFormer = value; }
     [SerializeField]private GridFormer _gridFormer;
 
     private void Awake()
     {
+        instance = this;
         alogthmManager = GetComponent<AlgorithmManager>();  
         toolMachine = new(this);
 
@@ -31,18 +49,16 @@ public class GridToolManager : ToolManager
         setBlockTool = CreateBlockTool();
         setWeightTool = CreateWeightTool();
     }
-
-    
-    #region OnEvents
-
+    private void Start()
+    {
+        toolMachine.SetTool(setBlockTool);
+    }
     #region OnEvents
     private void OnPoint(InputValue value)
     {
         if(toolMachine.currentTool != null)
             toolMachine.currentTool.Point();
     }
-
-    #endregion
     #endregion
     #region Buttons
     [Button]
@@ -74,18 +90,26 @@ public class GridToolManager : ToolManager
     {
         toolMachine.SetTool(setGoalTool);
     }
+    [Button]
+    public void CleanAllCells()
+    {
+        _gridFormer.CleanAllVerticies();
+    }
     #endregion
     #region PrivateMethods
     private SetVertexType<CellVertex> CreateStartPointTool()
     {
         return new SetVertexType<CellVertex>((vertexVisualizer) => 
         {
-            vertexVisualizer.vertex.cellState = CellVertex.CellState.Start;
+            ClearVertex(vertexVisualizer.vertex);
+
             if(alogthmManager.startVertex != null)
             {
                 alogthmManager.startVertex.SetCustomStatesToDefault();
+                alogthmManager.startVertex = null;
             }
-            vertexVisualizer.vertex.weight = 1;
+
+            vertexVisualizer.vertex.cellState = CellVertex.CellState.Start;
             _gridFormer.LocateVertex(vertexVisualizer as CellVertexVisualizer, out Vector2Int position);
             _gridFormer.ConnectVertex(vertexVisualizer.vertex, position);
 
@@ -97,12 +121,14 @@ public class GridToolManager : ToolManager
     {
         return new SetVertexType<CellVertex>((vertexVisualizer) => 
         {
-            vertexVisualizer.vertex.cellState = CellVertex.CellState.Goal;
+            ClearVertex(vertexVisualizer.vertex);
+
             if(alogthmManager.goalVertex != null)
             {
                 alogthmManager.goalVertex.SetCustomStatesToDefault();
+                alogthmManager.goalVertex = null;
             }
-            vertexVisualizer.vertex.weight = 1;
+            vertexVisualizer.vertex.cellState = CellVertex.CellState.Goal;
             _gridFormer.LocateVertex(vertexVisualizer as CellVertexVisualizer, out Vector2Int position);
             _gridFormer.ConnectVertex(vertexVisualizer.vertex, position);
             
@@ -114,7 +140,8 @@ public class GridToolManager : ToolManager
     {
         return new SetVertexType<CellVertex>((vertexVisualizer) => 
         {
-            // if(vertexVisualizer.vertex.cellState ==)
+            ClearVertex(vertexVisualizer.vertex);
+
             vertexVisualizer.vertex.weight = settingWeight;
             vertexVisualizer.vertex.cellState = CellVertex.CellState.Weighted;
             _gridFormer.LocateVertex(vertexVisualizer as CellVertexVisualizer, out Vector2Int position);
@@ -125,8 +152,8 @@ public class GridToolManager : ToolManager
     {
         return new SetVertexType<CellVertex>((vertexVisualizer) => 
         {
-            // if(vertexVisualizer.vertex.cellState ==)
-            vertexVisualizer.vertex.weight = 1;
+            ClearVertex(vertexVisualizer.vertex);
+
             vertexVisualizer.vertex.cellState = CellVertex.CellState.Common;
             _gridFormer.LocateVertex(vertexVisualizer as CellVertexVisualizer, out Vector2Int position);
             _gridFormer.ConnectVertex(vertexVisualizer.vertex, position);
@@ -136,9 +163,24 @@ public class GridToolManager : ToolManager
     {
         return new SetVertexType<CellVertex>((vertexVisualizer) => 
         {
+            ClearVertex(vertexVisualizer.vertex);
             vertexVisualizer.vertex.cellState = CellVertex.CellState.Blocked;
             vertexVisualizer.vertex.UnlinkAll();
         });
     }
+    private void ClearVertex(CellVertex vertex)
+    {
+        vertex.weight = 1;
+        if(vertex.cellState == CellVertex.CellState.Start)
+        {
+            alogthmManager.startVertex = null;
+        }
+        if(vertex.cellState == CellVertex.CellState.Goal)
+        {
+            alogthmManager.goalVertex = null;
+        }
+        vertex.SetCustomStatesToDefault();
+    }
+
     #endregion
 }

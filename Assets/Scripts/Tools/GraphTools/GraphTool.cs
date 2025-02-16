@@ -3,6 +3,9 @@ using UnityEngine;
 public abstract class GraphTool : ITool
 {
     [HideInInspector]public GraphToolManager manager = null;
+
+    public bool block { get; set; }
+
     public virtual void Initialize(ToolManager manager)
     {
         if(this.manager != null)

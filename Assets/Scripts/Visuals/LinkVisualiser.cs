@@ -1,6 +1,9 @@
+using System.Linq;
 using EditorAttributes;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LinkVisualizer : MonoBehaviour
 {
@@ -9,6 +12,8 @@ public class LinkVisualizer : MonoBehaviour
     private Transform _transform;
 
     [SerializeField]private Link _link;
+    private Transform _textTransform;
+    private TMP_InputField _inputField;
     [SerializeField]private LinkColorSettings _linkColorSettings;
     private void OnEnable()
     {
@@ -16,12 +21,19 @@ public class LinkVisualizer : MonoBehaviour
         _collider = GetComponent<PolygonCollider2D>();
         _transform = transform;
     }
-    public void SetLink(Link link)
+    public void SetLink(Link link, Transform textTransform)
     {
         _link = link;
+
+        _textTransform = textTransform;
+        _inputField = _textTransform.GetComponent<TMP_InputField>();
+        _inputField.onValueChanged.AddListener(SetWeight);
+
         _lineRenderer.material = _linkColorSettings.standartMaterial;
+        
         _link.OnUnlink.AddListener(() => Destroy(gameObject));
         _link.OnChanged.AddListener(()=>SyncPosiitons());
+        _link.OnWeightChanged.AddListener(SetWeightText);
         _link.OnStateChanged.AddListener(StateChangeHandler);
     }
     private void StateChangeHandler(Link.State state)
@@ -39,27 +51,27 @@ public class LinkVisualizer : MonoBehaviour
                 break;
         }
     }
-    [Button]
-    private void SyncCollider()
+    private void SetWeightText(float number)
     {
-        var lineRenderer = GetComponent<LineRenderer>();
-
-        Vector2 localPosA = transform.InverseTransformPoint(lineRenderer.GetPosition(0));
-        Vector2 localPosB = transform.InverseTransformPoint(lineRenderer.GetPosition(1));
-
-        Vector2 side = Vector2.Perpendicular((localPosA-localPosB).normalized);
-
-
-
-        Vector2[] points = new Vector2[]
+        _inputField.text = number.ToString();
+    }
+    private void SetWeight(string text)
+    {
+        // _lineRenderer = _linkColorSettings.
+        if(!float.TryParse(text, out float number))
         {
-            localPosA - side * lineRenderer.startWidth,
-            localPosA + side * lineRenderer.startWidth,
-            localPosB + side * lineRenderer.startWidth,
-            localPosB - side * lineRenderer.startWidth,
-        };
-
-        GetComponent<PolygonCollider2D>().SetPath(0, points);
+            string result = new string(text.Where(t => char.IsDigit(t)).ToArray());
+            _inputField.text = result;
+            if(result == string.Empty)
+                return;
+            number = float.Parse(result);
+        }
+        if(number > 10)
+        {
+            number = 10;
+            SetWeightText(number);
+        }
+        _link.weight = number;
     }
     public void SyncPosiitons()
     {
@@ -74,7 +86,7 @@ public class LinkVisualizer : MonoBehaviour
 
         Vector2 side = Vector2.Perpendicular((localPosA-localPosB).normalized);
 
-
+        _textTransform.position = (posA + posB) /2;
 
         Vector2[] points = new Vector2[]
         {
@@ -89,5 +101,7 @@ public class LinkVisualizer : MonoBehaviour
     private void OnDestroy()
     {
         Vertex.UnLink(_link);
+        if(_textTransform)
+            Destroy(_textTransform.gameObject);
     }
 }

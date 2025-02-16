@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AlgorithmManager : MonoBehaviour
 {
     [SerializeField]private SearchAlgorithm[] algorithms;
     [SerializeField]private SearchAlgorithm currentAlgorithm;
+
     public Vertex startVertex;
     public Vertex goalVertex;
     public float iterationsPerSecond
@@ -15,8 +17,17 @@ public class AlgorithmManager : MonoBehaviour
     }
     [SerializeField]private float _iterationsPerSecond = 0;
     private List<Vertex> processedInStepVertexes;
-    public bool inProcess{get =>_inProcess;}
-    private bool _inProcess = false;
+    public bool inProcess
+    {
+        get => _inProcess; 
+        private set
+        {
+            _inProcess = value;
+            OnProcessChanged.Invoke(_inProcess);
+        }
+    }
+    private bool _inProcess;
+    public UnityEvent<bool> OnProcessChanged = new UnityEvent<bool>();
     private void Start()
     {
         algorithms = new SearchAlgorithm[]
@@ -43,7 +54,7 @@ public class AlgorithmManager : MonoBehaviour
         if(!CanStartSearch()) return;
         
 
-        _inProcess = true;
+        inProcess = true;
         currentAlgorithm.StartSearch(goalVertex, startVertex);
 
         currentAlgorithm.OnComplete.AddListener(AlgorithmCompleteHandler);
@@ -52,7 +63,7 @@ public class AlgorithmManager : MonoBehaviour
     }
     private bool CanStartSearch()
     {
-        if(_inProcess)
+        if(inProcess)
         {
             Debug.LogWarning($"Can`t start search because other algorithm is in process");
             return false;
@@ -74,6 +85,9 @@ public class AlgorithmManager : MonoBehaviour
     [EditorAttributes.Button]
     public void MakeOneIteration()
     {
+        if(!inProcess)
+            return;
+            
         if(currentAlgorithm == null) return;
 
         currentAlgorithm.MakeOneIteration();
@@ -81,9 +95,9 @@ public class AlgorithmManager : MonoBehaviour
     [EditorAttributes.Button]
     public void ClearResults()
     {
-        if(_inProcess)
+        if(inProcess)
         {
-            _inProcess = false;
+            inProcess = false;
             currentAlgorithm.Stop();
         }
         if(currentAlgorithm != null)
@@ -109,14 +123,14 @@ public class AlgorithmManager : MonoBehaviour
     }
     private void AlgorithmFailHandler()
     {
-        _inProcess = false;
+        inProcess = false;
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
         // Debug.Log("Fail!");
     }
     private void AlgorithmCompleteHandler(List<Vertex> path)
     {
-        _inProcess = false;
+        inProcess = false;
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
 

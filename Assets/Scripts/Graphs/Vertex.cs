@@ -28,6 +28,7 @@ public abstract class Vertex
     [SerializeField]protected List<Link> _links= new List<Link>();
     private ProcessState _processState;
     public UnityEvent<ProcessState> OnProcessStateChanged = new();
+    public UnityEvent OnCustomStateChanged = new();
     
     public List<Link> Links {get => _links;}
     public (Link, Vertex)[] GetNeighbours()
@@ -106,11 +107,7 @@ public abstract class Vertex
     }
     public static Link LinkTogether(Vertex vertexA, Vertex vertexB)
     {
-        return LinkTogether(vertexA, vertexB, 1);
-    }
-    public static Link LinkTogether(Vertex vertexA, Vertex vertexB, float weight)
-    {
-        Link link = new Link(vertexA, vertexB, weight);
+        Link link = new Link(vertexA, vertexB);
         vertexA.AddLink(link);
         vertexB.AddLink(link);
         return link;

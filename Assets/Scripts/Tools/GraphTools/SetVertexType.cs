@@ -4,6 +4,7 @@ using UnityEngine.Events;
 [System.Serializable]
 public class SetVertexType<T> : ITool where T : Vertex
 {
+    public bool block { get; set; }
     private Action<IVertexVisualizer<T>> _setAction;
     public SetVertexType(Action<IVertexVisualizer<T>> setAction)
     {
@@ -11,10 +12,13 @@ public class SetVertexType<T> : ITool where T : Vertex
     }
     public void Enable()
     {
-        InteractionsManager.instance.OnObjectPointed.AddListener(ObjectClickedhandler);
+        InteractionsManager.instance.OnObjectPointed.AddListener(ObjectPointedhandler);
     }
-    private void ObjectClickedhandler(Transform other)
+    private void ObjectPointedhandler(Transform other)
     {
+        if(block)
+            return;
+
         if(!other.TryGetComponent<IVertexVisualizer<T>>(out IVertexVisualizer<T> vertexVisualizer))
         {
             Debug.Log("Failed to get vertex");
@@ -24,7 +28,7 @@ public class SetVertexType<T> : ITool where T : Vertex
     }
     public void Disable()
     {
-        InteractionsManager.instance.OnObjectPointed.RemoveListener(ObjectClickedhandler);
+        InteractionsManager.instance.OnObjectPointed.RemoveListener(ObjectPointedhandler);
     }
     public void Point()
     {

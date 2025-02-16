@@ -6,6 +6,8 @@ public class CreatingTool: GraphTool
 {
     [SerializeField]private GameObject _vertexPrefab;
     [SerializeField]private GameObject _linkPrefab;
+    [SerializeField]private GameObject _linkLablePrefab;
+    [SerializeField]private RectTransform _lablesRoot;
     [SerializeField]private LayerMask _layerMask;
 
     private Transform _selectedObject;
@@ -17,6 +19,14 @@ public class CreatingTool: GraphTool
         InteractionsManager.instance.OnObjectClicked.AddListener(ObjectClickedhandler);
         InteractionsManager.instance.OnVoidClicked.AddListener(VoidClickedhandler);
         InteractionsManager.instance.OnClickUp.AddListener(ClickUpHandler);
+        InteractionsManager.instance.OnDoubleClickPreformed.AddListener(CreateSeparateVertex);
+    }
+    public override void Disable()
+    {
+        InteractionsManager.instance.OnObjectClicked.RemoveListener(ObjectClickedhandler);
+        InteractionsManager.instance.OnVoidClicked.RemoveListener(VoidClickedhandler);
+        InteractionsManager.instance.OnClickUp.RemoveListener(ClickUpHandler);
+        InteractionsManager.instance.OnDoubleClickPreformed.RemoveListener(CreateSeparateVertex);
     }
     private void ObjectClickedhandler(Transform clicked)
     {
@@ -89,12 +99,6 @@ public class CreatingTool: GraphTool
             }
         }
     }
-    public override void Disable()
-    {
-        InteractionsManager.instance.OnObjectClicked.RemoveListener(ObjectClickedhandler);
-        InteractionsManager.instance.OnVoidClicked.RemoveListener(VoidClickedhandler);
-        InteractionsManager.instance.OnClickUp.RemoveListener(ClickUpHandler);
-    }
 
     public override void Point()
     {
@@ -119,23 +123,24 @@ public class CreatingTool: GraphTool
     {
         _toMove = MonoBehaviour.Instantiate(_vertexPrefab, manager.gameSpace).transform;
         _toMove.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
+        manager.graphVertices.Add(_toMove.GetComponent<GraphVertexVisualizer>());
         _toMove.position = InteractionsManager.instance.mousePosition;
     }
     public void CreateSeparateVertex()
     {
         var go = MonoBehaviour.Instantiate(_vertexPrefab, InteractionsManager.instance.mousePosition, Quaternion.identity, manager.gameSpace);
+        manager.graphVertices.Add(go.GetComponent<GraphVertexVisualizer>());
         go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
     }
     private void Link(GraphVertexVisualizer vertexA, GraphVertexVisualizer vertexB)
     {
-        float distance = Vector2.Distance(vertexA.transform.position, vertexB.transform.position);
 
         GameObject linkGameObject = MonoBehaviour.Instantiate(_linkPrefab, manager.gameSpace);
         LinkVisualizer linkVisualizer = linkGameObject.GetComponent<LinkVisualizer>();
 
-        Link link = Vertex.LinkTogether(vertexA.vertex, vertexB.vertex, distance);
-        linkVisualizer.SetLink(link);
+        Link link = Vertex.LinkTogether(vertexA.vertex, vertexB.vertex);
+        Transform textLable = MonoBehaviour.Instantiate(_linkLablePrefab, _lablesRoot).transform;
+        linkVisualizer.SetLink(link, textLable);
         linkVisualizer.SyncPosiitons();
-
     }
 }

@@ -161,14 +161,14 @@ MonoBehaviour:
     OnChanged:
       m_PersistentCalls:
         m_Calls: []
-    OnSetAsPath:
+    OnStateChanged:
       m_PersistentCalls:
         m_Calls: []
-    OnSeen:
+    OnWeightChanged:
       m_PersistentCalls:
         m_Calls: []
-    _vertexA: {fileID: 0}
-    _vertexB: {fileID: 0}
+  _textTransform: {fileID: 0}
+  _text: {fileID: 0}
   _linkColorSettings: {fileID: 11400000, guid: 2e9ed1abff997e7479de2f21222541ba, type: 2}
 --- !u!60 &6666411017331805455
 PolygonCollider2D:

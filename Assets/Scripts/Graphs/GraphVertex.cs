@@ -10,9 +10,10 @@ public class GraphVertex : Vertex
         {
             _graphState = value;
             OnGraphStateChanged.Invoke(_graphState);
+            OnCustomStateChanged.Invoke();
         }
     }
-    private GraphState _graphState;
+    private GraphState _graphState = GraphState.Common;
     public UnityEvent<GraphState> OnGraphStateChanged = new();
     public override void SetCustomStatesToDefault()
     {

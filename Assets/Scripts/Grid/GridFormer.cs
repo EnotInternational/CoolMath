@@ -10,12 +10,10 @@ public class GridFormer : MonoBehaviour
     [SerializeField]private Transform _root;
     [SerializeField]private AnchorRect _anchorRect;
     [SerializeField]private LayerMask _mask;    
-    [SerializeField]private InteractionsManager _interactionsManager;    
     private Vector2Int _gridSize = Vector2Int.zero;
     private List<List<CellVertexVisualizer>> _vertices= new List<List<CellVertexVisualizer>>();
     private void Start()
     {
-        _interactionsManager = InteractionsManager.instance;
         _anchorRect.OnRectChanged.AddListener(ChangeGrid);
     }
     private void OnEnable()
@@ -26,7 +24,17 @@ public class GridFormer : MonoBehaviour
     {
         _anchorRect.OnRectChanged.RemoveListener(ChangeGrid);
     }
-    public void ChangeGrid()
+    public void CleanAllVerticies()
+    {
+        foreach (List<CellVertexVisualizer> row in _vertices)
+        {
+            foreach(CellVertexVisualizer visualizer in row)
+            {
+                visualizer.vertex.cellState = CellVertex.CellState.Common;
+            }
+        }
+    }
+    private void ChangeGrid()
     {
         _root.position = (Vector2)_anchorRect.rect.position + new Vector2(0.5f,0.5f);
 

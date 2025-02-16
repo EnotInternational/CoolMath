@@ -11,9 +11,11 @@ public class InteractionsManager : MonoBehaviour
     private Vector2 _lastCheckMousePosition;
     public UnityEvent OnClickUp;
     public UnityEvent OnClickDown;
+    public UnityEvent OnDoubleClickPreformed;
     public UnityEvent<Transform> OnObjectClicked;
     public UnityEvent<Transform> OnObjectPointed;
     private bool _mouseHold = false;
+
     public UnityEvent OnVoidClicked;
     private Transform _pointedObject;
     public static InteractionsManager instance
@@ -44,8 +46,6 @@ public class InteractionsManager : MonoBehaviour
         }
 
         _mousePosition = newPosition;
-
-
     }
     private void TryPointNewObject()
     {
@@ -68,8 +68,8 @@ public class InteractionsManager : MonoBehaviour
         
     }
     private void OnDoubleClick(InputValue value)
-    {
-        
+    {   
+        OnDoubleClickPreformed.Invoke();
     }   
     private void OnDelete(InputValue value)
     {
@@ -90,6 +90,10 @@ public class InteractionsManager : MonoBehaviour
             {
                 OnVoidClicked.Invoke();
                 return;
+            }
+            if(hit.TryGetComponent<IClickable>(out IClickable component))
+            {
+                component.OnClickDown();
             }
             if(hit.transform != _pointedObject)
             {

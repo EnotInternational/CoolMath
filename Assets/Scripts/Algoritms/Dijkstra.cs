@@ -66,6 +66,7 @@ public class Dijkstra : SearchAlgorithm
                 if(neighbourWeightedVertex.vertex == goalVertex)
                 {
                     RecursiveReturnToStart(neighbourWeightedVertex);
+                    return;
                 }
             }
             neighbour.Item1.state = Link.State.Seen;
@@ -114,13 +115,14 @@ public class Dijkstra : SearchAlgorithm
         {
             Complete(pathVertexes);
             foreach(var potential in potentialVertexes)
-        {
+            {
                 potential.vertex.processState = Vertex.ProcessState.Seen;
             }
         }
         else
         {
             currentVertex.GetLinkWith(weightedVertex.origin.vertex).state = Link.State.Path;
+
             RecursiveReturnToStart(weightedVertex.origin);
         }
     }
