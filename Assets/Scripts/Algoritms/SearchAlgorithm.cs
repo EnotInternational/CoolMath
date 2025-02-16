@@ -68,11 +68,11 @@ public abstract class SearchAlgorithm
         _inProcess = true;
         while(InProcess)
         {
-            if(_manager.iterationsPerSecond == 0)
+            if(_manager.IterationsPerSecond == 0)
             {
-                yield return new WaitWhile(()=>{return _manager.iterationsPerSecond == 0;});
+                yield return new WaitWhile(()=>{return _manager.IterationsPerSecond == 0;});
             }
-            yield return new WaitForSeconds(1f/_manager.iterationsPerSecond);
+            yield return new WaitForSeconds(1f/_manager.IterationsPerSecond);
             
             stopwatch.Start();
             Iterate();

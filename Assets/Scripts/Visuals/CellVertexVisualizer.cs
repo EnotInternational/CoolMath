@@ -14,7 +14,7 @@ public class CellVertexVisualizer : MonoBehaviour, IVertexVisualizer<CellVertex>
         set
         {
             _vertex = value;
-            Debug.Log(_vertex);
+            // Debug.Log(_vertex);
             _vertex.OnProcessStateChanged.AddListener(ProcessStateChangedHandler);
             _vertex.OnCellStateChanged.AddListener(CellStateChangedHandler);
             UpdatePosition();

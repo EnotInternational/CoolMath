@@ -60,7 +60,7 @@ public class GridFormer : MonoBehaviour
             {
                 for(int x = 0; x < absDelta; x++)
                 {
-                    Debug.Log("spawn");
+                    // Debug.Log("spawn");
                     _vertices[y].Add(SpawnVertex(new Vector2Int(_vertices[y].Count,y)));
                 }
             }
@@ -93,7 +93,7 @@ public class GridFormer : MonoBehaviour
                 _vertices.Add(row);
                 for(int x = 0; x < _gridSize.x; x++)
                 {
-                    Debug.Log("spawn row");
+                    // Debug.Log("spawn row");
                     row.Add(SpawnVertex(new Vector2Int(x, _gridSize.y + y)));
                 }
             }

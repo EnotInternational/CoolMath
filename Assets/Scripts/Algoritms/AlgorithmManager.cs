@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class AlgorithmManager : MonoBehaviour
 {
@@ -11,11 +13,16 @@ public class AlgorithmManager : MonoBehaviour
 
     public Vertex startVertex;
     public Vertex goalVertex;
-    public float iterationsPerSecond
+    public float IterationsPerSecond
     {
         get => _iterationsPerSecond;
+        private set => _iterationsPerSecond = value;
     }
     [SerializeField]private float _iterationsPerSecond = 0;
+    [SerializeField]private Slider slider;
+    [SerializeField]private TMP_InputField inputField;
+
+    private float _savedIterationsPerSecond = 1;
     private List<Vertex> processedInStepVertexes;
     public bool inProcess
     {
@@ -28,6 +35,7 @@ public class AlgorithmManager : MonoBehaviour
     }
     private bool _inProcess;
     public UnityEvent<bool> OnProcessChanged = new UnityEvent<bool>();
+
     private void Start()
     {
         algorithms = new SearchAlgorithm[]
@@ -35,6 +43,53 @@ public class AlgorithmManager : MonoBehaviour
             new BFS(this),
             new Dijkstra(this)
         };
+    }
+    private void OnEnable()
+    {
+        slider.onValueChanged.AddListener(SetSimulationSpeedBySlider);
+        inputField.onValueChanged.AddListener(SetSimulationSpeedByInputField);
+
+    }
+    private void Disable()
+    {
+        slider.onValueChanged.RemoveListener(SetSimulationSpeedBySlider);
+        inputField.onValueChanged.RemoveListener(SetSimulationSpeedByInputField);
+    }
+
+    public void Pause()
+    {
+        _savedIterationsPerSecond = _iterationsPerSecond;
+        _iterationsPerSecond = 0;
+    }
+    public void Unpause()
+    {
+        _iterationsPerSecond = _savedIterationsPerSecond;
+    }
+    public void SetSimulationSpeedBySlider(float value)
+    {
+        _iterationsPerSecond = value;
+        inputField.SetTextWithoutNotify(Mathf.RoundToInt(value).ToString());
+    }
+    public void SetSimulationSpeedByInputField(string text)
+    {
+        if(!float.TryParse(text, out float number))
+        {
+            string result = new string(text.Where(t => char.IsDigit(t)).ToArray());
+            
+            if(result == string.Empty)
+                return;
+            number = float.Parse(result);
+            Debug.Log("Wrond text, new is: " + result);
+            inputField.SetTextWithoutNotify(result);
+        }
+        Debug.Log("Sussessful " + number);
+        if(number > 100)
+        {
+            number = 100;
+            inputField.SetTextWithoutNotify(number.ToString());
+        }
+        slider.SetValueWithoutNotify(number);
+        _iterationsPerSecond = number;
     }
     [EditorAttributes.Button]
     public void StartBFS()

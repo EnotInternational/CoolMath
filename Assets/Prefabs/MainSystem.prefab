@@ -202,7 +202,6 @@ MonoBehaviour:
     toolManager: {fileID: 6993455332451799909}
     gameObjects:
     - {fileID: 2331526963649399588}
-    - {fileID: 0}
   gridMode:
     toolManager: {fileID: 1190913167535528124}
     gameObjects:
@@ -222,6 +221,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _iterationsPerSecond: 1
   OnProcessChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnIterationsPerSecondChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1190913167535528124
@@ -268,6 +270,7 @@ MonoBehaviour:
   deleteTool:
     manager: {fileID: 0}
   _gameSpace: {fileID: 178501586260142599}
+  graphVertices: []
 --- !u!114 &5526427434984537834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +357,7 @@ Transform:
   m_GameObject: {fileID: 2331526963649399588}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.7923912, y: 1.0214323, z: 0.09829364}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

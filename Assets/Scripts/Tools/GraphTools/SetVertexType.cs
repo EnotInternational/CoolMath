@@ -21,7 +21,7 @@ public class SetVertexType<T> : ITool where T : Vertex
 
         if(!other.TryGetComponent<IVertexVisualizer<T>>(out IVertexVisualizer<T> vertexVisualizer))
         {
-            Debug.Log("Failed to get vertex");
+            // Debug.Log("Failed to get vertex");
             return;
         }
         _setAction(vertexVisualizer);
