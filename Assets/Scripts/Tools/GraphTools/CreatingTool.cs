@@ -128,6 +128,14 @@ public class CreatingTool: GraphTool
     }
     public void CreateSeparateVertex()
     {
+        if(_toMove != null)
+            return;
+        
+        if(InteractionsManager.instance.CheckOverlapMousePos())
+        {
+            // Debug.Log("sus");
+            return;
+        }
         var go = MonoBehaviour.Instantiate(_vertexPrefab, InteractionsManager.instance.mousePosition, Quaternion.identity, manager.gameSpace);
         manager.graphVertices.Add(go.GetComponent<GraphVertexVisualizer>());
         go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();

@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InteractionsManager : MonoBehaviour
 {
     [SerializeField]private float _checkSkip = 0.02f;
+    [SerializeField]private LayerMask _uiMask;
     public Vector2 mousePosition{get => _mousePosition;}
     private Vector2 _mousePosition;
+    
+    private Vector2 _mousePxPosition;
     private Vector2 _lastCheckMousePosition;
     public UnityEvent OnClickUp;
     public UnityEvent OnClickDown;
@@ -35,9 +39,24 @@ public class InteractionsManager : MonoBehaviour
 
         instance = this;
     }
+    public bool CheckOverlapMousePos()
+    {
+        // Ray ray = Camera.main.ScreenPointToRay(_mousePxPosition);
+        // Debug.Log(ray);
+        // Debug.DrawRay(ray.origin, ray.direction);
+        if(Physics2D.OverlapPoint(mousePosition) || Physics.Raycast(Camera.main.ScreenPointToRay(_mousePxPosition), 10f, _uiMask))
+        {
+            // Physics.Raycast(Camera.main.ScreenPointToRay(_mousePxPosition), out var hitInfo, 10f, _uiMask);
+            
+            // Debug.Log(hitInfo.transform.gameObject);
+            return true;
+        }
+        return false;
+    }
     private void OnPoint(InputValue value)
     {
-        Vector2 newPosition = Camera.main.ScreenToWorldPoint(value.Get<Vector2>());
+        _mousePxPosition = value.Get<Vector2>();
+        Vector2 newPosition = Camera.main.ScreenToWorldPoint(_mousePxPosition);
 
         if((newPosition - _lastCheckMousePosition).magnitude >= _checkSkip)
         {

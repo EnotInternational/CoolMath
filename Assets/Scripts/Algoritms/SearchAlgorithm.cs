@@ -11,6 +11,11 @@ public abstract class SearchAlgorithm
     public UnityEvent OnStepComplete = new();
     public bool InProcess{get => _inProcess;}
     private bool _inProcess;
+    public bool Paused
+    {
+        get;
+        set;
+    }
     protected Vertex goalVertex;
     protected Vertex startVertex;
     public Coroutine searchCoroutine;
@@ -68,11 +73,16 @@ public abstract class SearchAlgorithm
         _inProcess = true;
         while(InProcess)
         {
+            yield return new WaitForSeconds(1f/_manager.IterationsPerSecond);
+            
             if(_manager.IterationsPerSecond == 0)
             {
                 yield return new WaitWhile(()=>{return _manager.IterationsPerSecond == 0;});
             }
-            yield return new WaitForSeconds(1f/_manager.IterationsPerSecond);
+            if(Paused)
+            {
+                yield return new WaitWhile(()=>{return Paused;});
+            }
             
             stopwatch.Start();
             Iterate();

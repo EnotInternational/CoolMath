@@ -19,10 +19,9 @@ public class AlgorithmManager : MonoBehaviour
         private set => _iterationsPerSecond = value;
     }
     [SerializeField]private float _iterationsPerSecond = 0;
+    [SerializeField]private bool _paused = false;
     [SerializeField]private Slider slider;
     [SerializeField]private TMP_InputField inputField;
-
-    private float _savedIterationsPerSecond = 1;
     private List<Vertex> processedInStepVertexes;
     public bool inProcess
     {
@@ -38,11 +37,13 @@ public class AlgorithmManager : MonoBehaviour
 
     private void Start()
     {
+
         algorithms = new SearchAlgorithm[]
         {
             new BFS(this),
             new Dijkstra(this)
         };
+        ChangeAlgorithm<BFS>();
     }
     private void OnEnable()
     {
@@ -50,20 +51,27 @@ public class AlgorithmManager : MonoBehaviour
         inputField.onValueChanged.AddListener(SetSimulationSpeedByInputField);
 
     }
-    private void Disable()
+    private void OnDisable()
     {
         slider.onValueChanged.RemoveListener(SetSimulationSpeedBySlider);
         inputField.onValueChanged.RemoveListener(SetSimulationSpeedByInputField);
     }
 
-    public void Pause()
+    public bool Pause()
     {
-        _savedIterationsPerSecond = _iterationsPerSecond;
-        _iterationsPerSecond = 0;
+        _paused = true;
+        if(!_inProcess)
+        {
+            return false;
+        }
+        currentAlgorithm.Paused = true;
+        return true;
     }
-    public void Unpause()
+    public bool Unpause()
     {
-        _iterationsPerSecond = _savedIterationsPerSecond;
+        _paused = false;
+        currentAlgorithm.Paused = false;
+        return true;
     }
     public void SetSimulationSpeedBySlider(float value)
     {
@@ -104,10 +112,17 @@ public class AlgorithmManager : MonoBehaviour
         StartSearch();
     }
 
-    public void StartSearch()
+    public bool StartSearch()
     {
-        if(!CanStartSearch()) return;
+        if(_paused)
+        {
+            Unpause();
+            return true;
+        }
+
+        if(!CanStartSearch()) return false;
         
+        ClearResults();
 
         inProcess = true;
         currentAlgorithm.StartSearch(goalVertex, startVertex);
@@ -115,6 +130,7 @@ public class AlgorithmManager : MonoBehaviour
         currentAlgorithm.OnComplete.AddListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.AddListener(AlgorithmFailHandler);
         currentAlgorithm.OnStepComplete.AddListener(AlgorithmStepHandler);
+        return true;
     }
     private bool CanStartSearch()
     {
@@ -178,6 +194,7 @@ public class AlgorithmManager : MonoBehaviour
     }
     private void AlgorithmFailHandler()
     {
+        _paused = false;
         inProcess = false;
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
@@ -185,6 +202,7 @@ public class AlgorithmManager : MonoBehaviour
     }
     private void AlgorithmCompleteHandler(List<Vertex> path)
     {
+        _paused = false;
         inProcess = false;
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
