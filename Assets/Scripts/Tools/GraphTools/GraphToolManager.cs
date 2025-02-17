@@ -139,6 +139,11 @@ public class GraphToolManager : ToolManager
                 alogthmManager.goalVertex.SetCustomStatesToDefault();
                 alogthmManager.goalVertex = null;
             }
+            if(alogthmManager.startVertex != null)
+            {
+                alogthmManager.startVertex.SetCustomStatesToDefault();
+                alogthmManager.startVertex = null;
+            }
             vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Start;
             alogthmManager.startVertex = vertexVisualizer.vertex;
 
@@ -154,6 +159,11 @@ public class GraphToolManager : ToolManager
             {
                 alogthmManager.startVertex.SetCustomStatesToDefault();
                 alogthmManager.startVertex = null;
+            }
+            if(alogthmManager.goalVertex != null)
+            {
+                alogthmManager.goalVertex.SetCustomStatesToDefault();
+                alogthmManager.goalVertex = null;
             }
             vertexVisualizer.vertex.graphState = GraphVertex.GraphState.Goal;
             alogthmManager.goalVertex = vertexVisualizer.vertex;

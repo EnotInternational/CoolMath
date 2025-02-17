@@ -42,6 +42,11 @@ public class Dijkstra : SearchAlgorithm
         // processedInPreviousStep.Clear();
         
         var currentVertex = GetMinimalPotentialVertex();
+        if(currentVertex.vertex == goalVertex)
+        {
+            RecursiveReturnToStart(currentVertex);
+            return;
+        }
         // Debug.Log("Processing " + currentVertex.vertex);
         // Debug.
         var neighbourInfos = currentVertex.vertex.GetNeighboursWithWeights();
@@ -63,11 +68,6 @@ public class Dijkstra : SearchAlgorithm
                 seenVertexes.AddFirst(neighbourWeightedVertex);
                 potentialVertexes.AddFirst(neighbourWeightedVertex);
                 neighbourWeightedVertex.vertex.processState = Vertex.ProcessState.Processing;
-                if(neighbourWeightedVertex.vertex == goalVertex)
-                {
-                    RecursiveReturnToStart(neighbourWeightedVertex);
-                    return;
-                }
             }
             neighbour.Item1.state = Link.State.Seen;
             

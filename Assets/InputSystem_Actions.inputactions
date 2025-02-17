@@ -72,7 +72,7 @@
                     "name": "Next",
                     "type": "Button",
                     "id": "b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -539,7 +539,7 @@
                     "id": "3290a9de-f88c-4a2c-8639-f074ff3db97f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "MultiTap(tapTime=0.1,tapDelay=0.2)",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=0.3)",
                     "initialStateCheck": true
                 },
                 {

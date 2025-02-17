@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -8,20 +7,20 @@ public class PlayVideo1 : MonoBehaviour
 {
     public RawImage rawImage;
     public VideoPlayer videoPlayer;
-    void OnEnable(){
-        StartCoroutine(PlayVideos());
-    }
-    IEnumerator PlayVideos(){
+    private void Awake(){
         videoPlayer.Prepare();
-        WaitForSeconds waitForSeconds = new WaitForSeconds(0);
-        while (!videoPlayer.isPrepared)
-        {
-            yield return waitForSeconds;
-            
-        }
+    }
+    private void OnDisable()
+    {
+        rawImage.gameObject.SetActive(false);
+    }
+    private void OnEnable()
+    {
+        rawImage.gameObject.SetActive(true);
+    }
+    public void PlayVideo()
+    {
         rawImage.texture = videoPlayer.texture;
         videoPlayer.Play();
-        
     }
-
 }
