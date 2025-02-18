@@ -631,6 +631,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 785868130620792283, guid: bea13cdbacad3284d8e31ce36a815d55, type: 3}
   m_PrefabInstance: {fileID: 101748528}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &101748531 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7447872206787901079, guid: bea13cdbacad3284d8e31ce36a815d55, type: 3}
+  m_PrefabInstance: {fileID: 101748528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101748529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &111519568
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,9 +692,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0089fb52307d84a85c0dc3270582ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playButton: {fileID: 0}
-  stopButton: {fileID: 0}
-  algorithmManager: {fileID: 0}
+  playButton: {fileID: 1398614469}
+  stopButton: {fileID: 101748531}
+  algorithmManager: {fileID: 557322552}
 --- !u!1001 &136028190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -702,7 +713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2331526963649399588, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4699763597543096703, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
       propertyPath: m_IsActive
@@ -710,7 +721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4715767472140724480, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.78
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4715767472140724480, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
       propertyPath: m_LocalPosition.y
@@ -760,6 +771,10 @@ PrefabInstance:
       propertyPath: inputField
       value: 
       objectReference: {fileID: 212941727}
+    - target: {fileID: 5526427434984537834, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
+      propertyPath: inputModule
+      value: 
+      objectReference: {fileID: 497531857}
     - target: {fileID: 5526427434984537834, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
       propertyPath: _uiMask.m_Bits
       value: 4294967295
@@ -1721,7 +1736,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 333722973}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1146363445}
+        m_TargetAssemblyTypeName: GridToolManager, Assembly-CSharp
+        m_MethodName: SetSetPointToGoalTool
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &333722973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2296,8 +2323,9 @@ GameObject:
   - component: {fileID: 395475062}
   - component: {fileID: 395475064}
   - component: {fileID: 395475063}
+  - component: {fileID: 395475065}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: ToolsRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2365,6 +2393,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395475061}
   m_CullTransparentMesh: 1
+--- !u!114 &395475065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395475061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ff56db80d8aeb4b8cfe797f7ceccef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &405137625
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,7 +2891,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 480371386}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1146363445}
+        m_TargetAssemblyTypeName: GridToolManager, Assembly-CSharp
+        m_MethodName: SetBlockTool
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &480371386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3557,7 +3609,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 556592853}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1146363445}
+        m_TargetAssemblyTypeName: GridToolManager, Assembly-CSharp
+        m_MethodName: SetWeightTool
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &556592853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4073,12 +4137,12 @@ GameObject:
   - component: {fileID: 661488553}
   - component: {fileID: 661488552}
   m_Layer: 5
-  m_Name: daPanel
+  m_Name: GridPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &661488552
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5968,7 +6032,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 874559325}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1146363445}
+        m_TargetAssemblyTypeName: GridToolManager, Assembly-CSharp
+        m_MethodName: SetSetPointToStartTool
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &874559325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7323,7 +7399,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1103652639}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1146363445}
+        m_TargetAssemblyTypeName: GridToolManager, Assembly-CSharp
+        m_MethodName: SetCleanTool
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1103652639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7781,6 +7869,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1145655563}
   m_CullTransparentMesh: 1
+--- !u!114 &1146363445 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1190913167535528124, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
+  m_PrefabInstance: {fileID: 136028190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed30727ef53dce4db535cdbde6d500b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1153133510 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8228264658548136918, guid: 15844684f47bd4846b106dcfa5fcba25, type: 3}
@@ -9319,12 +9418,12 @@ GameObject:
   - component: {fileID: 1374625146}
   - component: {fileID: 1374625145}
   m_Layer: 5
-  m_Name: BFSPanel
+  m_Name: GraphPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &1374625145
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9650,6 +9749,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1195923876386582982, guid: bea13cdbacad3284d8e31ce36a815d55, type: 3}
   m_PrefabInstance: {fileID: 923084682}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1398614469 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7447872206787901079, guid: bea13cdbacad3284d8e31ce36a815d55, type: 3}
+  m_PrefabInstance: {fileID: 923084682}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398614468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1399624798
 GameObject:
   m_ObjectHideFlags: 0

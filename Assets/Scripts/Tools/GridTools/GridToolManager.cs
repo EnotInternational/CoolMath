@@ -62,31 +62,31 @@ public class GridToolManager : ToolManager
     #endregion
     #region Buttons
     [Button]
-    private void SetCleanTool()
+    public void SetCleanTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
         toolMachine.SetTool(setCleanTool);
     }
     [Button]
-    private void SetWeightTool()
+    public void SetWeightTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
         toolMachine.SetTool(setWeightTool);
     }
     [Button]
-    private void SetBlockTool()
+    public void SetBlockTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
         toolMachine.SetTool(setBlockTool);
     }
     [Button]
-    private void SetSetPointToStartTool()
+    public void SetSetPointToStartTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
         toolMachine.SetTool(setStartTool);
     }
     [Button]
-    private void SetSetPointToGoalTool()
+    public void SetSetPointToGoalTool()
     {
         toolMachine.SetTool(setGoalTool);
     }
