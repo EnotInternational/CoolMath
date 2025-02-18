@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIColorSwitch : MonoBehaviour
+public class UIColorSwitch : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]private Color _color;
     [SerializeField]private SwitchColorSet _colors;
@@ -35,7 +36,6 @@ public class UIColorSwitch : MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        _graphicToChange.color = _colors.pointedColor;
     }
     private void OnMouseExit()
     {
@@ -60,5 +60,23 @@ public class UIColorSwitch : MonoBehaviour
             ToEnabled();
         }
         OnChange.Invoke(_enabled, this);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _graphicToChange.color = Color.Lerp(_colors.pointedColor, _graphicToChange.color, 0.6f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _graphicToChange.color = _color;
+        if(_enabled)
+        {
+            _graphicToChange.color = _colors.enabledColor;
+        }
+        else
+        {
+            _graphicToChange.color = _color;
+        }
     }
 }
