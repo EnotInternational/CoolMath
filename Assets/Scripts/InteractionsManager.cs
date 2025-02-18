@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InteractionsManager : MonoBehaviour
 {
     [SerializeField]private float _checkSkip = 0.02f;
     [SerializeField]private LayerMask _uiMask;
+    [SerializeField]private InputSystemUIInputModule inputModule;
     public Vector2 mousePosition{get => _mousePosition;}
     private Vector2 _mousePosition;
     
@@ -38,6 +40,17 @@ public class InteractionsManager : MonoBehaviour
         }
 
         instance = this;
+    }
+    public bool IsOverUI()
+    {
+        RaycastResult raycastResult = inputModule.GetLastRaycastResult(0);
+        if(!raycastResult.gameObject)
+            return false;
+        if(raycastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
+        {
+            return true;
+        }
+        return false;
     }
     public bool CheckOverlapMousePos()
     {

@@ -30,6 +30,11 @@ public class CreatingTool: GraphTool
     }
     private void ObjectClickedhandler(Transform clicked)
     {
+        if(InteractionsManager.instance.IsOverUI())
+        {
+            return;
+        }
+        
         if(!LayerMaskExtensions.Includes(_layerMask, clicked.gameObject.layer))
         {
             return;
@@ -131,9 +136,8 @@ public class CreatingTool: GraphTool
         if(_toMove != null)
             return;
         
-        if(InteractionsManager.instance.CheckOverlapMousePos())
+        if(InteractionsManager.instance.IsOverUI())
         {
-            // Debug.Log("sus");
             return;
         }
         var go = MonoBehaviour.Instantiate(_vertexPrefab, InteractionsManager.instance.mousePosition, Quaternion.identity, manager.gameSpace);
