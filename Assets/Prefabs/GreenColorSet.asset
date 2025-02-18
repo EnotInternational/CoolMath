@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b50e293424d6d614e9f87aaf680e8cfc, type: 3}
-  m_Name: WhiteColorSet
+  m_Name: GreenColorSet
   m_EditorClassIdentifier: 
-  enabledColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
-  pointedColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+  enabledColor: {r: 0.026177445, g: 0.1792453, b: 0.00591848, a: 1}
+  pointedColor: {r: 0, g: 0, b: 0, a: 1}
