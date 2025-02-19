@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class AlgorithmManager : MonoBehaviour
@@ -49,12 +50,22 @@ public class AlgorithmManager : MonoBehaviour
     {
         slider.onValueChanged.AddListener(SetSimulationSpeedBySlider);
         inputField.onValueChanged.AddListener(SetSimulationSpeedByInputField);
-
+        InteractionsManager.instance.OnObjectPointed.AddListener(ObjectPointedHandler);
     }
     private void OnDisable()
     {
         slider.onValueChanged.RemoveListener(SetSimulationSpeedBySlider);
         inputField.onValueChanged.RemoveListener(SetSimulationSpeedByInputField);
+        InteractionsManager.instance.OnObjectPointed.RemoveListener(ObjectPointedHandler);
+    }
+    private void ObjectPointedHandler(Transform clicked)
+    {
+        if(_inProcess)
+            return;
+        if(currentAlgorithm != null)
+        {
+            currentAlgorithm.Clear();
+        }
     }
 
     public bool Pause()
@@ -98,6 +109,22 @@ public class AlgorithmManager : MonoBehaviour
         }
         slider.SetValueWithoutNotify(number);
         _iterationsPerSecond = number;
+    }
+    public void SetBFS()
+    {
+        ChangeAlgorithm<BFS>();
+    }
+    public void SetDijkstra()
+    {
+        ChangeAlgorithm<Dijkstra>();
+    }
+    public void SetGreedy()
+    {
+        // ChangeAlgorithm<Dijkstra>();
+    }
+    public void SetAStar()
+    {
+        // ChangeAlgorithm<Dijkstra>();
     }
     [EditorAttributes.Button]
     public void StartBFS()

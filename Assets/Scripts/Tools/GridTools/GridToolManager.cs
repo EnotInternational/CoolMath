@@ -12,8 +12,6 @@ public class GridToolManager : ToolManager
     private SetVertexType<CellVertex> setGoalTool;
     private SetVertexType<CellVertex> setBlockTool;
     private SetVertexType<CellVertex> setWeightTool;
-
-    private ToolMachine toolMachine;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
     public int settingWeight = 2;
@@ -33,9 +31,12 @@ public class GridToolManager : ToolManager
         }
     }
     private bool _block;
-    public AlgorithmManager alogthmManager{get;private set;}
     public GridFormer gridFormer { get => _gridFormer; private set => _gridFormer = value; }
     [SerializeField]private GridFormer _gridFormer;
+    public override void Disable()
+    {
+        toolMachine.SetTool(null);
+    }
 
     private void Awake()
     {
@@ -54,10 +55,14 @@ public class GridToolManager : ToolManager
         toolMachine.SetTool(setBlockTool);
     }
     #region OnEvents
-    private void OnPoint(InputValue value)
+    protected override void OnEnable()
     {
-        if(toolMachine.currentTool != null)
-            toolMachine.currentTool.Point();
+        base.OnEnable();
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        toolMachine.SetTool(null);
     }
     #endregion
     #region Buttons
@@ -65,30 +70,30 @@ public class GridToolManager : ToolManager
     public void SetCleanTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
-        toolMachine.SetTool(setCleanTool);
+        SetTool(setCleanTool);
     }
     [Button]
     public void SetWeightTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
-        toolMachine.SetTool(setWeightTool);
+        SetTool(setWeightTool);
     }
     [Button]
     public void SetBlockTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
-        toolMachine.SetTool(setBlockTool);
+        SetTool(setBlockTool);
     }
     [Button]
     public void SetSetPointToStartTool()
     {
         // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
-        toolMachine.SetTool(setStartTool);
+        SetTool(setStartTool);
     }
     [Button]
     public void SetSetPointToGoalTool()
     {
-        toolMachine.SetTool(setGoalTool);
+        SetTool(setGoalTool);
     }
     [Button]
     public void CleanAllCells()
@@ -97,6 +102,17 @@ public class GridToolManager : ToolManager
     }
     #endregion
     #region PrivateMethods
+    private void SetTool(ITool tool)
+    {
+        if(alogthmManager.inProcess)
+            return;
+        toolMachine.SetTool(tool);
+        alogthmManager.ClearResults();
+    }
+    private void DeselectTools()
+    {
+        toolMachine.SetTool(null);
+    }
     private SetVertexType<CellVertex> CreateStartPointTool()
     {
         return new SetVertexType<CellVertex>((vertexVisualizer) => 

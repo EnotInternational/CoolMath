@@ -22,6 +22,7 @@ public class CellVertexVisualizer : MonoBehaviour, IVertexVisualizer<CellVertex>
     }
     [SerializeField]private SpriteRenderer _renderer;
     private bool _processable = true;
+    
     private void ProcessStateChangedHandler(Vertex.ProcessState processState)
     {
         if(!_processable)

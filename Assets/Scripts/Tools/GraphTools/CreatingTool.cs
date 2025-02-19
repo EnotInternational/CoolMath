@@ -19,14 +19,14 @@ public class CreatingTool: GraphTool
         InteractionsManager.instance.OnObjectClicked.AddListener(ObjectClickedhandler);
         InteractionsManager.instance.OnVoidClicked.AddListener(VoidClickedhandler);
         InteractionsManager.instance.OnClickUp.AddListener(ClickUpHandler);
-        InteractionsManager.instance.OnDoubleClickPreformed.AddListener(CreateSeparateVertex);
+        // InteractionsManager.instance.OnDoubleClickPreformed.AddListener(CreateSeparateVertex);
     }
     public override void Disable()
     {
         InteractionsManager.instance.OnObjectClicked.RemoveListener(ObjectClickedhandler);
         InteractionsManager.instance.OnVoidClicked.RemoveListener(VoidClickedhandler);
         InteractionsManager.instance.OnClickUp.RemoveListener(ClickUpHandler);
-        InteractionsManager.instance.OnDoubleClickPreformed.RemoveListener(CreateSeparateVertex);
+        // InteractionsManager.instance.OnDoubleClickPreformed.RemoveListener(CreateSeparateVertex);
     }
     private void ObjectClickedhandler(Transform clicked)
     {
@@ -131,18 +131,12 @@ public class CreatingTool: GraphTool
         manager.graphVertices.Add(_toMove.GetComponent<GraphVertexVisualizer>());
         _toMove.position = InteractionsManager.instance.mousePosition;
     }
-    public void CreateSeparateVertex()
+    public GraphVertexVisualizer CreateSeparateVertex(Vector3 position)
     {
-        if(_toMove != null)
-            return;
-        
-        if(InteractionsManager.instance.IsOverUI())
-        {
-            return;
-        }
-        var go = MonoBehaviour.Instantiate(_vertexPrefab, InteractionsManager.instance.mousePosition, Quaternion.identity, manager.gameSpace);
+        var go = MonoBehaviour.Instantiate(_vertexPrefab, position, Quaternion.identity, manager.gameSpace);
         manager.graphVertices.Add(go.GetComponent<GraphVertexVisualizer>());
         go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
+        return go.GetComponent<GraphVertexVisualizer>();
     }
     private void Link(GraphVertexVisualizer vertexA, GraphVertexVisualizer vertexB)
     {

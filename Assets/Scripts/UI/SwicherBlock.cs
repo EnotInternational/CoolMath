@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SwitcherBlock : MonoBehaviour
 {
+    [SerializeField]private UIColorSwitch _basic;
     private UIColorSwitch[] _switches = new UIColorSwitch[]{};
     private void Awake()
     {
@@ -12,6 +13,11 @@ public class SwitcherBlock : MonoBehaviour
         {
             colorSwitch.OnChange.AddListener(OnChangeHandler);
         }
+    }
+    private void Start()
+    {
+        if(_basic != null)
+            _basic.ToEnabled();
     }
     private void OnChangeHandler(bool enabled, UIColorSwitch sender)
     {

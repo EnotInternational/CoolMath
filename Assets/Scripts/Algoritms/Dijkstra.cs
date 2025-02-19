@@ -31,7 +31,7 @@ public class Dijkstra : SearchAlgorithm
     }
     protected override void Iterate()
     {
-        if(potentialVertexes.First == null)
+        if(potentialVertexes.Count == 0)
         {
             Fail();
         }

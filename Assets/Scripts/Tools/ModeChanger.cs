@@ -16,6 +16,7 @@ public class ModeChanger : MonoBehaviour
     }
     public void ChangeMode(Mode mode)
     {   
+        _algorithmManager.ClearResults();
         if(currentMode!=null)
         {
             currentMode.Disable(_algorithmManager);
@@ -56,6 +57,7 @@ public class ModeChanger : MonoBehaviour
             goalVertex = algorithmManager.goalVertex;
             
             toolManager.enabled = false;
+            toolManager.Disable();
             foreach (var gameObject in gameObjects)
             {
                 gameObject.SetActive(false);

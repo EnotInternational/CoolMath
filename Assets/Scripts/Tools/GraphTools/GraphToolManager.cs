@@ -13,12 +13,13 @@ public class GraphToolManager : ToolManager
     // [SerializeField]private Transform 
     private SetVertexType<GraphVertex> setStartTool;
     private SetVertexType<GraphVertex> setGoalTool;
-
-    private ToolMachine toolMachine;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
     public List<GraphVertexVisualizer> graphVertices = new List<GraphVertexVisualizer>();
-    public AlgorithmManager alogthmManager{get;private set;}
+    public override void Disable()
+    {
+        toolMachine.SetTool(null);
+    }
     private void Awake()
     {
         alogthmManager = GetComponent<AlgorithmManager>();  
@@ -28,28 +29,31 @@ public class GraphToolManager : ToolManager
         setGoalTool = CreateGoalPointTool();
         creatingTool.Initialize(this);
         deleteTool.Initialize(this);
+
+        
+    }
+    private void Start()
+    {
+        GraphVertexVisualizer vertex1 = creatingTool.CreateSeparateVertex(new Vector3(-3, 0));
+        vertex1.vertex.graphState = GraphVertex.GraphState.Start;
+        alogthmManager.startVertex = vertex1.vertex;
+
+        GraphVertexVisualizer vertex2 = creatingTool.CreateSeparateVertex(new Vector3(3, 0));
+        vertex2.vertex.graphState = GraphVertex.GraphState.Goal;
+        alogthmManager.goalVertex = vertex2.vertex;
+
     }
     #region OnEvents
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         toolMachine.SetTool(creatingTool);
-        alogthmManager.OnProcessChanged.AddListener((processing) => {if(processing) DeselectTools();});
     }
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        toolMachine.SetTool(null);
-        alogthmManager.OnProcessChanged.RemoveListener((processing) => {if(processing) DeselectTools();});
-    }
-    private void DeselectTools()
-    {
+        base.OnDisable();
         toolMachine.SetTool(null);
     }
-    // private void OnDoubleClick()
-    // {
-    //     if(!enabled)
-    //         return;
-    //     creatingTool.CreateSeparateVertex();
-    // }
     private void OnPoint(InputValue value)
     {
         if(toolMachine.currentTool != null)
@@ -60,58 +64,27 @@ public class GraphToolManager : ToolManager
     [Button]
     public void SetCreatingTool()
     {
-        if(alogthmManager.inProcess)
-            return;
-        if(alogthmManager.inProcess)
-        {
-            return;
-        }
-        toolMachine.SetTool(creatingTool);
+        SetTool(creatingTool);
     }
     [Button]
     public void SetMoveTool()
     {
-        if(alogthmManager.inProcess)
-            return;
-        if(alogthmManager.inProcess)
-        {
-            return;
-        }
-        toolMachine.SetTool(moveTool);
+        SetTool(moveTool);
     }
     [Button]
     public void SetDeleteTool()
     {
-        if(alogthmManager.inProcess)
-            return;
-        if(alogthmManager.inProcess)
-        {
-            return;
-        }
-        toolMachine.SetTool(deleteTool);
+        SetTool(deleteTool);
     }
     [Button]
     public void SetSetPointToStartTool()
     {
-        if(alogthmManager.inProcess)
-            return;
-        if(alogthmManager.inProcess)
-        {
-            return;
-        }
-        // SetStartEndPointsTool(StartEndPointTool.PointType.Start);
-        toolMachine.SetTool(setStartTool);
+        SetTool(setStartTool);
     }
     [Button]
     public void SetSetPointToGoalTool()
     {
-        if(alogthmManager.inProcess)
-            return;
-        if(alogthmManager.inProcess)
-        {
-            return;
-        }
-        toolMachine.SetTool(setGoalTool);
+        SetTool(setGoalTool);
     }
     [Button]
     public void DestroyAll()
@@ -128,6 +101,13 @@ public class GraphToolManager : ToolManager
     }
     #endregion
     #region PrivateMethods
+    private void SetTool(ITool tool)
+    {
+        if(alogthmManager.inProcess)
+            return;
+        toolMachine.SetTool(tool);
+        alogthmManager.ClearResults();
+    }
     private SetVertexType<GraphVertex> CreateStartPointTool()
     {
         return new SetVertexType<GraphVertex>((vertexVisualizer) => 

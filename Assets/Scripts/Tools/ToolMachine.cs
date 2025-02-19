@@ -10,6 +10,7 @@ public class ToolMachine
     public ITool currentTool{get; private set;}
     public virtual void SetTool(ITool tool)
     {
+        // Debug.Log("Changing to " + tool);
         if(currentTool!=null)
         {
             currentTool.Disable();

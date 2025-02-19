@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -76,10 +77,16 @@ public abstract class Vertex
     }
     public void UnlinkAll()
     {
-        for(int i = _links.Count-1; i>=0; i--)
+        if(_links.Count == 0)
+            return;
+        for(int i = 1; i<_links.Count; i++)
         {
-            UnLink(_links[i]);
+            // Debug.Log("i" +  i);
+            // Debug.Log("count" + _links.Count);
+
+            UnLink(_links[_links.Count-i]);
         }
+        _links.Clear();
     }
     // [SerializeField]private Sprite
     protected void AddLink(Link link)

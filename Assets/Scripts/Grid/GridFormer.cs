@@ -132,6 +132,10 @@ public class GridFormer : MonoBehaviour
                 if(vertex.HasLinkWith(currentVertex.vertex))
                     continue;
                 
+                if(currentVertex.vertex.cellState == CellVertex.CellState.Blocked)
+                {
+                    continue;
+                }
                 Link link = Vertex.LinkTogether(vertex, currentVertex.vertex);
                 if(Mathf.Abs(y) + Mathf.Abs(x) == 2)
                 {

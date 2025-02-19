@@ -7,6 +7,7 @@ public class Anchor : MonoBehaviour, IClickable
 {
     public UnityEvent OnPositionChanged;
     public Anchor pair;
+    [SerializeField]private Transform _derivePositionFrom;
     public int minToPairDistance = 1;
     public int intPosition{get => _intPosition;}
     private int _intPosition;
@@ -21,10 +22,10 @@ public class Anchor : MonoBehaviour, IClickable
         switch(_constraint)
         {
             case Constraint.OnlyY:
-                _intPosition = Mathf.FloorToInt(_transform.position.y);
+                _intPosition = Mathf.FloorToInt(_derivePositionFrom.position.y);
                 break;
             case Constraint.OnlyX:
-                _intPosition = Mathf.FloorToInt(_transform.position.x);
+                _intPosition = Mathf.FloorToInt(_derivePositionFrom.position.x);
                 break;
         }
         
@@ -47,17 +48,17 @@ public class Anchor : MonoBehaviour, IClickable
         switch(_constraint)
         {
             case Constraint.OnlyY:
-                _intPosition = Mathf.FloorToInt(_transform.position.y);
+                _intPosition = Mathf.FloorToInt(_derivePositionFrom.position.y);
                 break;
             case Constraint.OnlyX:
-                _intPosition = Mathf.FloorToInt(_transform.position.x);
+                _intPosition = Mathf.FloorToInt(_derivePositionFrom.position.x);
                 break;
         }
         return _intPosition;
     }
     public void ChangePosition(Vector2 targetPos)
     {
-        _transform.position = targetPos;
+        _derivePositionFrom.position = targetPos;
     }
     private void FixedUpdate()
     {
@@ -91,11 +92,11 @@ public class Anchor : MonoBehaviour, IClickable
         switch(_constraint)
         {
             case Constraint.OnlyY:
-                _transform.position = new Vector3(_transform.position.x, targetPos);
+                _derivePositionFrom.position = new Vector3(_derivePositionFrom.position.x, targetPos);
                 break;
 
             case Constraint.OnlyX:
-                _transform.position = new Vector3(targetPos, _transform.position.y);
+                _derivePositionFrom.position = new Vector3(targetPos, _derivePositionFrom.position.y);
                 break;
         }
     }

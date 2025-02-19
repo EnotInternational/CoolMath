@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.UI;
 public class InteractionsManager : MonoBehaviour
 {
     [SerializeField]private float _checkSkip = 0.02f;
+    [SerializeField]private int _mousePositionMargin = 50;
     [SerializeField]private LayerMask _uiMask;
     [SerializeField]private InputSystemUIInputModule inputModule;
     public Vector2 mousePosition{get => _mousePosition;}
@@ -69,6 +70,12 @@ public class InteractionsManager : MonoBehaviour
     private void OnPoint(InputValue value)
     {
         _mousePxPosition = value.Get<Vector2>();
+        // Debug.Log(_mousePxPosition);
+        _mousePxPosition =new Vector2
+        (
+            Mathf.Clamp(_mousePxPosition.x, _mousePositionMargin, Camera.main.pixelWidth-_mousePositionMargin), 
+            Mathf.Clamp(_mousePxPosition.y, _mousePositionMargin, Camera.main.pixelHeight-_mousePositionMargin)
+        );
         Vector2 newPosition = Camera.main.ScreenToWorldPoint(_mousePxPosition);
 
         if((newPosition - _lastCheckMousePosition).magnitude >= _checkSkip)

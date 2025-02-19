@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3913019720849443935}
   - component: {fileID: 8863644907078265599}
   - component: {fileID: 952861576100163010}
+  - component: {fileID: 3792495417934633098}
   m_Layer: 5
   m_Name: "\u0410*MethodButton"
   m_TagString: Untagged
@@ -77,7 +78,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.62
+  m_PixelsPerUnitMultiplier: 0.96
 --- !u!114 &952861576100163010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +171,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3792495417934633098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200974819098814381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4302b3ba660532a4f9886b75c6a05eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+  _colors: {fileID: 11400000, guid: 25f5f2b60a24e424c9bf7be7e4d87035, type: 2}
+  OnChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &799387592045170350
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +336,7 @@ GameObject:
   - component: {fileID: 4832609671913478483}
   - component: {fileID: 9096364031688477878}
   - component: {fileID: 3187799354096917962}
+  - component: {fileID: 5109246355682028910}
   m_Layer: 5
   m_Name: 1MethodButton (1)
   m_TagString: Untagged
@@ -383,7 +402,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.62
+  m_PixelsPerUnitMultiplier: 0.96
 --- !u!114 &3187799354096917962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +495,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5109246355682028910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3626615521931056914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4302b3ba660532a4f9886b75c6a05eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+  _colors: {fileID: 11400000, guid: 25f5f2b60a24e424c9bf7be7e4d87035, type: 2}
+  OnChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5441934813205515015
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,6 +797,7 @@ GameObject:
   - component: {fileID: 3689083602791701329}
   - component: {fileID: 5865077599069122389}
   - component: {fileID: 6413464598725163248}
+  - component: {fileID: 9115808521441868381}
   m_Layer: 5
   m_Name: DijksterMethodButton
   m_TagString: Untagged
@@ -826,7 +863,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.62
+  m_PixelsPerUnitMultiplier: 0.96
 --- !u!114 &6413464598725163248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -919,6 +956,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9115808521441868381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962329733984512050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4302b3ba660532a4f9886b75c6a05eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+  _colors: {fileID: 11400000, guid: 25f5f2b60a24e424c9bf7be7e4d87035, type: 2}
+  OnChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6490250427854326162
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +984,7 @@ GameObject:
   - component: {fileID: 3385933743384315687}
   - component: {fileID: 2104672696692875143}
   - component: {fileID: 7127035134793643188}
+  - component: {fileID: 5337983752719979965}
   m_Layer: 5
   m_Name: MethodPanel
   m_TagString: Untagged
@@ -944,7 +999,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6490250427854326162}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -999,6 +1054,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5337983752719979965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490250427854326162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ff56db80d8aeb4b8cfe797f7ceccef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _basic: {fileID: 772624871306985842}
 --- !u!1 &7105105079191130120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,6 +1760,7 @@ GameObject:
   - component: {fileID: 5172702834056765735}
   - component: {fileID: 759020020979822903}
   - component: {fileID: 693562765593057955}
+  - component: {fileID: 772624871306985842}
   m_Layer: 5
   m_Name: BFSMethodButton
   m_TagString: Untagged
@@ -1757,7 +1826,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.62
+  m_PixelsPerUnitMultiplier: 0.96
 --- !u!114 &693562765593057955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1862,6 +1931,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &772624871306985842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8105671059007386318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4302b3ba660532a4f9886b75c6a05eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+  _colors: {fileID: 11400000, guid: 25f5f2b60a24e424c9bf7be7e4d87035, type: 2}
+  OnChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8471250785772077869
 GameObject:
   m_ObjectHideFlags: 0
