@@ -4,7 +4,7 @@ using UnityEngine.Events;
 public class TranslatorManager : MonoBehaviour
 {
     public static TranslatorManager Instance {get; private set;}
-    private Language _language = Language.RU;
+    [SerializeField]private Language _language = Language.RU;
     public Language language
     {
         get => _language;
@@ -12,6 +12,10 @@ public class TranslatorManager : MonoBehaviour
     public UnityEvent<Language> OnLanguageSet = new UnityEvent<Language>();
     private void Awake()
     {
+        if(Instance != null)
+        {
+            Debug.LogWarning("There can`t be more than one translator manager!");
+        }
         Instance = this;
     }
     public void SetRU()

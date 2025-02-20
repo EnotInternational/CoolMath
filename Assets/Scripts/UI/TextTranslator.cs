@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class TextTranslator : MonoBehaviour
 {
-    private TextMeshProUGUI text;
+    [SerializeField]private TextMeshProUGUI text;
     public string RuText;
     public string EngText;
-    private TranslatorManager.Language _language;
+    [SerializeField]private TranslatorManager.Language _language;
     /// <summary>
     /// Принудительная проверка смены текста, не обязательно вызываеть её вручную
     /// </summary>
