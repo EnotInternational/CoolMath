@@ -8,48 +8,48 @@ public class MultipleVideoPlayer : MonoBehaviour
 {
     public RawImage rawImage;
     public VideoPlayer videoPlayer;
-    [SerializeField, DataTable]
-    private NamedVideo[] namedVideo;
+    [SerializeField]
+    private string[] videosUrls;
     
     private void Awake()
     {
         videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer.prepareCompleted += PrepareCompleteHandler;
+        // videoPlayer.targetTexture = rawImage.;
         // videoPlayer.url = System.IO.Path.Combine (Application.streamingAssetsPath, filename);
         // videoPlayer.Prepare();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void PlayVideoByName(string name)
     {
-        string filename = "";
-        foreach (var video in namedVideo)
-        {
-            if(video.name == name)
-            {
-                filename = video.url;
-            }
-        }
-        if(filename == "")
-        {
-            Debug.LogWarning($"Video with name {name} not found in the video player list", this);
+        string url = System.IO.Path.Combine(Application.streamingAssetsPath, name);
+        if(videoPlayer.url == url)
             return;
-        }
-        string url = System.IO.Path.Combine(Application.streamingAssetsPath, filename);
         videoPlayer.url = url;
-        videoPlayer.Play();
+        videoPlayer.Prepare();
     }
     public void PlayVideoByIndex(int index)
     {
-        if(index < 0 || index > namedVideo.Length)
+        if(index < 0 || index > videosUrls.Length)
         {
             Debug.LogWarning($"Video player list doesn`t have index {index}");
             return;
         }
 
     
-        string url = System.IO.Path.Combine(Application.streamingAssetsPath, namedVideo[index].url);
+        string url = System.IO.Path.Combine(Application.streamingAssetsPath, videosUrls[index]);
+        if(videoPlayer.url == url)
+            return;
         videoPlayer.url = url;
+        videoPlayer.Prepare();
+    }
+
+    private void PrepareCompleteHandler(VideoPlayer source)
+    {
+        rawImage.texture = videoPlayer.texture;
         videoPlayer.Play();
     }
+
     void Start()
     {
         
@@ -59,12 +59,5 @@ public class MultipleVideoPlayer : MonoBehaviour
     void Update()
     {
         
-    }
-    [System.Serializable]
-    private struct NamedVideo
-    {
-        public string name;
-        public string url;
-
     }
 }
