@@ -25,6 +25,10 @@ public class TextTranslator : MonoBehaviour
     }
     void OnEnable()
     {
+        if(text == null)
+        {
+            text = GetComponent<TextMeshProUGUI>();
+        }
         SetLanguage(TranslatorManager.Instance.language);
         TranslatorManager.Instance.OnLanguageSet.AddListener(SetLanguage);
     }
