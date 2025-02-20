@@ -15,18 +15,7 @@ public class UITooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private TextMeshProUGUI tooltipText;
     private Transform tooltipTransform;
     private Coroutine waitCoroutine;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         if(tooltipTransform == null)
@@ -51,12 +40,21 @@ public class UITooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         
         waitCoroutine = StartCoroutine(Wait(hideDelay, Hide));
     }
+    private void OnDisable()
+    {
+        if(waitCoroutine != null)
+        {
+            StopCoroutine(waitCoroutine);
+        }
+        
+        Hide();
+    }
     private void CreateToooltip()
     {
         tooltipTransform = Instantiate(tooltipPrefab, FindFirstObjectByType<Canvas>().transform).transform;
         tooltipTransform.gameObject.SetActive(false);
         tooltipText = tooltipTransform.GetComponentInChildren<TextMeshProUGUI>(); 
-        
+
         TextTranslator tooltipTranslator = tooltipTransform.GetComponentInChildren<TextTranslator>(); 
         tooltipTranslator.RuText = tooltipMessageRU;
         tooltipTranslator.EngText = tooltipMessageEN;

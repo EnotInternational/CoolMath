@@ -7,7 +7,16 @@ public class PlayVideo1 : MonoBehaviour
 {
     public RawImage rawImage;
     public VideoPlayer videoPlayer;
-    private void Awake(){
+    public string filename;
+    private void Awake()
+    {
+        videoPlayer = GetComponent<VideoPlayer>();
+
+        if(filename == string.Empty)
+        {
+            return;
+        }
+        videoPlayer.url = System.IO.Path.Combine (Application.streamingAssetsPath,filename);
         videoPlayer.Prepare();
     }
     private void OnDisable()
