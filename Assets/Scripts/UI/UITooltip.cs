@@ -70,6 +70,8 @@ public class UITooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
     private void Hide()
     {
+        if(!tooltipTransform)
+            return;
         tooltipTransform.gameObject.SetActive(false);
     }
 
