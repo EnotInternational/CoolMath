@@ -1,9 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TextTranslator : MonoBehaviour
 {
-    [SerializeField]private TextMeshProUGUI text;
+    [SerializeField]private TextMeshProUGUI textTMP;
+    [SerializeField]private Text text;
     public string RuText;
     public string EngText;
     [SerializeField]private TranslatorManager.Language _language;
@@ -16,7 +18,10 @@ public class TextTranslator : MonoBehaviour
     }
     void Awake()
     {
-        text = GetComponent<TextMeshProUGUI>();
+        if(!TryGetComponent<TextMeshProUGUI>(out textTMP))
+        {
+            text =  GetComponent<Text>();
+        }
     }
     void Start()
     {
@@ -25,10 +30,6 @@ public class TextTranslator : MonoBehaviour
     }
     void OnEnable()
     {
-        if(text == null)
-        {
-            text = GetComponent<TextMeshProUGUI>();
-        }
         SetLanguage(TranslatorManager.Instance.language);
         TranslatorManager.Instance.OnLanguageSet.AddListener(SetLanguage);
     }
@@ -42,12 +43,24 @@ public class TextTranslator : MonoBehaviour
 
         if(language == TranslatorManager.Language.RU)
         {
-            text.text = RuText;
+            SetText(RuText);
         }
         else
         {
-            text.text = EngText;
+            SetText(EngText);
         }
+    }
+    private void SetText(string message)
+    {
+        if(textTMP)
+        {
+            textTMP.text = message;
+        }
+        else
+        {
+            text.text = message;
+        }
+
     }
     
 }
