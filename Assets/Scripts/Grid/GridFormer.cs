@@ -139,6 +139,8 @@ public class GridFormer : MonoBehaviour
         CellVertex vertex = visualizer.vertex;
         if(_allowDiagonals)
         {
+            if(vertex.cellState == CellVertex.CellState.Blocked)
+                return;
             if(vertex.HasDiagonals)
                 return;
             ConnectVertex(vertex, position);

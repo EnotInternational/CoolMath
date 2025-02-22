@@ -41,6 +41,17 @@ public abstract class Vertex
         }
         return vertices;
     }
+    public Vertex[] GetNeighbours(out Link[] links)
+    {
+        Vertex[] vertices = new Vertex[_links.Count];
+        links = new Link[_links.Count];
+        for(int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = _links[i].GetOther(this);
+            links[i] = _links[i];
+        }
+        return vertices;
+    }
     public virtual (Link, Vertex, float)[] GetNeighboursWithWeights()
     {
         (Link, Vertex, float)[] vertices = new (Link, Vertex, float)[_links.Count];
@@ -50,7 +61,11 @@ public abstract class Vertex
         }
         return vertices;
     }
-    
+    public virtual float GetWeightWith(Vertex other, out Link link)
+    {
+        link = GetLinkWith(other);
+        return link.weight;
+    }
     public void UpdateAllLinks()
     {
         foreach (Link link in _links)

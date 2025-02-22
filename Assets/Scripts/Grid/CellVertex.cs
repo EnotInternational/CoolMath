@@ -30,6 +30,11 @@ public class CellVertex : Vertex
         }
         return vertices;
     }
+    public override float GetWeightWith(Vertex other, out Link link)
+    {
+        link = GetLinkWith(other);
+        return ((CellVertex)other).weight * link.weight;
+    }
     public enum CellState{Start, Goal, Common, Weighted, Blocked}
 
     public override void SetCustomStatesToDefault()

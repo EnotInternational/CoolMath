@@ -42,7 +42,9 @@ public class AlgorithmManager : MonoBehaviour
         algorithms = new SearchAlgorithm[]
         {
             new BFS(this),
-            new Dijkstra(this)
+            new Dijkstra(this),
+            new Greedy(this),
+            new AStar(this)
         };
         ChangeAlgorithm<BFS>();
     }
@@ -120,11 +122,11 @@ public class AlgorithmManager : MonoBehaviour
     }
     public void SetGreedy()
     {
-        // ChangeAlgorithm<Dijkstra>();
+        ChangeAlgorithm<Greedy>();
     }
     public void SetAStar()
     {
-        // ChangeAlgorithm<Dijkstra>();
+        ChangeAlgorithm<AStar>();
     }
     [EditorAttributes.Button]
     public void StartBFS()
