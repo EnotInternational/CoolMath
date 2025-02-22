@@ -9,7 +9,7 @@ public class Link
     [HideInInspector]public UnityEvent OnUnlink = new();
     [HideInInspector]public UnityEvent OnChanged = new();
     [HideInInspector]public UnityEvent<State> OnStateChanged = new();
-    private State _state;
+    [SerializeField]private State _state;
     public State state 
     { 
         get => _state; 

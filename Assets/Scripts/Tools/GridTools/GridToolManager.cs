@@ -65,6 +65,16 @@ public class GridToolManager : ToolManager
         toolMachine.SetTool(null);
     }
     #endregion
+    #region Public methods
+    public void SetWeight(float weight)
+    {
+        settingWeight = Mathf.RoundToInt(weight);
+    }
+    public void SetWeight(string weight)
+    {
+        settingWeight = int.Parse(weight);
+    }
+    #endregion
     #region Buttons
     [Button]
     public void SetCleanTool()

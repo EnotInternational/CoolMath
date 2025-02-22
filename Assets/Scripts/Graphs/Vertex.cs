@@ -77,14 +77,12 @@ public abstract class Vertex
     }
     public void UnlinkAll()
     {
-        if(_links.Count == 0)
+        int count = _links.Count;
+        if(count == 0)
             return;
-        for(int i = 1; i<_links.Count; i++)
+        for(int i = 1; i<=count; i++)
         {
-            // Debug.Log("i" +  i);
-            // Debug.Log("count" + _links.Count);
-
-            UnLink(_links[_links.Count-i]);
+            UnLink(_links[count-i]);
         }
         _links.Clear();
     }

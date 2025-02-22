@@ -10,6 +10,19 @@ public class GridFormer : MonoBehaviour
     [SerializeField]private Transform _root;
     [SerializeField]private AnchorRect _anchorRect;
     [SerializeField]private LayerMask _mask;    
+    public bool AllowDiagonals
+    {
+        get =>_allowDiagonals;
+        set
+        {
+            if(_allowDiagonals == value)
+                return;
+            _allowDiagonals = value;
+            ChangeAllDiagonals();
+        }
+    }
+    [SerializeField, EditorAttributes.OnValueChanged(nameof(ChangeAllDiagonals))]
+    private bool _allowDiagonals = true;
     private Vector2Int _gridSize = Vector2Int.zero;
     private List<List<CellVertexVisualizer>> _vertices= new List<List<CellVertexVisualizer>>();
     private void Start()
@@ -111,6 +124,51 @@ public class GridFormer : MonoBehaviour
         }
         
     }
+    private void ChangeAllDiagonals()
+    {
+        for(int y = 0; y < _vertices.Count; y++)
+        {
+            for(int x = 0; x < _vertices[y].Count; x++)
+            {
+                ChangeDiagonal(_vertices[y][x], new Vector2Int(x, y));
+            }
+        }
+    }
+    private void ChangeDiagonal(CellVertexVisualizer visualizer, Vector2Int position)
+    {
+        CellVertex vertex = visualizer.vertex;
+        if(_allowDiagonals)
+        {
+            if(vertex.HasDiagonals)
+                return;
+            ConnectVertex(vertex, position);
+            vertex.HasDiagonals = true;
+        }
+        else
+        {
+            if(!vertex.HasDiagonals)
+                return;
+            
+            CellVertexVisualizer otherVisualiser;
+            if(TryGetVertex(position + new Vector2Int(1, 1), out otherVisualiser))
+            {
+                Vertex.UnLink(vertex, otherVisualiser.vertex);
+            }
+            if(TryGetVertex(position + new Vector2Int(1, -1), out otherVisualiser))
+            {
+                Vertex.UnLink(vertex, otherVisualiser.vertex);
+            }
+            if(TryGetVertex(position + new Vector2Int(-1, -1), out otherVisualiser))
+            {
+                Vertex.UnLink(vertex, otherVisualiser.vertex);
+            }
+            if(TryGetVertex(position + new Vector2Int(-1, 1), out otherVisualiser))
+            {
+                Vertex.UnLink(vertex, otherVisualiser.vertex);
+            }
+            vertex.HasDiagonals = false;
+        }   
+    }
     private CellVertexVisualizer SpawnVertex(Vector2Int position)
     {
         GameObject vertexGO = Instantiate(_prefab, _root);
@@ -127,6 +185,10 @@ public class GridFormer : MonoBehaviour
         {
             for(int x = -1; x < 2; x++)
             {
+                if(!_allowDiagonals && x != 0 && y != 0)
+                {
+                    continue;
+                }
                 if(!TryGetVertex(vertexPosition + new Vector2Int(x, y), out CellVertexVisualizer currentVertex))
                     continue;
                 if(vertex.HasLinkWith(currentVertex.vertex))

@@ -163,13 +163,14 @@ public class AlgorithmManager : MonoBehaviour
     {
         if(inProcess)
         {
-            Debug.LogWarning($"Can`t start search because other algorithm is in process");
+            // Debug.LogWarning($"Can`t start search because other algorithm is in process");
             return false;
         }
 
         if(startVertex == null || goalVertex == null)
         {
-            Debug.LogWarning($"Can`t start search because start or goal vertexes are not assigned");
+            // Debug.LogWarning($"Can`t start search because start or goal vertexes are not assigned");
+            UILogger.LogWarning("Требуются точки старта и цели","Start and goal points are required");
             return false;
         }
         if(currentAlgorithm == null)
@@ -226,6 +227,7 @@ public class AlgorithmManager : MonoBehaviour
         currentAlgorithm.OnComplete.RemoveListener(AlgorithmCompleteHandler);
         currentAlgorithm.OnFail.RemoveListener(AlgorithmFailHandler);
         // Debug.Log("Fail!");
+        UILogger.Log("Путь не найден","Algorithm failed: path not found", Color.yellow);
     }
     private void AlgorithmCompleteHandler(List<Vertex> path)
     {
@@ -239,6 +241,7 @@ public class AlgorithmManager : MonoBehaviour
             vertex.processState = Vertex.ProcessState.Path;
         }
         // Debug.Log("Complete!");
+        UILogger.Log("Алгоритм успешно завершён","Algorithm successfully completed", Color.green);
     }
     private void AlgorithmStepHandler()
     {

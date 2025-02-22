@@ -31,7 +31,7 @@ public class LinkVisualizer : MonoBehaviour
 
         _lineRenderer.material = _linkColorSettings.standartMaterial;
         
-        _link.OnUnlink.AddListener(() => Destroy(gameObject));
+        _link.OnUnlink.AddListener(LinkDestroyedHandler);
         _link.OnChanged.AddListener(()=>SyncPosiitons());
         _link.OnWeightChanged.AddListener(SetWeightText);
         _link.OnStateChanged.AddListener(StateChangeHandler);
@@ -104,4 +104,10 @@ public class LinkVisualizer : MonoBehaviour
         if(_textTransform)
             Destroy(_textTransform.gameObject);
     }
+    private void LinkDestroyedHandler()
+    {
+        Debug.Log("Handle destroy link");
+        Destroy(gameObject);
+    }
+    
 }

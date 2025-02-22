@@ -17,6 +17,7 @@ public class CellVertex : Vertex
         }
     }
     private CellState _cellState = CellState.Common;
+    public bool HasDiagonals = true;
     public UnityEvent<CellState> OnCellStateChanged = new();
     public override (Link, Vertex, float)[] GetNeighboursWithWeights()
     {
