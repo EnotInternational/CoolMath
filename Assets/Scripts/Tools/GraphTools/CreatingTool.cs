@@ -72,6 +72,7 @@ public class CreatingTool: GraphTool
             Link(vertexA, vertexB);
 
             _toMove.GetComponent<Collider2D>().enabled = true;
+            
             _toMove = null;
 
             DropSelections();
@@ -136,6 +137,7 @@ public class CreatingTool: GraphTool
         var go = MonoBehaviour.Instantiate(_vertexPrefab, position, Quaternion.identity, manager.gameSpace);
         manager.graphVertices.Add(go.GetComponent<GraphVertexVisualizer>());
         go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
+        
         return go.GetComponent<GraphVertexVisualizer>();
     }
     private void Link(GraphVertexVisualizer vertexA, GraphVertexVisualizer vertexB)
@@ -143,10 +145,17 @@ public class CreatingTool: GraphTool
 
         GameObject linkGameObject = MonoBehaviour.Instantiate(_linkPrefab, manager.gameSpace);
         LinkVisualizer linkVisualizer = linkGameObject.GetComponent<LinkVisualizer>();
-
         Link link = Vertex.LinkTogether(vertexA.vertex, vertexB.vertex);
         Transform textLable = MonoBehaviour.Instantiate(_linkLablePrefab, _lablesRoot).transform;
         linkVisualizer.SetLink(link, textLable);
+        if(manager.AutoWeights)
+        {
+            link.AutoCalcWeight();
+        }
+        else
+        {
+            link.LockWeight = true;
+        }
         linkVisualizer.SyncPosiitons();
     }
 }

@@ -15,6 +15,12 @@ public class GraphToolManager : ToolManager
     private SetVertexType<GraphVertex> setGoalTool;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
+    [SerializeField, OnValueChanged(nameof(AssignAutoWeights))]
+    private bool _autoWeights = true;
+    public bool AutoWeights 
+    { 
+        get => _autoWeights;
+    }
     public List<GraphVertexVisualizer> graphVertices = new List<GraphVertexVisualizer>();
     public override void Disable()
     {
@@ -58,6 +64,22 @@ public class GraphToolManager : ToolManager
     {
         if(toolMachine.currentTool != null)
             toolMachine.currentTool.Point();
+    }
+    private void AssignAutoWeights()
+    {
+
+        // if(!_autoWeights)
+        //     return;
+        // // Debug.Log(graphVertices.Count);
+        // for(int i = 0; i < graphVertices.Count; i++)
+        // {
+        //     if(! graphVertices[i])
+        //         continue;
+        //     foreach(var link in graphVertices[i].vertex.Links)
+        //     {
+        //         link.weight = Mathf.RoundToInt(Vector2.Distance(link.VertexA.position, link.VertexB.position));
+        //     }
+        // }
     }
     #endregion
     #region Buttons

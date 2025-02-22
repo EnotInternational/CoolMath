@@ -16,6 +16,8 @@ public class ToolsMenu : MonoBehaviour
     void Start()
     {
        v = slider.anchorMax;
+    //    slider.anchorMax = new Vector2(0.06f, slider.anchorMax.y);
+        pressMenu = true;
     }
     public void Menu()
     {
@@ -39,14 +41,14 @@ public class ToolsMenu : MonoBehaviour
             }
         }    
     if(pressMenu==true)
+    {
+        v.x -= 0.01f;
+        slider.anchorMax = v;
+        if (slider.anchorMax.x <= 0)
         {
-            v.x -= 0.01f;
-            slider.anchorMax = v;
-            if (slider.anchorMax.x <= 0)
-            {
-                pressMenu = false;
-            }
-        }   
+            pressMenu = false;
+        }
+    }   
     
     
     

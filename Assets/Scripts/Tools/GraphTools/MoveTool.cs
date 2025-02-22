@@ -34,6 +34,13 @@ public class MoveTool : GraphTool
         {
             _toMove.position = InteractionsManager.instance.mousePosition;
             _toMove.GetComponent<IVertexVisualizer<GraphVertex>>().UpdatePosition();
+            if(manager.AutoWeights)
+            {
+                foreach(var link in _toMove.GetComponent<GraphVertexVisualizer>().vertex.Links)
+                {
+                    link.weight = Mathf.RoundToInt(Vector2.Distance(link.VertexA.position, link.VertexB.position));
+                }
+            }
         }
     }
     #endregion

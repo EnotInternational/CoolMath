@@ -14,6 +14,7 @@ public class LinkVisualizer : MonoBehaviour
     [SerializeField]private Link _link;
     private Transform _textTransform;
     private TMP_InputField _inputField;
+    private Toggle _lockToggle;
     [SerializeField]private LinkColorSettings _linkColorSettings;
     private void OnEnable()
     {
@@ -27,13 +28,17 @@ public class LinkVisualizer : MonoBehaviour
 
         _textTransform = textTransform;
         _inputField = _textTransform.GetComponent<TMP_InputField>();
+        _lockToggle = _textTransform.GetComponentInChildren<Toggle>();
+        
         _inputField.onValueChanged.AddListener(SetWeight);
+        _lockToggle.onValueChanged.AddListener(SetLocked);
 
         _lineRenderer.material = _linkColorSettings.standartMaterial;
         
         _link.OnUnlink.AddListener(LinkDestroyedHandler);
         _link.OnChanged.AddListener(()=>SyncPosiitons());
         _link.OnWeightChanged.AddListener(SetWeightText);
+        _link.OnLockWeightChanged.AddListener(LockedLinkHandler);
         _link.OnStateChanged.AddListener(StateChangeHandler);
     }
     private void StateChangeHandler(Link.State state)
@@ -51,6 +56,22 @@ public class LinkVisualizer : MonoBehaviour
                 break;
         }
     }
+    private void SetLocked(bool locked)
+    {
+        _link.SetLockWeightWithoutNotify(locked);
+        if(!locked)
+        {
+            _link.AutoCalcWeight();
+        }
+    }
+    private void LockedLinkHandler()
+    {
+        _lockToggle.isOn = _link.LockWeight;
+        if(!_link.LockWeight)
+        {
+            _link.AutoCalcWeight();
+        }
+    }
     private void SetWeightText(float number)
     {
         _inputField.text = number.ToString();
@@ -66,9 +87,9 @@ public class LinkVisualizer : MonoBehaviour
                 return;
             number = float.Parse(result);
         }
-        if(number > 10)
+        if(number > 40)
         {
-            number = 10;
+            number = 40;
             SetWeightText(number);
         }
         _link.weight = number;
@@ -106,7 +127,7 @@ public class LinkVisualizer : MonoBehaviour
     }
     private void LinkDestroyedHandler()
     {
-        Debug.Log("Handle destroy link");
+        // Debug.Log("Handle destroy link");
         Destroy(gameObject);
     }
     

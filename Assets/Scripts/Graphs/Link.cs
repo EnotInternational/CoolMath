@@ -6,7 +6,18 @@ using UnityEngine.Events;
 public class Link
 {
     [SerializeField]private float _weight = 1;
+    private bool _lockWeight = false;
+    public bool LockWeight 
+    { 
+        get => _lockWeight; 
+        set 
+        {
+            _lockWeight = value;
+            OnLockWeightChanged.Invoke();
+        }
+    }
     [HideInInspector]public UnityEvent OnUnlink = new();
+    [HideInInspector]public UnityEvent OnLockWeightChanged = new();
     [HideInInspector]public UnityEvent OnChanged = new();
     [HideInInspector]public UnityEvent<State> OnStateChanged = new();
     [SerializeField]private State _state;
@@ -27,14 +38,25 @@ public class Link
         }
         set 
         { 
+            if(_lockWeight)
+                return;
             _weight = value; 
             OnWeightChanged.Invoke(_weight);
         }
+    }
+    public void SetLockWeightWithoutNotify(bool lockWeight)
+    {
+        _lockWeight = lockWeight;
+    }
+    public void AutoCalcWeight()
+    {
+        weight = Mathf.RoundToInt(Vector2.Distance(VertexA.position, VertexB.position));
     }
     [SerializeField]private Vertex _vertexA;
     [SerializeField]private Vertex _vertexB;
     public Vertex VertexA{get => _vertexA;}
     public Vertex VertexB{get => _vertexB;}
+
     public UnityEvent<float> OnWeightChanged = new UnityEvent<float>();
 
     public Vertex GetOther(Vertex vertex)

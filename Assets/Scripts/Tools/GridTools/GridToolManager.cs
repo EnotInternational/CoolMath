@@ -14,6 +14,7 @@ public class GridToolManager : ToolManager
     private SetVertexType<CellVertex> setWeightTool;
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
+    
     public int settingWeight = 2;
     public bool block
     {
