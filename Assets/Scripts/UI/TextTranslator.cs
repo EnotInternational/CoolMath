@@ -18,10 +18,15 @@ public class TextTranslator : MonoBehaviour
     }
     void Awake()
     {
-        if(!TryGetComponent<TextMeshProUGUI>(out textTMP))
+        if(TryGetComponent<TextMeshProUGUI>(out textTMP))
         {
-            text =  GetComponent<Text>();
+            return;
         }
+        if(TryGetComponent<Text>(out text))
+        {
+            return;
+        }
+        enabled = false;
     }
     void Start()
     {

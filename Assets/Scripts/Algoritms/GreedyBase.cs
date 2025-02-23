@@ -42,6 +42,11 @@ public abstract class GreedyBase : SearchAlgorithm
         if(queueVertexes.Count == 0)
         {
             Fail();
+            foreach(var pathVertex in pathVertexes)
+            {
+                pathVertex.processState = Vertex.ProcessState.Seen;
+            }
+            return;
         }
         
         Link[] otherLinks;
@@ -75,9 +80,9 @@ public abstract class GreedyBase : SearchAlgorithm
                         continue;
                     }
 
-                    queueVertexes.Enqueue(weightedVertex); 
+                    // queueVertexes.Enqueue(weightedVertex); 
                     // seen.Add(next, nextWeighted); 
-                    next.processState = Vertex.ProcessState.Processing;
+                    // next.processState = Vertex.ProcessState.Processing;
                     continue;
                 }
             }
