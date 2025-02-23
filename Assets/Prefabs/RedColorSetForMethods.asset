@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50e293424d6d614e9f87aaf680e8cfc, type: 3}
   m_Name: RedColorSetForMethods
   m_EditorClassIdentifier: 
-  enabledColor: {r: 1, g: 0.3160377, b: 0.3160377, a: 1}
+  enabledColor: {r: 0.9245283, g: 0.2921858, b: 0.2921858, a: 1}
   pointedColor: {r: 0.6320754, g: 0.18783373, b: 0.18783373, a: 1}
