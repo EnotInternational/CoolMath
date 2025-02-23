@@ -65,9 +65,9 @@ public class GraphToolManager : ToolManager
         if(toolMachine.currentTool != null)
             toolMachine.currentTool.Point();
     }
-    private void AssignAutoWeights()
+    public void AssignAutoWeights(bool assign)
     {
-
+        _autoWeights = assign;
         // if(!_autoWeights)
         //     return;
         // // Debug.Log(graphVertices.Count);
