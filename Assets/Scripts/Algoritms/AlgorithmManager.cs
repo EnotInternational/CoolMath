@@ -208,8 +208,13 @@ public class AlgorithmManager : MonoBehaviour
     }
     public void ChangeAlgorithm<T>() where T : SearchAlgorithm
     {
+        if(_inProcess)
+        {
+            inProcess = false;
+        }
         if(currentAlgorithm != null)
         {
+            currentAlgorithm.Stop();
             currentAlgorithm.Clear();
         }
         foreach (var algorithm in algorithms)

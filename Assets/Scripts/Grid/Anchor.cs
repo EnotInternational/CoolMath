@@ -64,7 +64,7 @@ public class Anchor : MonoBehaviour, IClickable
     {
         if(_dragging)
         {
-            Vector2Int mousePos = Vector2Int.RoundToInt(InteractionsManager.instance.mousePosition);
+            Vector2Int mousePos = Vector2Int.RoundToInt(InteractionsManager.instance.marginedMousePosition);
             int targetPos = _intPosition;
             switch(_constraint)
             {

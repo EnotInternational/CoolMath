@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class NumberOnlyInputFieldValidator : MonoBehaviour
 {
     [SerializeField]private float _maxNumber;
+    [SerializeField]private float _minNumber = 1;
     private TMP_InputField _inputField;
     public UnityEvent<float> OnValueChanged = new UnityEvent<float>();
     private void Awake()
@@ -38,6 +39,11 @@ public class NumberOnlyInputFieldValidator : MonoBehaviour
         if(number > _maxNumber)
         {
             number = _maxNumber;
+            _inputField.text = number.ToString();
+        }
+        if(number < _minNumber)
+        {
+            number = _minNumber;
             _inputField.text = number.ToString();
         }
         OnValueChanged.Invoke(number);

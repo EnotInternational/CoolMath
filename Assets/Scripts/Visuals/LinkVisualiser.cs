@@ -92,7 +92,7 @@ public class LinkVisualizer : MonoBehaviour
             number = 40;
             SetWeightText(number);
         }
-        _link.weight = number;
+        _link.SetWeightForceWithoutNotify(number);
     }
     public void SyncPosiitons()
     {

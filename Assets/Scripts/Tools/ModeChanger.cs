@@ -24,6 +24,13 @@ public class ModeChanger : MonoBehaviour
         currentMode = mode;
         currentMode.Enable(_algorithmManager);
     }
+    public void Reset()
+    {
+        currentMode.toolManager.ResetField();
+        _algorithmManager.ClearResults();
+        _algorithmManager.startVertex = null;
+        _algorithmManager.goalVertex = null;
+    }
     [Button]
     public void SetGraphs()
     {

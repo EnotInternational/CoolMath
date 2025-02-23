@@ -107,7 +107,7 @@ public class GridToolManager : ToolManager
         SetTool(setGoalTool);
     }
     [Button]
-    public void CleanAllCells()
+    public override void ResetField()
     {
         _gridFormer.CleanAllVerticies();
     }

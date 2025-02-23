@@ -40,13 +40,7 @@ public class GraphToolManager : ToolManager
     }
     private void Start()
     {
-        GraphVertexVisualizer vertex1 = creatingTool.CreateSeparateVertex(new Vector3(-3, 0));
-        vertex1.vertex.graphState = GraphVertex.GraphState.Start;
-        alogthmManager.startVertex = vertex1.vertex;
-
-        GraphVertexVisualizer vertex2 = creatingTool.CreateSeparateVertex(new Vector3(3, 0));
-        vertex2.vertex.graphState = GraphVertex.GraphState.Goal;
-        alogthmManager.goalVertex = vertex2.vertex;
+        CreateBasicCells();
 
     }
     #region OnEvents
@@ -109,7 +103,7 @@ public class GraphToolManager : ToolManager
         SetTool(setGoalTool);
     }
     [Button]
-    public void DestroyAll()
+    public override void ResetField()
     {
         if(alogthmManager.inProcess)
             return;
@@ -120,9 +114,20 @@ public class GraphToolManager : ToolManager
             Destroy(graphVertices[i].gameObject);
             graphVertices.RemoveAt(i);
         }
+        CreateBasicCells();
     }
     #endregion
     #region PrivateMethods
+    private void CreateBasicCells()
+    {
+        GraphVertexVisualizer vertex1 = creatingTool.CreateSeparateVertex(new Vector3(-3, 0));
+        vertex1.vertex.graphState = GraphVertex.GraphState.Start;
+        alogthmManager.startVertex = vertex1.vertex;
+
+        GraphVertexVisualizer vertex2 = creatingTool.CreateSeparateVertex(new Vector3(3, 0));
+        vertex2.vertex.graphState = GraphVertex.GraphState.Goal;
+        alogthmManager.goalVertex = vertex2.vertex;
+    }
     private void SetTool(ITool tool)
     {
         if(alogthmManager.inProcess)

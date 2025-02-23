@@ -17,6 +17,15 @@ public class DeleteTool : GraphTool
         {
             return;
         }
+        if(hit.transform.TryGetComponent<GraphVertexVisualizer>(out var vertex) )
+        {
+            if(manager.graphVertices.Count == 1)
+            {
+                UILogger.LogWarning("Нельзя удалить последнюю вершину графа","Can`t destroy last graph vertex");
+                return;
+            }
+            manager.graphVertices.Remove(vertex);
+        }
         
         MonoBehaviour.Destroy(hit.gameObject);
     }

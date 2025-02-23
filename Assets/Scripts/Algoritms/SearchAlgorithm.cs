@@ -40,6 +40,8 @@ public abstract class SearchAlgorithm
     }
     public void Stop()
     {
+        if(searchCoroutine != null)
+            _manager.StopCoroutine(searchCoroutine);
         _inProcess = false;
     }
     public void Complete(List<Vertex> path)
@@ -84,6 +86,8 @@ public abstract class SearchAlgorithm
                 yield return new WaitWhile(()=>{return Paused;});
             }
             
+            if(!InProcess)
+                break;
             stopwatch.Start();
             Iterate();
             stopwatch.Stop();

@@ -14,7 +14,7 @@ public class MoveTool : GraphTool
     }
     private void ClickDownHandler()
     {
-        Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.mousePosition, _layerMask);
+        Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.marginedMousePosition, _layerMask);
         if(!hit)
             return;
         _toMove = hit.transform;
@@ -32,7 +32,7 @@ public class MoveTool : GraphTool
     {
         if(_toMove)
         {
-            _toMove.position = InteractionsManager.instance.mousePosition;
+            _toMove.position = InteractionsManager.instance.marginedMousePosition;
             _toMove.GetComponent<IVertexVisualizer<GraphVertex>>().UpdatePosition();
             if(manager.AutoWeights)
             {

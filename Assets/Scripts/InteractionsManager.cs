@@ -12,7 +12,9 @@ public class InteractionsManager : MonoBehaviour
     [SerializeField]private LayerMask _uiMask;
     [SerializeField]private InputSystemUIInputModule inputModule;
     public Vector2 mousePosition{get => _mousePosition;}
+    public Vector2 marginedMousePosition{get => _marginedMousePosition;}
     private Vector2 _mousePosition;
+    private Vector2 _marginedMousePosition;
     
     private Vector2 _mousePxPosition;
     private Vector2 _lastCheckMousePosition;
@@ -58,7 +60,7 @@ public class InteractionsManager : MonoBehaviour
         // Ray ray = Camera.main.ScreenPointToRay(_mousePxPosition);
         // Debug.Log(ray);
         // Debug.DrawRay(ray.origin, ray.direction);
-        if(Physics2D.OverlapPoint(mousePosition) || Physics.Raycast(Camera.main.ScreenPointToRay(_mousePxPosition), 10f, _uiMask))
+        if(Physics2D.OverlapPoint(_marginedMousePosition) || Physics.Raycast(Camera.main.ScreenPointToRay(_mousePxPosition), 10f, _uiMask))
         {
             // Physics.Raycast(Camera.main.ScreenPointToRay(_mousePxPosition), out var hitInfo, 10f, _uiMask);
             
@@ -71,11 +73,12 @@ public class InteractionsManager : MonoBehaviour
     {
         _mousePxPosition = value.Get<Vector2>();
         // Debug.Log(_mousePxPosition);
-        _mousePxPosition =new Vector2
+        _marginedMousePosition =new Vector2
         (
             Mathf.Clamp(_mousePxPosition.x, _mousePositionMargin, Camera.main.pixelWidth-_mousePositionMargin), 
             Mathf.Clamp(_mousePxPosition.y, _mousePositionMargin, Camera.main.pixelHeight-_mousePositionMargin)
         );
+        _marginedMousePosition = Camera.main.ScreenToWorldPoint(_marginedMousePosition);
         Vector2 newPosition = Camera.main.ScreenToWorldPoint(_mousePxPosition);
 
         if((newPosition - _lastCheckMousePosition).magnitude >= _checkSkip)
@@ -92,7 +95,7 @@ public class InteractionsManager : MonoBehaviour
         {
             return;
         }
-        Collider2D hit = Physics2D.OverlapPoint(mousePosition);
+        Collider2D hit = Physics2D.OverlapPoint(_marginedMousePosition);
         if(hit == null)
         {
             _pointedObject = null;
@@ -124,7 +127,7 @@ public class InteractionsManager : MonoBehaviour
         {
             OnClickDown.Invoke();
             _mouseHold = true;
-            Collider2D hit = Physics2D.OverlapPoint(mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(_mousePosition);
             if(hit == null)
             {
                 OnVoidClicked.Invoke();

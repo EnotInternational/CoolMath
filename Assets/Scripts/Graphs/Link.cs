@@ -48,6 +48,10 @@ public class Link
     {
         _lockWeight = lockWeight;
     }
+    public void SetWeightForceWithoutNotify(float weight)
+    {
+        _weight = weight;
+    }
     public void AutoCalcWeight()
     {
         weight = Mathf.RoundToInt(Vector2.Distance(VertexA.position, VertexB.position));

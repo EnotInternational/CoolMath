@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 public class Greedy : SearchAlgorithm
 {
-    [SerializeField] private List<Vertex> processedInPreviousStep = new List<Vertex>();
     [SerializeField] private List<Vertex> seen = new List<Vertex>();
     [SerializeField] private List<Vertex> pathVertexes=new List<Vertex>();
     [SerializeField] private PriorityQueues.MappedBinaryPriorityQueue<WeightedVertex> queueVertexes = 
@@ -22,7 +21,6 @@ public class Greedy : SearchAlgorithm
             }
         }
         seen.Clear();
-        processedInPreviousStep.Clear();
         pathVertexes.Clear();
         queueVertexes.Clear();
     }
@@ -37,14 +35,15 @@ public class Greedy : SearchAlgorithm
         {
             Fail();
         }
-        foreach(Vertex v in processedInPreviousStep)
-        {
-            v.processState = Vertex.ProcessState.Seen;
-        }
-        processedInPreviousStep.Clear();
+        // foreach(Vertex v in processedInPreviousStep)
+        // {
+        //     v.processState = Vertex.ProcessState.Seen;
+        // }
         Link[] otherLinks;
 
         WeightedVertex current = queueVertexes.Dequeue();
+        current.vertex.processState = Vertex.ProcessState.Seen;
+
         Vertex[] neighpours = current.vertex.GetNeighbours(out otherLinks);
         for (int j = 0; j < neighpours.Length; j++)
         {
@@ -60,6 +59,7 @@ public class Greedy : SearchAlgorithm
             WeightedVertex nextWeighted = new WeightedVertex(next, current, next.GetLinkWith(current.vertex), weight);
             queueVertexes.Enqueue(nextWeighted); 
             seen.Add(next); 
+            next.processState = Vertex.ProcessState.Processing;
             
             if(CheckVertex(nextWeighted,current)) return;
         } 
@@ -69,8 +69,7 @@ public class Greedy : SearchAlgorithm
  
     [SerializeField] private bool CheckVertex(WeightedVertex current, WeightedVertex privous)
     {
-        processedInPreviousStep.Add(current.vertex);
-        current.vertex.processState = Vertex.ProcessState.Processing;
+        // current.vertex.processState = Vertex.ProcessState.Processing;
 
         if (current.vertex==goalVertex) //последний vertex
         {
@@ -86,9 +85,9 @@ public class Greedy : SearchAlgorithm
         if(vertex.vertex==startVertex)
         {
             Complete(pathVertexes);
-            foreach(Vertex processed in processedInPreviousStep)
+            foreach(WeightedVertex processed in queueVertexes)
             {
-                processed.processState = Vertex.ProcessState.Seen;
+                processed.vertex.processState = Vertex.ProcessState.Seen;
             }
         }
         else

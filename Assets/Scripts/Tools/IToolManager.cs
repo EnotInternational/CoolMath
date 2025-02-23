@@ -14,6 +14,7 @@ public abstract class ToolManager : MonoBehaviour
     {
         alogthmManager.OnProcessChanged.RemoveListener(ProcessChangedHandler);
     }
+    public abstract void ResetField();
     private void ProcessChangedHandler(bool processing)
     {
         if(processing)
