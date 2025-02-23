@@ -26,10 +26,12 @@ public class ModeChanger : MonoBehaviour
     }
     public void Reset()
     {
-        currentMode.toolManager.ResetField();
         _algorithmManager.ClearResults();
+        _algorithmManager.startVertex.SetCustomStatesToDefault();
         _algorithmManager.startVertex = null;
+        _algorithmManager.goalVertex.SetCustomStatesToDefault();
         _algorithmManager.goalVertex = null;
+        currentMode.toolManager.ResetField();
     }
     [Button]
     public void SetGraphs()
