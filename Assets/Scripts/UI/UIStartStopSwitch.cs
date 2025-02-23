@@ -22,6 +22,11 @@ public class UIStartStopSwitch : MonoBehaviour
             stopButton.gameObject.SetActive(true);
             playButton.gameObject.SetActive(false);
         }
+        else
+        {
+            stopButton.gameObject.SetActive(false);
+            playButton.gameObject.SetActive(true);
+        }
     }
     private void StopButtonClickHandler()
     {

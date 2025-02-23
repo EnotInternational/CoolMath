@@ -132,5 +132,5 @@ public abstract class Vertex
         vertexB.AddLink(link);
         return link;
     }
-    public enum ProcessState{NotSeen, Seen, Processing, Path}
+    public enum ProcessState{NotSeen, Seen, Processing, Path, Current}
 }

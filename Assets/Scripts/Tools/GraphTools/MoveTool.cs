@@ -14,6 +14,11 @@ public class MoveTool : GraphTool
     }
     private void ClickDownHandler()
     {
+        if(!manager.AlgorithmManager.clean)
+        {
+            manager.AlgorithmManager.ClearResults();
+        }
+        
         Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.marginedMousePosition, _layerMask);
         if(!hit)
             return;

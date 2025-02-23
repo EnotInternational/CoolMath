@@ -21,6 +21,11 @@ public class AlgorithmManager : MonoBehaviour
     }
     [SerializeField]private float _iterationsPerSecond = 0;
     [SerializeField]private bool _paused = false;
+    public bool clean
+    {
+        get => _clean; 
+    }
+    [SerializeField]private bool _clean = false;
     [SerializeField]private Slider slider;
     [SerializeField]private TMP_InputField inputField;
     private List<Vertex> processedInStepVertexes;
@@ -153,6 +158,8 @@ public class AlgorithmManager : MonoBehaviour
         
         ClearResults();
 
+        _clean = false;
+
         inProcess = true;
         currentAlgorithm.StartSearch(goalVertex, startVertex);
 
@@ -196,6 +203,10 @@ public class AlgorithmManager : MonoBehaviour
     [EditorAttributes.Button]
     public void ClearResults()
     {
+        if(_paused)
+        {
+            Unpause();
+        }
         if(inProcess)
         {
             inProcess = false;
@@ -204,6 +215,7 @@ public class AlgorithmManager : MonoBehaviour
         if(currentAlgorithm != null)
         {
             currentAlgorithm.Clear();
+            _clean = true;
         }
     }
     public void ChangeAlgorithm<T>() where T : SearchAlgorithm
@@ -212,11 +224,8 @@ public class AlgorithmManager : MonoBehaviour
         {
             inProcess = false;
         }
-        if(currentAlgorithm != null)
-        {
-            currentAlgorithm.Stop();
-            currentAlgorithm.Clear();
-        }
+        ClearResults();
+        
         foreach (var algorithm in algorithms)
         {
             if(algorithm.GetType() == typeof(T))

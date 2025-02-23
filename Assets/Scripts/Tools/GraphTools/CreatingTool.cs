@@ -30,6 +30,11 @@ public class CreatingTool: GraphTool
     }
     private void ObjectClickedhandler(Transform clicked)
     {
+        if(!manager.AlgorithmManager.clean)
+        {
+            manager.AlgorithmManager.ClearResults();
+        }
+
         if(InteractionsManager.instance.IsOverUI())
         {
             return;

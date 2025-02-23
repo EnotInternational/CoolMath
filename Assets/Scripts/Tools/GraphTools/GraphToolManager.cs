@@ -13,6 +13,10 @@ public class GraphToolManager : ToolManager
     // [SerializeField]private Transform 
     private SetVertexType<GraphVertex> setStartTool;
     private SetVertexType<GraphVertex> setGoalTool;
+    public AlgorithmManager AlgorithmManager
+    {
+        get => alogthmManager;
+    }
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
     [SerializeField, OnValueChanged(nameof(AssignAutoWeights))]
@@ -139,6 +143,8 @@ public class GraphToolManager : ToolManager
     {
         return new SetVertexType<GraphVertex>((vertexVisualizer) => 
         {
+            TryClearAlgoritmResults();
+
             if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Start)
                 return;
             if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Goal)
@@ -160,6 +166,7 @@ public class GraphToolManager : ToolManager
     {
         return new SetVertexType<GraphVertex>((vertexVisualizer) => 
         {
+            TryClearAlgoritmResults();
             if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Goal)
                 return;
             if(vertexVisualizer.vertex.graphState == GraphVertex.GraphState.Start)
@@ -176,6 +183,13 @@ public class GraphToolManager : ToolManager
             alogthmManager.goalVertex = vertexVisualizer.vertex;
 
         });
+    }
+    private void TryClearAlgoritmResults()
+    {
+        if(!alogthmManager.clean)
+        {
+            alogthmManager.ClearResults();
+        }
     }
     #endregion
 }

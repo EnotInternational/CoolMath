@@ -12,6 +12,11 @@ public class DeleteTool : GraphTool
     }
     public void Delete()
     {
+        if(!manager.AlgorithmManager.clean)
+        {
+            manager.AlgorithmManager.ClearResults();
+        }
+        
         Collider2D hit = Physics2D.OverlapPoint(InteractionsManager.instance.mousePosition);
         if(hit == null)
         {

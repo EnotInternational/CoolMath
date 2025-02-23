@@ -207,6 +207,10 @@ public class GridToolManager : ToolManager
             alogthmManager.goalVertex = null;
         }
         vertex.SetCustomStatesToDefault();
+        if(!alogthmManager.clean)
+        {
+            alogthmManager.ClearResults();
+        }
     }
 
     #endregion

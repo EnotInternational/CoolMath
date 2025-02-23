@@ -7,6 +7,7 @@ public class VertexColorSettings : ScriptableObject
     [SerializeField]private Color unseenColor;
     [SerializeField]private Color seenColor;
     [SerializeField]private Color pathColor;
+    [SerializeField]private Color currentColor;
     [SerializeField]private Color processedColor;
 
     [Header("Common state colors")]
@@ -30,6 +31,8 @@ public class VertexColorSettings : ScriptableObject
                 return unseenColor; 
             case Vertex.ProcessState.Path:
                 return pathColor; 
+            case Vertex.ProcessState.Current:
+                return currentColor; 
             default:
                 return Color.black;
         }

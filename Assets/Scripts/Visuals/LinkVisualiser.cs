@@ -21,6 +21,13 @@ public class LinkVisualizer : MonoBehaviour
         _lineRenderer = GetComponent<LineRenderer>();
         _collider = GetComponent<PolygonCollider2D>();
         _transform = transform;
+        if(_inputField)
+            _inputField.gameObject.SetActive(true);
+    }
+    private void OnDisable()
+    {
+        if(_inputField)
+            _inputField.gameObject.SetActive(false);
     }
     public void SetLink(Link link, Transform textTransform)
     {

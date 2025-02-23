@@ -39,11 +39,17 @@ public class GridFormer : MonoBehaviour
     }
     public void CleanAllVerticies()
     {
-        foreach (List<CellVertexVisualizer> row in _vertices)
+        for(int y = 0; y < _vertices.Count; y++)
         {
-            foreach(CellVertexVisualizer visualizer in row)
+            for(int x = 0; x < _vertices[y].Count; x++)
             {
-                visualizer.vertex.cellState = CellVertex.CellState.Common;
+                if(_vertices[y][x].vertex.cellState == CellVertex.CellState.Blocked)
+                {
+                    _vertices[y][x].vertex.cellState = CellVertex.CellState.Common;
+                    ConnectVertex(_vertices[y][x].vertex, new Vector2Int(x, y));
+                }
+                _vertices[y][x].vertex.cellState = CellVertex.CellState.Common;
+                    
             }
         }
     }
