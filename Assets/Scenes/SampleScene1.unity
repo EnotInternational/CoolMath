@@ -5314,11 +5314,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609274745}
   m_CullTransparentMesh: 1
---- !u!1 &609623521 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4699763597543096703, guid: 553ef4545eff1a44ba89962025c3e339, type: 3}
-  m_PrefabInstance: {fileID: 136028190}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &633528182 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4917091961622839886, guid: 6a235c939a1b1924886bb830da4bea0d, type: 3}
@@ -5748,7 +5743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &661488552
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6662,10 +6657,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1377972121}
   m_HandleRect: {fileID: 1691975039}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 100
+  m_MinValue: 1
+  m_MaxValue: 200
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6967,10 +6962,10 @@ RectTransform:
   m_GameObject: {fileID: 868359755}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.000011, y: 1.000011, z: 1.000011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1374625146}
+  m_Father: {fileID: 1244510211}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7525,7 +7520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5821117898883065605, guid: 2b33d8a738da94f49a288d23ecff9da9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -9.7238
+      value: -9.723801
       objectReference: {fileID: 0}
     - target: {fileID: 5929596021821992399, guid: 2b33d8a738da94f49a288d23ecff9da9, type: 3}
       propertyPath: m_IsActive
@@ -7573,7 +7568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6490250427854326162, guid: 2b33d8a738da94f49a288d23ecff9da9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7105105079191130120, guid: 2b33d8a738da94f49a288d23ecff9da9, type: 3}
       propertyPath: m_IsActive
@@ -10036,6 +10031,7 @@ RectTransform:
   - {fileID: 1972072991}
   - {fileID: 1374625146}
   - {fileID: 661488553}
+  - {fileID: 868359756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10059,7 +10055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1268067479
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10600,18 +10596,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 609623521}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1610060578}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -10914,6 +10898,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.5660378
       objectReference: {fileID: 0}
+    - target: {fileID: 4623586442840101643, guid: daca2702f4142dd408201ae655ba8624, type: 3}
+      propertyPath: offset.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623586442840101643, guid: daca2702f4142dd408201ae655ba8624, type: 3}
+      propertyPath: offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5696698249427933696, guid: daca2702f4142dd408201ae655ba8624, type: 3}
       propertyPath: m_SizeDelta.x
       value: 3.525
@@ -11081,7 +11073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &1374625145
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11104,7 +11096,6 @@ RectTransform:
   m_Children:
   - {fileID: 290936086}
   - {fileID: 34653941}
-  - {fileID: 868359756}
   - {fileID: 316049328}
   - {fileID: 1283233932}
   - {fileID: 367968186}

@@ -19,7 +19,7 @@ public class GraphToolManager : ToolManager
     }
     [SerializeField]public Transform gameSpace{get => _gameSpace;}
     [SerializeField]private Transform _gameSpace;
-    [SerializeField, OnValueChanged(nameof(AssignAutoWeights))]
+    [SerializeField]
     private bool _autoWeights = true;
     public bool AutoWeights 
     { 

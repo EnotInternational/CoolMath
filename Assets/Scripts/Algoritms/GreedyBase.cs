@@ -92,19 +92,20 @@ public abstract class GreedyBase : SearchAlgorithm
             next.processState = Vertex.ProcessState.Processing;
             
             
-            if(CheckVertex(nextWeighted,currentVertex)) return;
         } 
+        if(CheckVertex(currentVertex)) return;
         ShowPath(currentVertex);
         currentVertex.vertex.processState = Vertex.ProcessState.Current;
         OnStepComplete.Invoke();
     }
  
-    [SerializeField] private bool CheckVertex(WeightedVertex current, WeightedVertex privous)
+    [SerializeField] private bool CheckVertex(WeightedVertex current)
     {
         // current.vertex.processState = Vertex.ProcessState.Processing;
 
         if (current.vertex==goalVertex) //последний vertex
         {
+            Debug.Log("Gool");
             RecursiveReturnToStart(current);
             return true;
         }
@@ -112,11 +113,8 @@ public abstract class GreedyBase : SearchAlgorithm
     }
     private void RecursiveReturnToStart(WeightedVertex vertex)
     {
-        foreach(var pathVertex in pathVertexes)
-        {
-            pathVertex.processState = Vertex.ProcessState.Seen;
-        }
-        pathVertexes.Clear();
+        ClearPathVertexes(Vertex.ProcessState.Seen, Link.State.Seen);;
+
         ReturnToStart(vertex);
         
         void ReturnToStart(WeightedVertex vertex)
@@ -127,31 +125,35 @@ public abstract class GreedyBase : SearchAlgorithm
             {
                 foreach(WeightedVertex processed in queueVertexes)
                 {
+                    if(processed.link.state == Link.State.Path)
+                        continue;
                     processed.vertex.processState = Vertex.ProcessState.NotSeen;
+                    processed.link.state = Link.State.NotSeen;
                 }
+                // vertex.link.state = Link.State.Path;
                 Complete(pathVertexes);
             }
             else
             {
                 WeightedVertex previous = vertex.origin;
                 vertex.link.state = Link.State.Path;
+                // queueVertexes.Remove(vertex);
                 ReturnToStart(previous);
             }
         }
     }
     private void ShowPath(WeightedVertex weightedVertex)
     {
-        foreach(var vertex in pathVertexes)
-        {
-            vertex.processState = Vertex.ProcessState.Seen;
-        }
-        pathVertexes.Clear();
+        ClearPathVertexes(Vertex.ProcessState.Seen, Link.State.Seen);
 
         RecursiveReturn(weightedVertex);
         void RecursiveReturn(WeightedVertex weightedVertex)
         {
             Vertex currentVertex = weightedVertex.vertex;
             pathVertexes.Add(currentVertex);
+
+
+            
 
             if(currentVertex==startVertex)
             {
@@ -163,6 +165,20 @@ public abstract class GreedyBase : SearchAlgorithm
 
             RecursiveReturn(weightedVertex.origin);
         }
+    }
+    private void ClearPathVertexes(Vertex.ProcessState vertexState, Link.State linkState)
+    {
+        if(pathVertexes.Count == 0)
+            return;
+        Vertex pathVertex = pathVertexes[0];
+        pathVertex.processState = vertexState;
+        for (int i = 1; i < pathVertexes.Count; i++)
+        {
+            pathVertex = pathVertexes[i];
+            pathVertex.processState = vertexState;
+            pathVertex.GetLinkWith(pathVertexes[i-1]).state = linkState;
+        }
+        pathVertexes.Clear();
     }
     protected abstract float GetWeight(WeightedVertex current, Vertex next);
     protected class WeightedVertex

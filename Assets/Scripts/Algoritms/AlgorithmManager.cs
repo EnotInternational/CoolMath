@@ -105,13 +105,18 @@ public class AlgorithmManager : MonoBehaviour
             if(result == string.Empty)
                 return;
             number = float.Parse(result);
-            Debug.Log("Wrond text, new is: " + result);
+            // Debug.Log("Wrond text, new is: " + result);
             inputField.SetTextWithoutNotify(result);
         }
-        Debug.Log("Sussessful " + number);
-        if(number > 100)
+        // Debug.Log("Sussessful " + number);
+        if(number > 200)
         {
-            number = 100;
+            number = 200;
+            inputField.SetTextWithoutNotify(number.ToString());
+        }
+        if(number < 1)
+        {
+            number = 1;
             inputField.SetTextWithoutNotify(number.ToString());
         }
         slider.SetValueWithoutNotify(number);
