@@ -16,7 +16,7 @@ public class Anchor : MonoBehaviour, IClickable
 
     private Vector3 _mousePosition;
     private bool _dragging;
-    private void Start()
+    private void Awake()
     {
         
         switch(_constraint)
@@ -29,7 +29,6 @@ public class Anchor : MonoBehaviour, IClickable
                 break;
         }
         
-        OnPositionChanged.Invoke();
     }
     public void MakePair(Anchor other)
     {
@@ -121,6 +120,8 @@ public class Anchor : MonoBehaviour, IClickable
     }
     public void OnClickDown()
     {
+        if(InteractionsManager.instance.IsOverUI())
+            return;
         _dragging = true;
         GridToolManager.instance.block = true;
     }

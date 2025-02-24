@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.UI;
 public class InteractionsManager : MonoBehaviour
 {
     [SerializeField]private float _checkSkip = 0.02f;
-    [SerializeField]private int _mousePositionMargin = 50;
+    [SerializeField]private Rect _mousePositionMargin;
     [SerializeField]private LayerMask _uiMask;
     [SerializeField]private InputSystemUIInputModule inputModule;
     public Vector2 mousePosition{get => _mousePosition;}
@@ -73,12 +73,16 @@ public class InteractionsManager : MonoBehaviour
     {
         _mousePxPosition = value.Get<Vector2>();
         // Debug.Log(_mousePxPosition);
+        _marginedMousePosition = Camera.main.ScreenToWorldPoint(_mousePxPosition);
+
+        Vector2 worldMin = Camera.main.ScreenToWorldPoint(Vector2.zero);
+        Vector2 worldMax = Camera.main.ScreenToWorldPoint(new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight));
+
         _marginedMousePosition =new Vector2
         (
-            Mathf.Clamp(_mousePxPosition.x, _mousePositionMargin, Camera.main.pixelWidth-_mousePositionMargin), 
-            Mathf.Clamp(_mousePxPosition.y, _mousePositionMargin, Camera.main.pixelHeight-_mousePositionMargin)
+            Mathf.Clamp(_marginedMousePosition.x, worldMin.x + _mousePositionMargin.min.x, worldMax.x - _mousePositionMargin.max.x), 
+            Mathf.Clamp(_marginedMousePosition.y, worldMin.y + _mousePositionMargin.min.y, worldMax.y - _mousePositionMargin.max.y)
         );
-        _marginedMousePosition = Camera.main.ScreenToWorldPoint(_marginedMousePosition);
         Vector2 newPosition = Camera.main.ScreenToWorldPoint(_mousePxPosition);
 
         if((newPosition - _lastCheckMousePosition).magnitude >= _checkSkip)

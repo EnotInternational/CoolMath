@@ -135,9 +135,13 @@ public class GraphToolManager : ToolManager
     private void SetTool(ITool tool)
     {
         if(alogthmManager.inProcess)
+        {
+            previousTool = tool;
             return;
+        }
+            
         toolMachine.SetTool(tool);
-        alogthmManager.ClearResults();
+        // alogthmManager.ClearResults();
     }
     private SetVertexType<GraphVertex> CreateStartPointTool()
     {

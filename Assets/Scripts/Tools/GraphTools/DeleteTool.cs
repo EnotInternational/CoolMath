@@ -24,6 +24,14 @@ public class DeleteTool : GraphTool
         }
         if(hit.transform.TryGetComponent<GraphVertexVisualizer>(out var vertex) )
         {
+            if(vertex.vertex == manager.AlgorithmManager.startVertex)
+            {
+                manager.AlgorithmManager.startVertex = null;
+            }
+            if(vertex.vertex == manager.AlgorithmManager.goalVertex)
+            {
+                manager.AlgorithmManager.goalVertex = null;
+            }
             if(manager.graphVertices.Count == 1)
             {
                 UILogger.LogWarning("Нельзя удалить последнюю вершину графа","Can`t destroy last graph vertex");

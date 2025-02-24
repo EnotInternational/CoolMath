@@ -27,6 +27,9 @@ public class AnchorRect : MonoBehaviour
         Vector2Int size = new Vector2Int(_right.GetIntPosition(), _up.GetIntPosition()) - position;
         _rect.position = position;
         _rect.size = size;
+
+
+        UpdateRect();
     }
     private void UpdateRect()
     {

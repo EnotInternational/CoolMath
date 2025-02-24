@@ -14,6 +14,8 @@ public class MoveTool : GraphTool
     }
     private void ClickDownHandler()
     {
+        if(InteractionsManager.instance.IsOverUI())
+            return;
         if(!manager.AlgorithmManager.clean)
         {
             manager.AlgorithmManager.ClearResults();

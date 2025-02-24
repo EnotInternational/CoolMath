@@ -28,6 +28,7 @@ public class GridFormer : MonoBehaviour
     private void Start()
     {
         _anchorRect.OnRectChanged.AddListener(ChangeGrid);
+        ChangeGrid();
     }
     private void OnEnable()
     {

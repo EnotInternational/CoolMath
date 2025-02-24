@@ -15,6 +15,8 @@ public class MultipleVideoPlayer : MonoBehaviour
     {
         videoPlayer = GetComponent<VideoPlayer>();
         videoPlayer.prepareCompleted += PrepareCompleteHandler;
+        rawImage.color = new Color(0, 0, 0, 0);
+
         // videoPlayer.targetTexture = rawImage.;
         // videoPlayer.url = System.IO.Path.Combine (Application.streamingAssetsPath, filename);
         // videoPlayer.Prepare();
@@ -47,7 +49,12 @@ public class MultipleVideoPlayer : MonoBehaviour
     private void PrepareCompleteHandler(VideoPlayer source)
     {
         rawImage.texture = videoPlayer.texture;
+        rawImage.color = Color.white;
         videoPlayer.Play();
+    }
+    private void OnDisable()
+    {
+        rawImage.color = new Color(0, 0, 0, 0);
     }
 
     void Start()

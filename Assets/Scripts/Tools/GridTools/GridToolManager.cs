@@ -116,9 +116,12 @@ public class GridToolManager : ToolManager
     private void SetTool(ITool tool)
     {
         if(alogthmManager.inProcess)
+        {
+            previousTool = tool;
             return;
+        }
         toolMachine.SetTool(tool);
-        alogthmManager.ClearResults();
+        // alogthmManager.ClearResults();
     }
     private void DeselectTools()
     {
