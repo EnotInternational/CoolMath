@@ -134,7 +134,10 @@ public class CreatingTool: GraphTool
     private void CreateToMove()
     {
         _toMove = MonoBehaviour.Instantiate(_vertexPrefab, manager.gameSpace).transform;
-        _toMove.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
+        _toMove.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex()
+        {
+            position = InteractionsManager.instance.marginedMousePosition
+        };
         manager.graphVertices.Add(_toMove.GetComponent<GraphVertexVisualizer>());
         _toMove.position = InteractionsManager.instance.marginedMousePosition;
     }
@@ -142,7 +145,10 @@ public class CreatingTool: GraphTool
     {
         var go = MonoBehaviour.Instantiate(_vertexPrefab, position, Quaternion.identity, manager.gameSpace);
         manager.graphVertices.Add(go.GetComponent<GraphVertexVisualizer>());
-        go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex();
+        go.GetComponent<GraphVertexVisualizer>().vertex = new GraphVertex
+        {
+            position = position
+        };
         return go.GetComponent<GraphVertexVisualizer>();
     }
     private void Link(GraphVertexVisualizer vertexA, GraphVertexVisualizer vertexB)

@@ -8,7 +8,7 @@ public abstract class GreedyBase : SearchAlgorithm
     [SerializeField] private Dictionary<Vertex, WeightedVertex> seen = new Dictionary<Vertex, WeightedVertex>();
     [SerializeField] private List<Vertex> pathVertexes=new List<Vertex>();
     [SerializeField] private PriorityQueues.MappedBinaryPriorityQueue<WeightedVertex> queueVertexes = 
-    new PriorityQueues.MappedBinaryPriorityQueue<WeightedVertex>(new System.Comparison<WeightedVertex>((a, b) => a.weight.CompareTo(b.weight)));  
+    new PriorityQueues.MappedBinaryPriorityQueue<WeightedVertex>(new System.Comparison<WeightedVertex>((a, b) => a.overhallWeight.CompareTo(b.overhallWeight)));  
     private WeightedVertex currentVertex;
     public GreedyBase(AlgorithmManager manager) : base(manager){}
     public override void Clear()
@@ -33,7 +33,7 @@ public abstract class GreedyBase : SearchAlgorithm
     }
     protected override void BeforeFirstIteration()
     {
-        WeightedVertex startWeightedVertex = new WeightedVertex(startVertex, null, null, 0f);
+        WeightedVertex startWeightedVertex = new WeightedVertex(startVertex, null, null, 0, Heuristic(startVertex));
         queueVertexes.Enqueue(startWeightedVertex);
         seen.Add(startVertex, startWeightedVertex);
     }
@@ -62,19 +62,21 @@ public abstract class GreedyBase : SearchAlgorithm
             Vertex next = neighbour;
 
             otherLinks[j].state = Link.State.Seen;
-
-            float newWeight = GetWeight(currentVertex, next);
+            
+            GetWeight(currentVertex, next, out float heuristicWeight, out float weight);
+            weight = weight + currentVertex.weight;
             WeightedVertex nextWeighted;
             if(seen.Keys.Contains(next))
             {
                 WeightedVertex weightedVertex = seen[next];
-                if(weightedVertex.weight < newWeight)
+                if(weightedVertex.overhallWeight < heuristicWeight + weight)
                 {
                     continue;
                 }
                 else
                 {
-                    weightedVertex.weight = newWeight;
+                    weightedVertex.weight = weight;
+                    weightedVertex.weightHeuristic = heuristicWeight;
                     if(queueVertexes.Contains(weightedVertex))
                     {
                         continue;
@@ -86,7 +88,7 @@ public abstract class GreedyBase : SearchAlgorithm
                     continue;
                 }
             }
-            nextWeighted = new WeightedVertex(next, currentVertex, currentVertex.vertex.GetLinkWith(next), newWeight);
+            nextWeighted = new WeightedVertex(next, currentVertex, currentVertex.vertex.GetLinkWith(next), weight, heuristicWeight);
             queueVertexes.Enqueue(nextWeighted); 
             seen.Add(next, nextWeighted); 
             next.processState = Vertex.ProcessState.Processing;
@@ -180,19 +182,30 @@ public abstract class GreedyBase : SearchAlgorithm
         }
         pathVertexes.Clear();
     }
-    protected abstract float GetWeight(WeightedVertex current, Vertex next);
+    protected abstract void GetWeight(WeightedVertex current, Vertex next, out float euristicWeight, out float weight);
+    protected virtual float Heuristic(Vertex current)
+    {
+        return 0;
+    }
+
     protected class WeightedVertex
     {
         public Vertex vertex;
         public WeightedVertex origin;
         public Link link;
         public float weight;
-        public WeightedVertex(Vertex vertex, WeightedVertex origin, Link link, float weight)
+        public float weightHeuristic;
+        public float overhallWeight
+        {
+            get => weight + weightHeuristic;
+        }
+        public WeightedVertex(Vertex vertex, WeightedVertex origin, Link link, float weight, float weightHeuristic)
         {
             this.vertex = vertex;
             this.origin = origin;
             this.link = link;
             this.weight = weight;
+            this.weightHeuristic = weightHeuristic;
         }
     }
 }

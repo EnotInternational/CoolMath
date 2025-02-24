@@ -170,8 +170,10 @@ public class Dijkstra : GreedyBase
 {
     public Dijkstra(AlgorithmManager manager) : base(manager){}
 
-    protected override float GetWeight(WeightedVertex current, Vertex next)
+    protected override void GetWeight(WeightedVertex current, Vertex next, out float euristicWeight, out float weight)
     {
-        return current.weight + current.vertex.GetWeightWith(next, out Link link);
+        weight = current.vertex.GetWeightWith(next, out Link link);
+        euristicWeight = Heuristic(next);
     }
+
 }

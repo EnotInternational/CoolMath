@@ -6,11 +6,13 @@ public class Greedy : GreedyBase
 {
     public Greedy(AlgorithmManager manager) : base(manager){}
 
-    protected override float GetWeight(WeightedVertex current, Vertex next)
+    protected override void GetWeight(WeightedVertex current, Vertex next, out float euristicWeight, out float weight)
     {
-        return Heuristic(next);
+        // weight = current.vertex.GetWeightWith(next, out Link link);
+        weight = 0;
+        euristicWeight = Heuristic(next);
     }
-    private float Heuristic(Vertex vertex)
+    protected override float Heuristic(Vertex vertex)
     {
         // return Vector2.Distance(current.vertex.position, goalVertex.position);
         return Vector2.Distance(vertex.position, goalVertex.position);

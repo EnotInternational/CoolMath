@@ -41,6 +41,7 @@ public class MoveTool : GraphTool
         {
             _toMove.position = InteractionsManager.instance.marginedMousePosition;
             _toMove.GetComponent<IVertexVisualizer<GraphVertex>>().UpdatePosition();
+            _toMove.GetComponent<IVertexVisualizer<GraphVertex>>().vertex.position = _toMove.position;
             if(manager.AutoWeights)
             {
                 foreach(var link in _toMove.GetComponent<GraphVertexVisualizer>().vertex.Links)
